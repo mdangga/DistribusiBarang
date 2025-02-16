@@ -18,9 +18,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'username','email', 'password', 'nama_user', 'no_telpon', 'nama_perusahaan', 'alamat',
     ];
 
     /**
@@ -30,7 +28,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -41,8 +38,15 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
+        ];
+    }
+
+    // rule untuk no telpon
+    public static function rules()
+    {
+        return [
+            'no_telpon' => 'required|string|min:10|max:15|regex:/^[0-9]+$/'
         ];
     }
 }

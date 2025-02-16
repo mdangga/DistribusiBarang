@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class authController extends Controller
 {
     function showWelcome() {
-        return view('welcome');
+        return view('dasboard');
     }
     // function Sign Up(start)
     function showSignup() {
@@ -19,13 +19,18 @@ class authController extends Controller
     
     function submitSignup(Request $request) {
         $user = new User();
+    
         
+        $user->username = $request->username;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
-        $user->name = $request->name;
-        $user->save();
-                
-        return redirect()->route('signin.show');
+        $user->nama_user = $request->nama_user;
+        $user->no_telpon = $request->no_telpon;
+        $user->nama_perusahaan = $request->nama_perusahaan;
+        $user->alamat = $request->alamat;
+        $user->save();      
+
+        return redirect()->route('signin.show')->with('success', 'Akun berhasil dibuat, silakan login!');
     }
     // function Sign Up(end)
 
@@ -35,7 +40,7 @@ class authController extends Controller
     }
     
     function submitSignin(Request $request) {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();

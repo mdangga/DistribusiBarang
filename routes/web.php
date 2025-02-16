@@ -3,6 +3,9 @@
 use App\Http\Controllers\authController;
 use Illuminate\Support\Facades\Route;
 
+// Route default saat akses http://localhost/
+Route::get('/', [AuthController::class, 'showSignin'])->name('signin.default');
+
 // route Sign Up
 route::get('/signup', [authController::class, 'showSignup'])-> name('signup.show');
 route::post('/signup/submit', [authController::class, 'submitSignup'])-> name('signup.submit');
