@@ -45,7 +45,7 @@
     </p>
   </div>
 </div>
-{{-- @if (session('success')) --}}
+@if (session('success'))
 <div id="toast-success" class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-green-100 rounded-lg shadow-sm " role="alert">
   <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
       <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -61,6 +61,6 @@
       </svg>
   </button>
 </div>
-  {{-- @endif --}}
+  @endif
 </body>
 </html>
