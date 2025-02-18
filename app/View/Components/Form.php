@@ -13,11 +13,13 @@ class Form extends Component
      */
     public $type;
     public $name;
+    public $placeholder;
 
-    public function __construct($type = 'text', $name)
+    public function __construct($type = 'text', $name, $placeholder='')
     {
         $this->type = $type;
         $this->name = $name;
+        $this->placeholder = $placeholder;
     }
 
     /**
