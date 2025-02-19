@@ -11,7 +11,10 @@ class authController extends Controller
 {
     // controller untuk dashboard
     function showAdmin() {
-        return view('admin.dashboard');
+        $user = Auth::user();
+        return view('admin.dashboard', [
+            'username' => $user->username,
+        ]);
     }
     function showUser() {
         return view('dashboard');
@@ -50,7 +53,7 @@ class authController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
             
             $user = Auth::user();
@@ -71,7 +74,7 @@ class authController extends Controller
     function signOut(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
-        return redirect()->route('signin.show')
+        return redirect()->route('default.show')
         ->with('logout', 'Anda telah berhasil logout.');
     }
     // function signout (end)
