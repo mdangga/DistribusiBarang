@@ -1,15 +1,28 @@
 <?php
 
 use App\Http\Controllers\authController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Route default saat akses http://localhost/
-Route::get('/', [AuthController::class, 'showSignin'])->name('signin.default');
 
-Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup.show');
-Route::post('/signup', [AuthController::class, 'submitSignup'])->name('signup.submit');
-Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin.show');
-Route::post('/signin', [AuthController::class, 'submitSignin'])->name('signin.submit');
+// Route default
+Route::get('/', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+        return match($user->role) {
+            'admin' => redirect()->route('admin.show'),
+            default => redirect()->route('user.show')
+        };
+    }
+    return redirect()->route('signin.show');
+})->name('default.show');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup.show');
+    Route::post('/signup', [AuthController::class, 'submitSignup'])->name('signup.submit');
+    Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin.show');
+    Route::post('/signin', [AuthController::class, 'submitSignin'])->name('signin.submit');
+});
 
 // protected route
 Route::middleware('auth')->group(function () {
