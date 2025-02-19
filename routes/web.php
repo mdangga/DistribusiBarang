@@ -6,11 +6,21 @@ use Illuminate\Support\Facades\Route;
 // Route default saat akses http://localhost/
 Route::get('/', [AuthController::class, 'showSignin'])->name('signin.default');
 
-// route Sign Up
-route::get('/signup', [authController::class, 'showSignup'])-> name('signup.show');
-route::post('/signup/submit', [authController::class, 'submitSignup'])-> name('signup.submit');
+Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup.show');
+Route::post('/signup', [AuthController::class, 'submitSignup'])->name('signup.submit');
+Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin.show');
+Route::post('/signin', [AuthController::class, 'submitSignin'])->name('signin.submit');
 
-// route Sign In
-route::get('/signin', [authController::class, 'showSignin'])-> name('signin.show');
-route::post('/signin/submit', [authController::class, 'submitSignin'])-> name('signin.submit');
-route::get('/welcome', [authController::class, 'showWelcome'])-> name('welcome.show');
+// protected route
+Route::middleware('auth')->group(function () {
+    Route::get('/signout', [AuthController::class, 'signOut'])->name('signout');
+    
+    // admin
+    Route::middleware('role:admin')->group(function ()  {
+        Route::get('/admin', [AuthController::class, 'showAdmin'])->name('admin.show');
+    });
+    // user
+    Route::middleware('role:user')->group(function ()  {
+        Route::get('/dashboard', [AuthController::class, 'showUser'])->name('user.show');
+    });
+});
