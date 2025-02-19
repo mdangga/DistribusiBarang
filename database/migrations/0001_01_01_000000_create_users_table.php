@@ -16,11 +16,12 @@ return new class extends Migration
             $table->string('username');
             $table->string('email')->unique();
             $table->string('password');
-            $table->boolean('is_admin')->default(false);
+            $table->enum('role', ['user', 'admin', 'owner'])->default('user');
             $table->string('nama_user');
             $table->string('no_telpon', 15)->unique(); 
             $table->string('nama_perusahaan');
             $table->string('alamat');
+            $table->rememberToken();
             $table->timestamps();
         });
 
