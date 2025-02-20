@@ -14,10 +14,15 @@ class authController extends Controller
         $user = Auth::user();
         return view('admin.dashboard', [
             'username' => $user->username,
+            'email' => $user->email,
         ]);
     }
     function showUser() {
-        return view('dashboard');
+        $user = Auth::user();
+        return view('user.dashboard', [
+            'username' => $user->username,
+            'email' => $user->email,
+        ]);
     }
     // function signup (start)
     // menampilkan tampilan signup

@@ -21,7 +21,7 @@
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" action="{{ route('signin.submit') }}" method="POST">
       @csrf
-      <x-form type="email" name="email">email</x-form>
+      <x-form type="email" name="email">Email</x-form>
       <div>
         <div class="flex items-center justify-between">
           <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
