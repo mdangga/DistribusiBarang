@@ -49,7 +49,7 @@ class authController extends Controller
     // function signin (start)
     // menampilkan tampilan signin
     function showSignin() {
-        return view('signin');
+        return view('signin1');
     }
     // submit signin
     function submitSignin(Request $request) {
