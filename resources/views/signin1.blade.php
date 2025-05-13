@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="img/favicon.svg">
     <title>Sign In</title>
 </head>
 
@@ -17,14 +17,14 @@
             <div class="grid grid-cols-1 lg:grid-cols-2">
                 <!-- Image section -->
                 <div class="hidden lg:block">
-                    <img src="img/login.svg"
-                        alt="illustration" class="w-full m-auto object-cover">
-                </div> <!-- Removed stray text here -->
+                    <img src="img/login-img.svg"
+                        alt="illustration" class="h-auto m-auto object-cover">
+                </div>
 
                 <!-- Form section -->
-                <div class="p-10"> <!-- Already has p-8 for padding -->
+                <div class="p-10 h-auto my-auto">
                     <div class="text-center mb-6">
-                        <h1 class="text-3xl font-semibold text-gray-800">Welcome Back!</h1>
+                        <h1 class="text-2xl font-semibold text-gray-800">Welcome Back!</h1>
                     </div>
 
                     <form class="" action="{{ route('signin.submit') }}" method="POST">
@@ -49,7 +49,7 @@
 
                         <div class="place-items-end">
                             <button type="submit"
-                                class="flex w-[100px] justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-150 ease-in">Sign
+                                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-150 ease-in">Sign
                                 In</button>
                         </div>
                     </form>
