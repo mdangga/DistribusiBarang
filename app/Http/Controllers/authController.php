@@ -14,10 +14,15 @@ class authController extends Controller
         $user = Auth::user();
         return view('admin.dashboard', [
             'username' => $user->username,
+            'email' => $user->email,
         ]);
     }
     function showUser() {
-        return view('dashboard');
+        $user = Auth::user();
+        return view('user.dashboard', [
+            'username' => $user->username,
+            'email' => $user->email,
+        ]);
     }
     // function signup (start)
     // menampilkan tampilan signup
@@ -44,7 +49,7 @@ class authController extends Controller
     // function signin (start)
     // menampilkan tampilan signin
     function showSignin() {
-        return view('signin');
+        return view('signin1');
     }
     // submit signin
     function submitSignin(Request $request) {
