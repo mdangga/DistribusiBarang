@@ -13,7 +13,6 @@
 
 <body class="h-full flex items-center justify-center bg-cover bg-center"
     style="background-image: url('img/bg-signin.jpg')">
-
     {{-- gradient HITAM --}}
     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-0"></div>
 
