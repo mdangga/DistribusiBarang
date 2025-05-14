@@ -20,7 +20,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2">
             <!-- Image section -->
             <div class="hidden lg:block">
-                <img src="img/login-img.svg" alt="illustration" class="h-auto m-auto object-cover scale-x-[-1]">
+                <img src="img/login-img.svg" alt="illustration" class="h-auto m-auto object-cover scale-x-[-1] cursor-not-allowed" draggable="false">
             </div>
 
             <!-- Form section -->
