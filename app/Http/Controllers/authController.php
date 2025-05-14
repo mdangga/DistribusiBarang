@@ -79,8 +79,8 @@ class authController extends Controller
     function signOut(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
-        return redirect()->route('default.show')
-        ->with(['logout' => 'Anda telah berhasil logout.']);
+        return redirect()->route('signin.show')
+        ->with('logout', 'Anda telah berhasil logout.');
     }
     // function signout (end)
 }
