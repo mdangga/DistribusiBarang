@@ -49,7 +49,7 @@ class authController extends Controller
     // function signin (start)
     // menampilkan tampilan signin
     function showSignin() {
-        return view('signin1');
+        return view('signin');
     }
     // submit signin
     function submitSignin(Request $request) {
@@ -69,7 +69,7 @@ class authController extends Controller
         }
 
         return redirect()->back()->with([
-            'gagal', 'Email atau password salah',
+            'gagal' => 'Email atau password salah',
         ])->onlyInput('email');
     }
     
@@ -80,7 +80,7 @@ class authController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         return redirect()->route('default.show')
-        ->with('logout', 'Anda telah berhasil logout.');
+        ->with(['logout' => 'Anda telah berhasil logout.']);
     }
     // function signout (end)
 }
