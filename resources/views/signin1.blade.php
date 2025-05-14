@@ -18,13 +18,13 @@
                 <!-- Image section -->
                 <div class="hidden lg:block">
                     <img src="img/login-img.svg"
-                        alt="illustration" class="h-auto m-auto object-cover scale-x-[-1]">
+                        alt="illustration" class="h-auto m-auto object-cover">
                 </div>
 
                 <!-- Form section -->
                 <div class="p-10 h-auto my-auto">
                     <div class="text-center mb-6">
-                        <h1 class="text-3xl font-semibold text-black">Welcome Back!</h1>
+                        <h1 class="text-2xl font-semibold text-gray-800">Welcome Back!</h1>
                     </div>
 
                     <form class="" action="{{ route('signin.submit') }}" method="POST">
@@ -34,7 +34,7 @@
                             <div class="flex items-center justify-between">
                                 <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
                                 <div class="text-sm">
-                                    <a href="#" class="font-semibold text-[#ff9f1c] hover:text-[#ffbf69]">Forgot
+                                    <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot
                                         password?</a>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
 
                         <div class="place-items-end">
                             <button type="submit"
-                                class="flex w-full justify-center rounded-md bg-[#ff9f1c] px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-[#ffbf69] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-150 ease-in">Sign
+                                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-150 ease-in">Sign
                                 In</button>
                         </div>
                     </form>
