@@ -1,70 +1,105 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-white">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite(['resources/css/app.css','resources/js/app.js'])
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="img/favicon.svg">
     <title>Sign In</title>
 </head>
-<body class="h-full">
 
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <img class="mx-auto h-10 w-auto" src="img/logo.png" alt="Your Company">
-    <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign in to your account</h2>
-  </div>
+<body class="h-full flex items-center justify-center bg-cover bg-center"
+    style="background-image: url('img/bg-signin.jpg')">
+    {{-- gradient HITAM --}}
+    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-0"></div>
 
-  
-  
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" action="{{ route('signin.submit') }}" method="POST">
-      @csrf
-      <x-form type="email" name="email">Email</x-form>
-      <div>
-        <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
-          <div class="text-sm">
-            <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
-          </div>
+    <div class="absolute z-10 bg-white shadow-lg rounded-lg overflow-hidden h-auto w-3/4 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+            <!-- Image section -->
+            <div class="hidden lg:block">
+                <img src="img/login-img.svg" alt="illustration"
+                    class="h-auto m-auto object-cover scale-x-[-1] cursor-not-allowed" draggable="false">
+            </div>
+
+            <!-- Form section -->
+            <div class="p-10 h-auto my-auto">
+                {{-- hello text --}}
+                <div class="text-center mb-6">
+                    <h1 class="text-3xl font-semibold text-black">Welcome Back!</h1>
+                </div>
+
+                {{-- awal pesan --}}
+                @if (session('gagal'))
+                    <div id="alert-gagal"
+                        class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50"
+                        role="alert">
+                        <div class="ms-3 text-sm font-normal" role="alert">
+                            <span class="font-medium">Peringatan!</span> {{ session('gagal') }}
+                        </div>
+                        <button type="button"
+                            class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8"
+                            data-dismiss-target="#alert-gagal" aria-label="Close">
+                            <span class="sr-only">Close</span>
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
+
+                @if (session('logout'))
+                    <div id="alert-logout"
+                        class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50"
+                        role="alert">
+                        <div class="ms-3 text-sm font-normal" role="alert">
+                            <span class="font-medium">Sukses! </span> {{ session('logout') }}
+                        </div>
+                        <button type="button"
+                            class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8"
+                            data-dismiss-target="#alert-logout" aria-label="Close">
+                            <span class="sr-only">Close</span>
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
+                {{-- akhir pesan --}}
+
+                <form class="" action="{{ route('signin.submit') }}" method="POST">
+                    @csrf
+                    {{-- input email --}}
+                    <x-form type="email" name="email">Email</x-form>
+                    {{-- input password --}}
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
+                            <div class="text-sm">
+                                <a href="#" class="font-semibold text-[#ff9f1c] hover:text-[#ffbf69]">Lupa
+                                    password?</a>
+                            </div>
+                        </div>
+
+                        <x-form type="password" name="password"></x-form>
+                    </div>
+
+                    {{-- submit button --}}
+                    <div class="place-items-end">
+                        <button type="submit"
+                            class="flex w-full justify-center rounded-md bg-[#ff9f1c] px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-[#ffbf69] hover:text-black transition duration-150 ease-in">Sign
+                            In</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <x-form type="password" name="password" ></x-form>
-      </div>
-
-    @if (session('gagal'))
-        <p class="mt-10 text-center text-sm/6 text-red-500">
-          {{ session('gagal') }}
-        </p>
-    @endif
-
-      <div>
-        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-150 ease-in">Sign In</button>
-      </div>
-    </form>
-
-    <p class="mt-10 text-center text-sm/6 text-gray-500">
-      Don't have an account?
-      <a href="/signup" class="font-semibold text-indigo-600 hover:text-indigo-500 ">Sign Up!</a>
-    </p>
-  </div>
-</div>
-@if (session('success'))
-<div id="toast-success" class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-green-100 rounded-lg shadow-sm " role="alert">
-  <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
-      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-      </svg>
-      <span class="sr-only">Check icon</span>
-  </div>
-  <div class="ms-3 text-sm font-normal">Sign Up Successfull! Please Sign In.</div>
-  <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-100 text-gray-400 hover:text-green-100 rounded-2xl focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-green-800 inline-flex items-center justify-center h-8 w-8 " data-dismiss-target="#toast-success" aria-label="Close">
-      <span class="sr-only">Close</span>
-      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-      </svg>
-  </button>
-</div>
-@endif
+    </div>
 </body>
+
 </html>
