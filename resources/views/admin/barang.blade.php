@@ -12,8 +12,6 @@
 </head>
 
 <body>
-
-
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200  ">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
@@ -139,7 +137,7 @@
                         </th>
                     </tr>
                 </thead>
-                
+
                 <tbody>
                     @foreach ($barang as $key => $item)
                         <tr class="bg-white border-b border-gray-200">
@@ -147,7 +145,8 @@
                                 {{ $key + 1 }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $item->nama_barang }}
+                                <a data-modal-target="crud-modal-barang" data-modal-toggle="crud-modal-barang"
+                                    class="cursor-pointer">{{ $item->nama_barang }}</a>
                             </td>
                             <td class="px-6 py-4">
                                 {{ $item->kategori }}
@@ -165,8 +164,47 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
-    </div>
+
+            <x-modal id="crud-modal-barang" header="Edit Data" button="Simpan" akses="$barang->id">
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                    <div class="col-span-2">
+                        <label for="nama_barang"
+                            class="block mb-2 text-sm font-medium text-gray-900">nama barang</label>
+                        <input type="text" name="nama_barang" id="nama_barang"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            value="{{ $item->nama_barang }}" required="">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="stok" class="block mb-2 text-sm font-medium text-gray-900">stok</label>
+                        <input type="text" name="stok" id="stok"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            value="{{ $item->stok }}" required="">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="satuan" class="block mb-2 text-sm font-medium text-gray-900">satuan</label>
+                        <input type="text" name="satuan" id="satuan"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            value="{{ $item->satuan }}" required="">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label for="harga" class="block mb-2 text-sm font-medium text-gray-900">harga</label>
+                        <input type="number" name="harga" id="harga"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            value="{{ $item->harga }}" required="">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900">kategori</label>
+                        <select id="kategori"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                            <option selected="">Select kategori</option>
+                            <option value="Cat">Cat</option>
+                            <option value="Semen">Semen</option>
+                            <option value="Tools">Tools</option>
+                            <option value="Pasir">Pasir</option>
+                        </select>
+                    </div>
+                </div>
+            </x-modal>
 
 </body>
 
