@@ -112,99 +112,91 @@
         </div>
     </aside>
 
+    <!-- Navbar (tetap sama seperti sebelumnya) -->
+
     <div class="p-4 sm:ml-64 mt-14">
-        <div class="relative overflow-x-auto">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Id
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Nama Barang
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Kategori
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Stok
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Satuan
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Harga
-                        </th>
+                        <th scope="col" class="px-6 py-3">ID</th>
+                        <th scope="col" class="px-6 py-3">Nama Barang</th>
+                        <th scope="col" class="px-6 py-3">Kategori</th>
+                        <th scope="col" class="px-6 py-3">Stok</th>
+                        <th scope="col" class="px-6 py-3">Satuan</th>
+                        <th scope="col" class="px-6 py-3">Harga</th>
                     </tr>
                 </thead>
-
                 <tbody>
-                    @foreach ($barang as $key => $item)
+                    @foreach ($barang as $item)
                         <tr class="bg-white border-b border-gray-200">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ $key + 1 }}
-                            </th>
+                            <td class="px-6 py-4">{{ $loop->iteration }}</td>
                             <td class="px-6 py-4">
-                                <a data-modal-target="crud-modal-barang" data-modal-toggle="crud-modal-barang"
-                                    class="cursor-pointer">{{ $item->nama_barang }}</a>
+                                <!-- Trigger Modal -->
+                                <a data-modal-target="editModal{{ $item->id_barang }}"
+                                    data-modal-toggle="editModal{{ $item->id_barang }}"
+                                    class="cursor-pointer font-medium text-blue-600 hover:underline">
+                                    {{ $item->nama_barang }}
+                                </a>
                             </td>
-                            <td class="px-6 py-4">
-                                {{ $item->kategori }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $item->stok }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $item->satuan }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ 'Rp. ' . number_format($item->harga, 2) }}
-                            </td>
+                            <td class="px-6 py-4">{{ $item->kategori }}</td>
+                            <td class="px-6 py-4">{{ $item->stok }}</td>
+                            <td class="px-6 py-4">{{ $item->satuan }}</td>
+                            <td class="px-6 py-4">{{ 'Rp ' . number_format($item->harga, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
 
-            <x-modal id="crud-modal-barang" header="Edit Data" button="Simpan" akses="$barang->id">
-                <div class="grid gap-4 mb-4 grid-cols-2">
-                    <div class="col-span-2">
-                        <label for="nama_barang"
-                            class="block mb-2 text-sm font-medium text-gray-900">nama barang</label>
-                        <input type="text" name="nama_barang" id="nama_barang"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                            value="{{ $item->nama_barang }}" required="">
-                    </div>
-                    <div class="col-span-2">
-                        <label for="stok" class="block mb-2 text-sm font-medium text-gray-900">stok</label>
-                        <input type="text" name="stok" id="stok"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                            value="{{ $item->stok }}" required="">
-                    </div>
-                    <div class="col-span-2">
-                        <label for="satuan" class="block mb-2 text-sm font-medium text-gray-900">satuan</label>
-                        <input type="text" name="satuan" id="satuan"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                            value="{{ $item->satuan }}" required="">
-                    </div>
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="harga" class="block mb-2 text-sm font-medium text-gray-900">harga</label>
-                        <input type="number" name="harga" id="harga"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                            value="{{ $item->harga }}" required="">
-                    </div>
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900">kategori</label>
-                        <select id="kategori"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
-                            <option selected="">Select kategori</option>
-                            <option value="Cat">Cat</option>
-                            <option value="Semen">Semen</option>
-                            <option value="Tools">Tools</option>
-                            <option value="Pasir">Pasir</option>
-                        </select>
-                    </div>
-                </div>
-            </x-modal>
+    <!-- Modals untuk setiap barang -->
+    @foreach ($barang as $item)
+        <x-modal id="editModal{{ $item->id_barang }}" header="Edit {{ $item->nama_barang }}"
+            button="Simpan Perubahan" akses="{{ $item->id_barang }}">
+            <div class="grid gap-4 mb-4
+            grid-cols-2">
+            <div class="col-span-2">
+                <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Nama Barang</label>
+                <input type="text" name="nama_barang" id="nama_barang" value="{{ $item->nama_barang }}"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+            </div>
+
+            <div class="col-span-2 sm:col-span-1">
+                <label for="stok" class="block mb-2 text-sm font-medium text-gray-900">Stok</label>
+                <input type="number" name="stok" id="stok" value="{{ $item->stok }}"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+            </div>
+
+            <div class="col-span-2 sm:col-span-1">
+                <label for="satuan" class="block mb-2 text-sm font-medium text-gray-900">Satuan</label>
+                <select name="satuan" id="satuan"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                    <option value="pcs" {{ $item->satuan == 'pcs' ? 'selected' : '' }}>PCS</option>
+                    <option value="kg" {{ $item->satuan == 'kg' ? 'selected' : '' }}>KG</option>
+                    <option value="liter" {{ $item->satuan == 'liter' ? 'selected' : '' }}>Liter</option>
+                </select>
+            </div>
+
+            <div class="col-span-2">
+                <label for="harga" class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
+                <input type="number" name="harga" id="harga" value="{{ $item->harga }}"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+            </div>
+
+            <div class="col-span-2">
+                <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900">Kategori</label>
+                <select name="kategori" id="kategori"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                    <option value="Cat" @if ($item->kategori === 'Cat') selected @endif>Cat</option>
+                    <option value="Semen" @if ($item->kategori === 'Semen') selected @endif>Semen</option>
+                    <option value="Tools" @if ($item->kategori === 'Tools') selected @endif>Tools</option>
+                    <option value="Pasir" @if ($item->kategori === 'Pasir') selected @endif>Pasir</option>
+                </select>
+            </div>
+            </div>
+        </x-modal>
+    @endforeach
 
 </body>
 
