@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     if (Auth::check()) {
         $user = Auth::user();
-        return match($user->role) {
+        return match ($user->role) {
             'admin' => redirect()->route('admin.show'),
             default => redirect()->route('user.show')
         };
@@ -29,15 +29,15 @@ Route::middleware('guest')->group(function () {
 // protected route
 Route::middleware('auth')->group(function () {
     Route::get('/signout', [AuthController::class, 'signOut'])->name('signout');
-    
+
     // admin
-    Route::middleware('role:admin')->group(function ()  {
+    Route::middleware('role:admin')->group(function () {
         Route::get('/admin', [AuthController::class, 'showAdmin'])->name('admin.show');
-        Route::get('/barang', [barangController::class, 'tampilkanDataBarang'])->name('admin.barang');
-        Route::post('/barang', [barangController::class, 'updateDataBarang'])->name('edit.barang');
+        Route::get('/admin/barang', [barangController::class, 'tampilkanDataBarang'])->name('admin.barang');
+        Route::put('/admin/barang/{id_barang}', [barangController::class, 'updateDataBarang'])->name('barang.update');
     });
     // user
-    Route::middleware('role:user')->group(function ()  {
+    Route::middleware('role:user')->group(function () {
         Route::get('/dashboard', [AuthController::class, 'showUser'])->name('user.show');
     });
 });
