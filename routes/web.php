@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\authController;
+use App\Http\Controllers\barangController;
+use App\Models\Barang;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +33,7 @@ Route::middleware('auth')->group(function () {
     // admin
     Route::middleware('role:admin')->group(function ()  {
         Route::get('/admin', [AuthController::class, 'showAdmin'])->name('admin.show');
+        Route::get('/barang', [barangController::class, 'tampilkanData'])->name('admin.barang');
     });
     // user
     Route::middleware('role:user')->group(function ()  {
