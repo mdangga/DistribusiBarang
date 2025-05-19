@@ -156,44 +156,44 @@
             button="Simpan Perubahan" akses="{{ $item->id_barang }}">
             <div class="grid gap-4 mb-4
             grid-cols-2">
-            <div class="col-span-2">
-                <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Nama Barang</label>
-                <input type="text" name="nama_barang" id="nama_barang" value="{{ $item->nama_barang }}"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-            </div>
+                <div class="col-span-2">
+                    <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Nama Barang</label>
+                    <input type="text" name="nama_barang" id="nama_barang" value="{{ $item->nama_barang }}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
+                </div>
 
-            <div class="col-span-2 sm:col-span-1">
-                <label for="stok" class="block mb-2 text-sm font-medium text-gray-900">Stok</label>
-                <input type="number" name="stok" id="stok" value="{{ $item->stok }}"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-            </div>
+                <div class="col-span-2 sm:col-span-1">
+                    <label for="stok" class="block mb-2 text-sm font-medium text-gray-900">Stok</label>
+                    <input type="number" name="stok" id="stok" value="{{ $item->stok }}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
+                </div>
 
-            <div class="col-span-2 sm:col-span-1">
-                <label for="satuan" class="block mb-2 text-sm font-medium text-gray-900">Satuan</label>
-                <select name="satuan" id="satuan"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
-                    <option value="pcs" {{ $item->satuan == 'pcs' ? 'selected' : '' }}>PCS</option>
-                    <option value="kg" {{ $item->satuan == 'kg' ? 'selected' : '' }}>KG</option>
-                    <option value="liter" {{ $item->satuan == 'liter' ? 'selected' : '' }}>Liter</option>
-                </select>
-            </div>
+                <div class="col-span-2 sm:col-span-1">
+                    <label for="satuan" class="block mb-2 text-sm font-medium text-gray-900">Satuan</label>
+                    <select name="satuan" id="satuan"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
+                        <option value="pcs" {{ $item->satuan == 'pcs' ? 'selected' : '' }}>PCS</option>
+                        <option value="kg" {{ $item->satuan == 'kg' ? 'selected' : '' }}>KG</option>
+                        <option value="liter" {{ $item->satuan == 'liter' ? 'selected' : '' }}>Liter</option>
+                    </select>
+                </div>
 
-            <div class="col-span-2">
-                <label for="harga" class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
-                <input type="number" name="harga" id="harga" value="{{ $item->harga }}"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-            </div>
+                <div class="col-span-2">
+                    <label for="harga" class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
+                    <input type="number" name="harga" id="harga" value="{{ $item->harga }}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
+                </div>
 
-            <div class="col-span-2">
-                <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900">Kategori</label>
-                <select name="kategori" id="kategori"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
-                    <option value="Cat" @if ($item->kategori === 'Cat') selected @endif>Cat</option>
-                    <option value="Semen" @if ($item->kategori === 'Semen') selected @endif>Semen</option>
-                    <option value="Tools" @if ($item->kategori === 'Tools') selected @endif>Tools</option>
-                    <option value="Pasir" @if ($item->kategori === 'Pasir') selected @endif>Pasir</option>
-                </select>
-            </div>
+                <div class="col-span-2">
+                    <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900">Kategori</label>
+                    <select name="kategori" id="kategori"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
+                        <option value="Cat" @if ($item->kategori === 'Cat') selected @endif>Cat</option>
+                        <option value="Semen" @if ($item->kategori === 'Semen') selected @endif>Semen</option>
+                        <option value="Tools" @if ($item->kategori === 'Tools') selected @endif>Tools</option>
+                        <option value="Pasir" @if ($item->kategori === 'Pasir') selected @endif>Pasir</option>
+                    </select>
+                </div>
             </div>
         </x-modal>
     @endforeach
