@@ -1,4 +1,4 @@
-@props(['id', 'akses', 'header', 'button'])
+@props(['id', 'akses' => null, 'header', 'button'])
 <div id="{{ $id }}" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-16 md:top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
@@ -24,9 +24,11 @@
             </div>
 
             <!-- Form -->
-            <form class="p-4 md:p-5" action="{{ route('barang.update', $akses) }}" method="POST">
+            <form class="p-4 md:p-5" @if($akses) action="{{ route('barang.update', $akses) }}" @else action="{{ route('barang.add') }}"@endif method="POST">
                 @csrf
+                @if($akses)
                 @method('PUT')
+                @endif
                 {!! $slot !!}
                 <button type="submit"
                     class="text-white inline-flex items-center bg-[#ff9f1c] hover:bg-[#ffbf69] transition focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
