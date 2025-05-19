@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin', [AuthController::class, 'showAdmin'])->name('admin.show');
         Route::get('/admin/barang', [barangController::class, 'tampilkanDataBarang'])->name('admin.barang');
+        Route::post('/admin/barang/', [barangController::class, 'addDataBarang'])->name('barang.add');
         Route::put('/admin/barang/{id_barang}', [barangController::class, 'updateDataBarang'])->name('barang.update');
     });
     // user
