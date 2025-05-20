@@ -6,7 +6,7 @@
             <!-- Modal Header -->
             <div class="flex items-center justify-between p-4 md:p-6 border-b rounded-t border-gray-200">
                 {{ $iconheader ?? '' }}
-                <h3 class="text-lg font-semibold text-gray-900">{{ $header }}</h3>
+                <h3 class="text-lg font-semibold text-gray-900 w-72 truncate">{{ $header }}</h3>
                 <button type="button"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 active:text-red-400 transition rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                     data-modal-toggle="{{ $id }}">
