@@ -37,9 +37,8 @@ class PesananController extends Controller
     /**
      * Simpan pesanan dan detail pesanan
      */
-    public function store(Request $request)
+public function store(Request $request)
     {
-        // Validasi input dasar
         $request->validate([
             'id_pesanan' => 'required|exists:pesanan,id_pesanan',
             'id_pelanggan' => 'nullable|integer',
@@ -48,48 +47,52 @@ class PesananController extends Controller
             'items.*.jumlah' => 'required|integer|min:1',
         ]);
 
-        // Mulai transaksi database
         DB::beginTransaction();
-        
+
         try {
-            // Ambil pesanan yang akan diisi
             $pesanan = Pesanan::findOrFail($request->id_pesanan);
-            
-            // Update data pesanan
+
+            // Validasi stok terlebih dahulu
+            foreach ($request->items as $item) {
+                $barang = Barang::findOrFail($item['id_barang']);
+                if ($barang->stok < $item['jumlah']) {
+                    throw new \Exception("Stok barang {$barang->nama_barang} tidak cukup.");
+                }
+            }
+
             $pesanan->update([
                 'total_harga' => $request->total_harga,
                 'id_pelanggan' => $request->id_pelanggan
             ]);
-            
-            // Simpan semua detail pesanan
-            $items = $request->items;
-            foreach ($items as $item) {
-                // Skip jika tidak ada barang yang dipilih
+
+            foreach ($request->items as $item) {
                 if (empty($item['id_barang'])) continue;
-                
-                // Ambil harga barang dari database
+
                 $barang = Barang::findOrFail($item['id_barang']);
-                
-                // Buat detail pesanan
+
+                // Simpan detail pesanan
                 DetailPesanan::create([
                     'jumlah' => $item['jumlah'],
                     'harga' => $barang->harga,
                     'id_barang' => $item['id_barang'],
                     'id_pesanan' => $request->id_pesanan
                 ]);
+
+                // Kurangi stok barang
+                $barang->stok -= $item['jumlah'];
+                $barang->save();
             }
-            
-            // Buat pesanan kosong baru untuk transaksi berikutnya
+
+            // Buat pesanan kosong baru
             Pesanan::create([
                 'total_harga' => 0,
                 'id_pelanggan' => null
             ]);
-            
+
             DB::commit();
-            
+
             return redirect()->route('pesanan.list')
-                ->with('success', 'Pesanan berhasil disimpan!');
-                
+                ->with('success', 'Pesanan berhasil disimpan dan stok barang diperbarui!');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()
@@ -97,6 +100,7 @@ class PesananController extends Controller
                 ->withInput();
         }
     }
+    
     
     /**
      * Menampilkan daftar pesanan yang sudah ada
