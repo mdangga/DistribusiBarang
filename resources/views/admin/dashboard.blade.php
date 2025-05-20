@@ -30,7 +30,7 @@
                         </svg>
                     </button>
                     <a href="https://flowbite.com" class="flex ms-2 md:me-24">
-                        <img src="{{ asset('img/logo.png') }}" class="h-8 me-3" alt="Materialin Logo" />
+                        <img src="{{ asset('img/favicon.svg') }}" class="h-8 me-3" alt="Materialin Logo" />
                         <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap ">Materialin</span>
                     </a>
                 </div>
