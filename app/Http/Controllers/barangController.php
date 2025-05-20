@@ -94,7 +94,8 @@ class barangController extends Controller
             ->take(10)
             ->get([
                 'id_barang as id',
-                'nama_barang'
+                'nama_barang',
+                'harga'
             ]);
 
         return response()->json($results);
