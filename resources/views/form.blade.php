@@ -88,6 +88,13 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
+                                <label for="id_pelanggan" class="form-label">ID Pelanggan</label>
+                                <input type="text" class="form-control" id="id_pelanggan" name="id_pelanggan" 
+                                    value="{{ old('id_pelanggan', $emptyPesanan->id_pelanggan) }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
                                 <label for="tanggal" class="form-label">Tanggal</label>
                                 <input type="date" class="form-control" id="tanggal" name="tanggal" 
                                     value="{{ old('tanggal', date('Y-m-d')) }}" readonly>
@@ -105,6 +112,13 @@
                     </div>
                     
                     <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="id_karyawan" class="form-label">ID Karyawan</label>
+                                <input type="text" class="form-control" id="id_karyawan" name="id_karyawan" 
+                                    value="{{ old('id_karyawan', $emptyPesanan->id_karyawan) }}">
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="catatan" class="form-label">Catatan</label>
