@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Route;
 
 
 // Route default
+Route::get('/test',  function(){
+    return view('welcome');
+});
+Route::get('/autocomplete-barang', [BarangController::class, 'autocomplete'])
+    ->name('autocomplete.barang');
+
 Route::get('/', function () {
     if (Auth::check()) {
         $user = Auth::user();
