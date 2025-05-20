@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\authController;
 use App\Http\Controllers\barangController;
+use App\Http\Controllers\PesananController;
 use App\Models\Barang;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,10 @@ Route::get('/test',  function(){
 Route::get('/autocomplete-barang', [BarangController::class, 'autocomplete'])
     ->name('autocomplete.barang');
 
+Route::get('/pesanan/form', [PesananController::class, 'index'])->name('pesanan.index');
+Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');
+Route::get('/pesanan', [PesananController::class, 'list'])->name('pesanan.list');
+Route::get('/pesanan/{id}', [PesananController::class, 'show'])->name('pesanan.show');
 Route::get('/', function () {
     if (Auth::check()) {
         $user = Auth::user();
