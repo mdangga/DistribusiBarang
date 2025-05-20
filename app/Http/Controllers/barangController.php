@@ -79,4 +79,24 @@ class barangController extends Controller
 
         return redirect()->route('admin.barang')->with('success', 'Data berhasil diupdate!');
     }
+
+    public function autocomplete(Request $request)
+    {
+        $request->validate([
+            'term' => 'required|string|min:2'
+        ]);
+
+        $term = $request->input('term');
+
+        $results = Barang::query()
+            ->where('nama_barang', 'LIKE', "%{$term}%")
+            ->orderBy('nama_barang')
+            ->take(10)
+            ->get([
+                'id_barang as id',
+                'nama_barang'
+            ]);
+
+        return response()->json($results);
+    }
 }
