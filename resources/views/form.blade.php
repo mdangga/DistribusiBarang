@@ -9,8 +9,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="h-full bg-white flex flex-col items-center justify-center p-10">
-    <a href="#" class="flex ms-2 md:me-24 my-10">
+<body class="h-full bg-white flex flex-col items-center  p-10">
+    <a href="#" class="flex ms-2 md:me-24 my-5">
         <img src="{{ asset('img/favicon.svg') }}" class="h-16 me-3" alt="Materialin Logo" />
         <span class="self-center text-4xl font-semibold sm:text-4xl whitespace-nowrap ">Materialin</span>
     </a>
@@ -62,7 +62,7 @@
             </div>
 
             <!-- Tabel Daftar Barang -->
-            <div class="overflow-x-auto mt-6 max-h-[230px] overflow-y-auto border rounded" id="tabelWrapper">
+            <div class="overflow-x-auto mt-6  border rounded" id="tabelWrapper">
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0">
                         <tr>
