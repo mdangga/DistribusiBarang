@@ -1,312 +1,167 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en" class="h-full bg-white">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Pesanan - Materialin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .card {
-            border-radius: 0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            border: none;
-        }
-        .logo {
-            color: #e67e22;
-            font-weight: bold;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .logo-icon {
-            color: #e67e22;
-            font-size: 24px;
-            margin-right: 5px;
-        }
-        .total-box {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: right;
-        }
-        .btn-simpan {
-            background-color: #2ecc71;
-            border-color: #2ecc71;
-        }
-        .btn-batal {
-            background-color: #e74c3c;
-            border-color: #e74c3c;
-        }
-        .btn-tambah {
-            background-color: #2ecc71;
-            border-color: #2ecc71;
-            float: right;
-        }
-        .table thead {
-            background-color: #fff3e0;
-        }
-        .input-no-border {
-            border: none;
-            background-color: transparent;
-            width: 100%;
-        }
-        .input-no-border:focus {
-            outline: none;
-            background-color: #f8f9fa;
-        }
-        .table-items {
-            border-collapse: collapse;
-        }
-        .table-items td {
-            padding: 10px;
-            vertical-align: middle;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Pembelian</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container mt-4">
-        <div class="row mb-3">
-            <div class="col-12 text-center">
-                <div class="logo">
-                    <i class="bi bi-grid-3x3-gap-fill logo-icon"></i> Materialin
+
+<body class="h-full bg-white flex flex-col items-center  p-10">
+    <a href="#" class="flex ms-2 md:me-24 my-5">
+        <img src="{{ asset('img/favicon.svg') }}" class="h-16 me-3" alt="Materialin Logo" />
+        <span class="self-center text-4xl font-semibold sm:text-4xl whitespace-nowrap ">Materialin</span>
+    </a>
+    <div class="w-full max-w-4xl p-6 space-y-6">
+        <form id="pesananForm" action="{{ route('pesanan.store') }}" method="POST">
+            @csrf
+            <!-- Informasi Umum -->
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Input hidden untuk ID pesanan kosong yang akan diisi -->
+                <input type="hidden" name="id_pesanan" value="{{ $emptyPesanan->id_pesanan }}">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ID Pelanggan</label>
+                    <input type="text" name="id_pelanggan"
+                        value="{{ old('id_pelanggan', $emptyPesanan->id_pelanggan) }}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
+                    <input type="text" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" readonly
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                 </div>
             </div>
-        </div>
-        
-        <div class="card mb-4">
-            <div class="card-body">
-                <form id="pesananForm" action="{{ route('pesanan.store') }}" method="POST">
-                    @csrf
-                    
-                    <!-- Input hidden untuk ID pesanan kosong yang akan diisi -->
-                    <input type="hidden" name="id_pesanan" value="{{ $emptyPesanan->id_pesanan }}">
-                    
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="id_pelanggan" class="form-label">ID Pelanggan</label>
-                                <input type="text" class="form-control" id="id_pelanggan" name="id_pelanggan" 
-                                    value="{{ old('id_pelanggan', $emptyPesanan->id_pelanggan) }}">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="tanggal" class="form-label">Tanggal</label>
-                                <input type="date" class="form-control" id="tanggal" name="tanggal" 
-                                    value="{{ old('tanggal', date('Y-m-d')) }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="total_harga" class="form-label">Total Pesanan</label>
-                                <div class="total-box">
-                                    <span>Rp</span> <span id="totalDisplay">0,00</span>
-                                    <input type="hidden" id="total_harga" name="total_harga" value="0">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="id_karyawan" class="form-label">ID Karyawan</label>
-                                <input type="text" class="form-control" id="id_karyawan" name="id_karyawan" 
-                                    value="{{ old('id_karyawan', $emptyPesanan->id_karyawan) }}">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="catatan" class="form-label">Catatan</label>
-                                <input type="text" class="form-control" id="catatan" name="catatan">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3 d-flex justify-content-end" style="margin-top: 32px;">
-                                <button type="submit" class="btn btn-simpan text-white me-2">
-                                    <i class="bi bi-check"></i> Simpan
-                                </button>
-                                <a href="{{ route('pesanan.list') }}" class="btn btn-batal text-white">
-                                    <i class="bi bi-x"></i> Batal
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <table class="table table-bordered table-items">
-                                <thead>
-                                    <tr>
-                                        <th width="35%">Nama Barang</th>
-                                        <th width="15%">Jumlah</th>
-                                        <th width="25%">Harga</th>
-                                        <th width="25%">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="itemRows">
-                                    <tr class="item-row">
-                                        <td>
-                                            <select class="form-select input-no-border barang-select" name="items[0][id_barang]" required>
-                                                <option value="">-- Pilih Barang --</option>
-                                                @foreach($barang as $b)
-                                                    <option value="{{ $b->id_barang }}" data-harga="{{ $b->harga }}">
-                                                        {{ $b->nama_barang }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-no-border item-qty" name="items[0][jumlah]" value="1" min="1" required>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="input-no-border item-price" name="items[0][harga]" readonly>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="input-no-border item-total" readonly>
-                                            <button type="button" class="btn btn-sm btn-danger delete-row float-end d-none">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            
-                            <button type="button" id="addRow" class="btn btn-tambah text-white mt-2">
-                                <i class="bi bi-plus"></i> Tambah
-                            </button>
-                        </div>
-                    </div>
-                </form>
+
+            <!-- Input Barang -->
+            <div class="grid grid-cols-3 gap-4 items-end mt-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Barang</label>
+                    <select id="barangSelect"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        <option value="">-- Pilih Barang --</option>
+                        @foreach ($barang as $b)
+                            <option value="{{ $b->id_barang }}" data-nama="{{ $b->nama_barang }}"
+                                data-harga="{{ $b->harga }}">
+                                {{ $b->nama_barang }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah</label>
+                    <input type="number" id="jumlahInput" min="1" value="1"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" />
+                </div>
+                <div>
+                    <button type="button" id="tambahBarang"
+                        class="w-full bg-[#ff9f1c] text-white p-2 rounded-md hover:bg-[#ffa82f] transition">+
+                        Tambah</button>
+                </div>
             </div>
-        </div>
+
+            <!-- Tabel Daftar Barang -->
+            <div class="overflow-x-auto mt-6  border rounded" id="tabelWrapper">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0">
+                        <tr>
+                            <th class="px-4 py-2">Nama Barang</th>
+                            <th class="px-4 py-2">Jumlah</th>
+                            <th class="px-4 py-2">Harga</th>
+                            <th class="px-4 py-2">Total</th>
+                            <th class="px-4 py-2">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="daftarBarang">
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Total Harga -->
+            <div class="flex justify-end mt-4">
+                <div class="text-right">
+                    <div class="text-sm text-gray-700">Total Harga:</div>
+                    <div class="text-3xl font-bold text-gray-900">Rp <span id="grandTotal">0,00</span></div>
+                    <input type="hidden" name="total_harga" id="totalHargaInput" value="0">
+                </div>
+            </div>
+
+            <!-- Tombol Simpan -->
+            <div class="flex justify-end mt-6 space-x-3">
+                <button type="submit"
+                    class="bg-green-600 text-white px-5 py-2 rounded-md hover:bg-green-500 transition">
+                    Simpan Pesanan
+                </button>
+
+                <a href="{{ route('pesanan.list') }}"
+                    class="bg-red-600 text-white px-5 py-2 rounded-md hover:bg-red-500">
+                    Batal
+                </a>
+            </div>
+
+        </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Format number to currency
-            function formatCurrency(number) {
-                return new Intl.NumberFormat('id-ID', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }).format(number);
-            }
-            
-            // Calculate row total
-            function calculateRowTotal(row) {
-                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-                const price = parseFloat(row.querySelector('.item-price').value.replace(/\./g, '').replace(',', '.')) || 0;
-                const total = qty * price;
-                
-                row.querySelector('.item-total').value = formatCurrency(total);
-                return total;
-            }
-            
-            // Calculate grand total
-            function calculateGrandTotal() {
-                let grandTotal = 0;
-                document.querySelectorAll('.item-row').forEach(row => {
-                    grandTotal += calculateRowTotal(row);
-                });
-                
-                document.getElementById('totalDisplay').textContent = formatCurrency(grandTotal);
-                document.getElementById('total_harga').value = grandTotal;
-            }
-            
-            // Update price when product selected
-            function updatePrice(row) {
-                const select = row.querySelector('.barang-select');
-                const priceInput = row.querySelector('.item-price');
-                
-                if (select.selectedIndex > 0) {
-                    const option = select.options[select.selectedIndex];
-                    const price = option.getAttribute('data-harga');
-                    priceInput.value = formatCurrency(price);
-                    calculateRowTotal(row);
-                    calculateGrandTotal();
-                } else {
-                    priceInput.value = '';
-                    row.querySelector('.item-total').value = '';
-                    calculateGrandTotal();
-                }
-            }
-            
-            // Add new row event
-            document.getElementById('addRow').addEventListener('click', function() {
-                const tbody = document.getElementById('itemRows');
-                const rowCount = tbody.querySelectorAll('.item-row').length;
-                const lastRow = tbody.querySelector('.item-row:last-child');
-                const newRow = lastRow.cloneNode(true);
-                
-                // Reset fields
-                const newSelect = newRow.querySelector('.barang-select');
-                newSelect.selectedIndex = 0;
-                newSelect.name = `items[${rowCount}][id_barang]`;
-                
-                const newQty = newRow.querySelector('.item-qty');
-                newQty.value = 1;
-                newQty.name = `items[${rowCount}][jumlah]`;
-                
-                newRow.querySelector('.item-price').value = '';
-                newRow.querySelector('.item-total').value = '';
-                
-                // Show delete button
-                newRow.querySelector('.delete-row').classList.remove('d-none');
-                
-                // Add event listeners
-                newSelect.addEventListener('change', function() {
-                    updatePrice(newRow);
-                });
-                
-                newQty.addEventListener('input', function() {
-                    calculateRowTotal(newRow);
-                    calculateGrandTotal();
-                });
-                
-                newRow.querySelector('.delete-row').addEventListener('click', function() {
-                    if (tbody.querySelectorAll('.item-row').length > 1) {
-                        newRow.remove();
-                        calculateGrandTotal();
-                    }
-                });
-                
-                tbody.appendChild(newRow);
+        let index = 0;
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'decimal',
+                minimumFractionDigits: 2
+            }).format(number);
+        }
+
+        function updateGrandTotal() {
+            let total = 0;
+            document.querySelectorAll('.item-total').forEach(item => {
+                total += parseFloat(item.value) || 0;
             });
-            
-            // Initial setup of event listeners for the first row
-            document.querySelectorAll('.item-row').forEach(row => {
-                row.querySelector('.barang-select').addEventListener('change', function() {
-                    updatePrice(row);
-                });
-                
-                row.querySelector('.item-qty').addEventListener('input', function() {
-                    calculateRowTotal(row);
-                    calculateGrandTotal();
-                });
-            });
-            
-            // Form submit handler
-            document.getElementById('pesananForm').addEventListener('submit', function(e) {
-                // Validate at least one item with product selected
-                let hasItems = false;
-                document.querySelectorAll('.barang-select').forEach(select => {
-                    if (select.value) hasItems = true;
-                });
-                
-                if (!hasItems) {
-                    e.preventDefault();
-                    alert('Silakan pilih minimal satu barang!');
-                    return false;
-                }
-                
-                return true;
-            });
+            document.getElementById('grandTotal').textContent = formatRupiah(total);
+            document.getElementById('totalHargaInput').value = total;
+        }
+
+        document.getElementById('tambahBarang').addEventListener('click', function() {
+
+            const select = document.getElementById('barangSelect');
+            const jumlahInput = document.getElementById('jumlahInput');
+
+            const id = select.value;
+            const nama = select.options[select.selectedIndex]?.dataset?.nama || '';
+            const harga = parseFloat(select.options[select.selectedIndex]?.dataset?.harga || 0);
+            const jumlah = parseInt(jumlahInput.value || 0);
+
+            if (!id || jumlah < 1) {
+                alert('Pilih barang dan masukkan jumlah yang valid.');
+                return;
+            }
+
+            const total = harga * jumlah;
+            const tbody = document.getElementById('daftarBarang');
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="px-4 py-2">${nama}<input type="hidden" name="items[${index}][id_barang]" value="${id}"></td>
+                <td class="px-4 py-2">${jumlah}<input type="hidden" name="items[${index}][jumlah]" value="${jumlah}"></td>
+                <td class="px-4 py-2">Rp ${formatRupiah(harga)}</td>
+                <td class="px-4 py-2">Rp ${formatRupiah(total)}<input type="hidden" class="item-total" value="${total}"></td>
+                <td class="px-4 py-2">
+                    <button type="button" class="text-red-600 hover:text-red-800" onclick="this.closest('tr').remove(); updateGrandTotal();"><svg class="w-5 h-5 overflow-visible transition duration-75 "
+            width="24" height="24" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" width="448" height="512" viewBox="0 0 448 512"><path fill="currentColor" d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0h120.4c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64s14.3-32 32-32h96zM32 128h384v320c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64zm96 64c-8.8 0-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16m96 0c-8.8 0-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16m96 0c-8.8 0-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16"/></svg></button>
+                </td>
+            `;
+            tbody.appendChild(row);
+
+            index++;
+            updateGrandTotal();
+
+            // Reset input
+            select.selectedIndex = 0;
+            jumlahInput.value = 1;
         });
     </script>
 </body>
+
 </html>
