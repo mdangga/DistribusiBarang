@@ -22,7 +22,7 @@ class Pesanan extends Model
     // Set fillable columns
     protected $fillable = [
         'total_harga',
-        'id_pelanggan'
+        'id_pelanggan',
     ];
 
     // Relasi ke detail pesanan
