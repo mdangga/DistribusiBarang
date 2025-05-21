@@ -41,7 +41,7 @@ public function store(Request $request)
     {
         $request->validate([
             'id_pesanan' => 'required|exists:pesanan,id_pesanan',
-            'id_pelanggan' => 'nullable|integer',
+            'id_pelanggan' => 'nullable|exists:pelanggan,id_pelanggan',
             'items' => 'required|array|min:1',
             'items.*.id_barang' => 'required|exists:barang,id_barang',
             'items.*.jumlah' => 'required|integer|min:1',
@@ -108,9 +108,12 @@ public function store(Request $request)
     public function list()
     {
         // Ambil semua pesanan yang memiliki detail pesanan
-        $pesanan = Pesanan::has('detailPesanan')
+        $pesanan = Pesanan::with('Pelanggan')
+            ->has('detailPesanan')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get(
+                
+            );
         
         return view('list', compact('pesanan'));
     }
@@ -120,7 +123,7 @@ public function store(Request $request)
      */
     public function show($id)
     {
-        $pesanan = Pesanan::with('detailPesanan.barang')
+        $pesanan = Pesanan::with('detailPesanan.barang', 'Pelanggan')
             ->findOrFail($id);
         
         return view('detail', compact('pesanan'));

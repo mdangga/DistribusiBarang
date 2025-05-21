@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\authController;
 use App\Http\Controllers\barangController;
+use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PesananController;
 use App\Models\Barang;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,8 @@ Route::get('/test',  function(){
 });
 Route::get('/autocomplete-barang', [BarangController::class, 'autocomplete'])
     ->name('autocomplete.barang');
+Route::get('/autocomplete-pelanggan', [PelangganController::class, 'autocomplete'])
+    ->name('autocomplete.pelanggan');
 
 Route::get('/pesanan/form', [PesananController::class, 'index'])->name('pesanan.index');
 Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');

@@ -23,9 +23,10 @@
                 <input type="hidden" name="id_pesanan" value="{{ $emptyPesanan->id_pesanan }}">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">ID Pelanggan</label>
-                    <input type="text" name="id_pelanggan"
-                        value="{{ old('id_pelanggan', $emptyPesanan->id_pelanggan) }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                    <input type="hidden" name="id_pelanggan" id="id_pelanggan" value="">
+                    <x-autocomplete-input name="pelanggan" endpoint="{{ route('autocomplete.pelanggan') }}"
+                        placeholder="Cari pelanggan..." form-field="nama_pelanggan" id-field="id"
+                        id="autocomplete-pelanggan" />
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
@@ -38,16 +39,8 @@
             <div class="grid grid-cols-3 gap-4 items-end mt-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Nama Barang</label>
-                    <select id="barangSelect"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-                        <option value="">-- Pilih Barang --</option>
-                        @foreach ($barang as $b)
-                            <option value="{{ $b->id_barang }}" data-nama="{{ $b->nama_barang }}"
-                                data-harga="{{ $b->harga }}">
-                                {{ $b->nama_barang }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <x-autocomplete-input name="barang" :endpoint="route('autocomplete.barang')" placeholder="Cari barang..."
+                        form-field="nama_barang" id-field="id" />
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah</label>
@@ -105,61 +98,98 @@
     </div>
 
     <script>
-        let index = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variabel untuk menyimpan data terpilih
+            let barangTerpilih = null;
+            let pelangganTerpilih = null;
+            let index = 0;
 
-        function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'decimal',
-                minimumFractionDigits: 2
-            }).format(number);
-        }
+            // Tangkap event sekali untuk kedua autocomplete
+            document.addEventListener('autocomplete-selected', function(e) {
+                const {
+                    field,
+                    selected
+                } = e.detail;
+                console.log('Field:', e.detail.field);
+                console.log('Selected:', e.detail.selected);
+                if (field === 'barang') {
+                    // Kalau yang dipilih berasal dari autocomplete barang
+                    barangTerpilih = selected;
+                    console.log('Barang dipilih:', barangTerpilih);
 
-        function updateGrandTotal() {
-            let total = 0;
-            document.querySelectorAll('.item-total').forEach(item => {
-                total += parseFloat(item.value) || 0;
+                } else if (field === 'pelanggan') {
+                    // Kalau yang dipilih berasal dari autocomplete pelanggan
+                    pelangganTerpilih = selected;
+                    console.log('Pelanggan dipilih:', pelangganTerpilih);
+
+                    // Update input hidden id_pelanggan
+                    console.log(pelangganTerpilih.id)
+                    document.querySelector('input[name="id_pelanggan"]').value = pelangganTerpilih.id;
+                }
             });
-            document.getElementById('grandTotal').textContent = formatRupiah(total);
-            document.getElementById('totalHargaInput').value = total;
-        }
 
-        document.getElementById('tambahBarang').addEventListener('click', function() {
+            // Tombol Tambah Barang
+            const tambahBarangButton = document.getElementById('tambahBarang');
+            tambahBarangButton.addEventListener('click', function() {
+                const jumlahInput = document.getElementById('jumlahInput');
+                const jumlah = parseInt(jumlahInput.value || 0);
 
-            const select = document.getElementById('barangSelect');
-            const jumlahInput = document.getElementById('jumlahInput');
+                if (!barangTerpilih || jumlah < 1) {
+                    alert('Pilih barang dan masukkan jumlah yang valid.');
+                    return;
+                }
 
-            const id = select.value;
-            const nama = select.options[select.selectedIndex]?.dataset?.nama || '';
-            const harga = parseFloat(select.options[select.selectedIndex]?.dataset?.harga || 0);
-            const jumlah = parseInt(jumlahInput.value || 0);
+                const {
+                    id,
+                    nama_barang: nama,
+                    harga
+                } = barangTerpilih;
+                const total = harga * jumlah;
 
-            if (!id || jumlah < 1) {
-                alert('Pilih barang dan masukkan jumlah yang valid.');
-                return;
+                const tbody = document.getElementById('daftarBarang');
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td class="px-4 py-2">${nama}
+                <input type="hidden" name="items[${index}][id_barang]" value="${id}">
+            </td>
+            <td class="px-4 py-2">${jumlah}
+                <input type="hidden" name="items[${index}][jumlah]" value="${jumlah}">
+            </td>
+            <td class="px-4 py-2">Rp ${formatRupiah(harga)}</td>
+            <td class="px-4 py-2">Rp ${formatRupiah(total)}
+                <input type="hidden" class="item-total" value="${total}">
+            </td>
+            <td class="px-4 py-2">
+                <button type="button"
+                    class="text-red-600 hover:text-red-800"
+                    onclick="this.closest('tr').remove(); updateGrandTotal();">
+                    Hapus
+                </button>
+            </td>
+        `;
+                tbody.appendChild(row);
+
+                index++;
+                updateGrandTotal();
+
+                // Reset barangTerpilih dan input pencarian
+                barangTerpilih = null;
+                jumlahInput.value = 1;
+                const searchInput = document.querySelector('#autocomplete-barang input[type="text"]');
+                if (searchInput) searchInput.value = '';
+            });
+
+            function updateGrandTotal() {
+                const totalEls = document.querySelectorAll('.item-total');
+                let grandTotal = 0;
+                totalEls.forEach(el => grandTotal += parseFloat(el.value));
+                document.getElementById('grandTotal').textContent = formatRupiah(grandTotal);
+                document.getElementById('totalHargaInput').value = grandTotal;
             }
 
-            const total = harga * jumlah;
-            const tbody = document.getElementById('daftarBarang');
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="px-4 py-2">${nama}<input type="hidden" name="items[${index}][id_barang]" value="${id}"></td>
-                <td class="px-4 py-2">${jumlah}<input type="hidden" name="items[${index}][jumlah]" value="${jumlah}"></td>
-                <td class="px-4 py-2">Rp ${formatRupiah(harga)}</td>
-                <td class="px-4 py-2">Rp ${formatRupiah(total)}<input type="hidden" class="item-total" value="${total}"></td>
-                <td class="px-4 py-2">
-                    <button type="button" class="text-red-600 hover:text-red-800" onclick="this.closest('tr').remove(); updateGrandTotal();"><svg class="w-5 h-5 overflow-visible transition duration-75 "
-            width="24" height="24" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" width="448" height="512" viewBox="0 0 448 512"><path fill="currentColor" d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0h120.4c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64s14.3-32 32-32h96zM32 128h384v320c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64zm96 64c-8.8 0-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16m96 0c-8.8 0-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16m96 0c-8.8 0-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16"/></svg></button>
-                </td>
-            `;
-            tbody.appendChild(row);
-
-            index++;
-            updateGrandTotal();
-
-            // Reset input
-            select.selectedIndex = 0;
-            jumlahInput.value = 1;
+            function formatRupiah(angka) {
+                return angka.toLocaleString('id-ID');
+            }
         });
     </script>
 </body>
