@@ -29,20 +29,19 @@
             </div>
 
             <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div>
                         <div class="font-semibold mb-1">Tanggal</div>
                         <div class="bg-gray-100 px-4 py-2 rounded">{{ $pesanan->created_at->format('d/m/Y') }}</div>
                     </div>
-                    {{-- <div>
-                        <div class="font-semibold mb-1">ID Karyawan</div>
-                        <div class="bg-gray-100 px-4 py-2 rounded">{{ $pesanan->id_karyawan ?? 'Tidak ada' }}</div>
-                    </div> --}}
                     <div>
                         <div class="font-semibold mb-1">ID Pelanggan</div>
                         <div class="bg-gray-100 px-4 py-2 rounded">{{ $pesanan->id_pelanggan ?? 'Tidak ada' }}</div>
                     </div>
-
+                    <div>
+                        <div class="font-semibold mb-1">Nama Pelanggan</div>
+                        <div class="bg-gray-100 px-4 py-2 rounded">{{ $pesanan->Pelanggan->nama_pelanggan ?? 'Tidak ada' }}</div>
+                    </div>
                 </div>
 
                 <div class="overflow-x-auto">

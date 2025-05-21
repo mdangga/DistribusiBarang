@@ -4,6 +4,7 @@
     formField: '{{ $formField ?? 'nama_barang' }}',
     idField: '{{ $idField ?? 'id' }}',
     minChars: {{ $minChars ?? 1 }},
+    name: '{{ $name }}',
     debounce: {{ $debounce ?? 300 }}
 })" class="relative" @click.outside="close">
     <!-- Hidden Input untuk ID -->
@@ -54,6 +55,7 @@
             idField: config.idField,
             minChars: config.minChars,
             debounce: config.debounce,
+            name: config.name,
 
             // State
             search: '',
@@ -120,7 +122,7 @@
                 // Dispatch event dengan data lengkap
                 this.$dispatch('autocomplete-selected', {
                     selected: item,
-                    field: '{{ $name }}'
+                    field: this.name
                 }, {
                     bubbles: true
                 });

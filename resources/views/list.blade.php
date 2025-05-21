@@ -57,7 +57,7 @@
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-2">{{ $p->id_pesanan }}</td>
                                         <td class="px-6 py-2">{{ $p->created_at->format('d/m/Y') }}</td>
-                                        <td class="px-6 py-2">{{ $p->id_pelanggan ?? '-' }}</td>
+                                        <td class="px-6 py-2">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
                                         <td class="px-6 py-2 font-medium text-black">Rp
                                             {{ number_format($p->total_harga, 2, ',', '.') }}</td>
                                         <td class="px-6 py-2">
