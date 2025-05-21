@@ -4,13 +4,14 @@ use App\Http\Controllers\authController;
 use App\Http\Controllers\barangController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\TransaksiController;
 use App\Models\Barang;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
 // Route default
-Route::get('/test',  function(){
+Route::get('/testing12331912',  function(){
     return view('welcome');
 });
 Route::get('/autocomplete-barang', [BarangController::class, 'autocomplete'])
@@ -18,11 +19,11 @@ Route::get('/autocomplete-barang', [BarangController::class, 'autocomplete'])
 Route::get('/autocomplete-pelanggan', [PelangganController::class, 'autocomplete'])
     ->name('autocomplete.pelanggan');
 
-Route::get('/pesanan/form', [PesananController::class, 'index'])->name('pesanan.index');
+Route::get('/', [PesananController::class, 'index'])->name('pesanan.index');
 Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');
 Route::get('/pesanan', [PesananController::class, 'list'])->name('pesanan.list');
 Route::get('/pesanan/{id}', [PesananController::class, 'show'])->name('pesanan.show');
-Route::get('/', function () {
+Route::get('/login123123', function () {
     if (Auth::check()) {
         $user = Auth::user();
         return match ($user->role) {
@@ -50,6 +51,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/barang', [barangController::class, 'tampilkanDataBarang'])->name('admin.barang');
         Route::post('/admin/barang/', [barangController::class, 'addDataBarang'])->name('barang.add');
         Route::put('/admin/barang/{id_barang}', [barangController::class, 'updateDataBarang'])->name('barang.update');
+        Route::get('/admin/transaksi', [TransaksiController::class, 'tampilkanDataTransaksi'])->name('admin.transaksi');
     });
     // user
     Route::middleware('role:user')->group(function () {
