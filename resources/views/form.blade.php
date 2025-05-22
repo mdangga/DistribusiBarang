@@ -162,13 +162,20 @@
             <td class="px-4 py-2">
                 <button type="button"
                     class="text-red-600 hover:text-red-800"
-                    onclick="this.closest('tr').remove(); updateGrandTotal();">
+                    >
                     Hapus
                 </button>
             </td>
         `;
                 tbody.appendChild(row);
 
+                tbody.addEventListener('click', function(e) {
+                    if (e.target.matches('button') && e.target.textContent.trim() === 'Hapus') {
+                        e.target.closest('tr').remove();
+                        updateGrandTotal();
+                    }
+                });
+                
                 index++;
                 updateGrandTotal();
 

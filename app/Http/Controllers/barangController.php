@@ -9,10 +9,20 @@ use Illuminate\Validation\Rule;
 
 class barangController extends Controller
 {
-    public function tampilkanDataBarang()
+    public function tampilkanDataBarang(Request $request)
     {
-        $barang = Barang::all();
         $user = Auth::user();
+
+        $barang = Barang::when($request->barang_id != null, function ($q) use ($request) {
+            return $q->where('id_barang', $request->barang_id);
+        })
+            ->when($request->nama != null, function ($q) use ($request) {
+                return $q->where('nama_barang', 'LIKE', "%{$request->nama}%");
+            })
+            ->when($request->kategori != null, function ($q) use ($request) {
+                return $q->where('kategori', $request->kategori);
+            })
+            ->paginate(10);
 
         return view('admin.barang', compact('barang'), [
             'username' => $user->username,
@@ -90,6 +100,7 @@ class barangController extends Controller
 
         $results = Barang::query()
             ->where('nama_barang', 'LIKE', "%{$term}%")
+            ->where('stok',  '!=', 0)
             ->orderBy('nama_barang')
             ->take(10)
             ->get([

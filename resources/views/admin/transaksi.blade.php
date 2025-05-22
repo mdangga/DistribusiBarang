@@ -114,6 +114,28 @@
 
     <div class="p-4 sm:ml-64 mt-14">
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <form action="" method="GET" class="p-4 bg-white rounded-lg shadow-md">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="date" class="block mb-1 text-sm font-medium text-gray-700">Filter by
+                            Date</label>
+                        <input type="date" name="date" value="{{ date('Y-m-d') }}"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
+                    </div>
+
+                    <div class="flex items-end">
+                        <button type="submit"
+                            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">
+                            Filter
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="mt-6">
+                <div class="bg-blue-50 p-4 rounded-md shadow-sm">
+                    {{ $transaksi->withQueryString()->links() }}
+                </div>
+            </div>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -125,8 +147,11 @@
                 </thead>
                 <tbody>
                     @foreach ($transaksi as $item)
-                        <tr
-                            class="@if ($item->jenis == 'pembelian') bg-red-100 @else bg-green-100 @endif border-b border-gray-200 text-black text-lg">
+                        <tr @class([
+                            'border-b border-gray-200 text-black text-lg',
+                            'bg-red-100' => $item->jenis === 'pembelian',
+                            'bg-green-100' => $item->jenis !== 'pembelian',
+                        ])>
                             <td class="px-6 py-4">
                                 @if ($item->jenis === 'pesanan')
                                     {{ 'PSN' . str_pad($item->id, 3, '0', STR_PAD_LEFT) }}
