@@ -23,7 +23,7 @@ class barangController extends Controller
                 return $q->where('kategori', $request->kategori);
             })
             ->paginate(10);
-
+        dd(Barang::select('kategori')->pluck('kategori'));
         return view('admin.barang', compact('barang'), [
             'username' => $user->username,
             'email' => $user->email

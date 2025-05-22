@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/barang/', [barangController::class, 'addDataBarang'])->name('barang.add');
         Route::put('/admin/barang/{id_barang}', [barangController::class, 'updateDataBarang'])->name('barang.update');
         Route::get('/admin/transaksi', [TransaksiController::class, 'tampilkanDataTransaksi'])->name('admin.transaksi');
+        Route::get('/admin/pelanggan', [PelangganController::class, 'tampilkanDataPelanggan'])->name('admin.pelanggan');
     });
     // user
     Route::middleware('role:user')->group(function () {
