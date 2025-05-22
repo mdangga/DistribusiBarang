@@ -170,9 +170,9 @@
                     <select name="kategori"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
                         <option value="">ALL</option>
-                        @foreach (['Alat Bantu', 'Bata', 'Besi', 'Cat', 'Gypsum', 'Kayu', 'Keramik', 'Material', 'Pelapis', 'Perekat', 'Perkakas', 'Semen'] as $kategori)
+                        @foreach ($kategori as $ktg)
                             <option value="{{ $kategori }}"
-                                {{ request('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}
+                                {{ request('kategori') == $ktg->kategori ? 'selected' : '' }}>{{ $ktg->kategori }}
                             </option>
                         @endforeach
                     </select>
@@ -180,7 +180,7 @@
 
                 <div class="flex items-end">
                     <button type="submit"
-                        class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-bold focus:border-primary-600 block w-full p-2.5 transition">
+                        class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-medium focus:border-primary-600 block w-full p-2.5 transition">
                         Filter
                     </button>
                 </div>
@@ -190,7 +190,7 @@
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr>
+                    <tr class="text-sm">
                         <th scope="col" class="px-6 py-3">ID</th>
                         <th scope="col" class="px-6 py-3">Nama Barang</th>
                         <th scope="col" class="px-6 py-3">Kategori</th>
@@ -220,8 +220,8 @@
                 </tbody>
             </table>
             <div class="mt-3">
-                <div class="flex justify-center bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-                    {{ $barang->withQueryString()->links('pagination::tailwind-custom') }}
+                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
+                    {{ $barang->withQueryString()->links() }}
                 </div>
             </div>
         </div>
