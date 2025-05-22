@@ -180,7 +180,7 @@
 
                 <div class="flex items-end">
                     <button type="submit"
-                        class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-bold focus:border-primary-600 block w-full p-2.5 transition">
+                        class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-medium focus:border-primary-600 block w-full p-2.5 transition">
                         Filter
                     </button>
                 </div>
@@ -190,7 +190,7 @@
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr>
+                    <tr class="text-sm">
                         <th scope="col" class="px-6 py-3">ID</th>
                         <th scope="col" class="px-6 py-3">Nama Barang</th>
                         <th scope="col" class="px-6 py-3">Kategori</th>

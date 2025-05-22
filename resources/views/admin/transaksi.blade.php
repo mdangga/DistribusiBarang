@@ -113,32 +113,28 @@
     </aside>
 
     <div class="p-4 sm:ml-64 mt-14">
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <form action="" method="GET" class="p-4 bg-white rounded-lg shadow-md">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="date" class="block mb-1 text-sm font-medium text-gray-700">Filter by
-                            Date</label>
-                        <input type="date" name="date" value="{{ date('Y-m-d') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
-                    </div>
-
-                    <div class="flex items-end">
-                        <button type="submit"
-                            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">
-                            Filter
-                        </button>
-                    </div>
+        <form action="" method="GET" class="p-4 bg-white rounded-lg ">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="date" class="block mb-1 text-sm font-medium text-gray-700">Filter by
+                        Date</label>
+                    <input type="date" name="date" value="{{ date('Y-m-d') }}"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#2ec4b6] focus:border-blue-500 active:ring-[#2ec4b6] active:border-blue-500" />
                 </div>
-            </form>
-            <div class="mt-6">
-                <div class="bg-blue-50 p-4 rounded-md shadow-sm">
-                    {{ $transaksi->withQueryString()->links() }}
+
+                <div class="flex items-end">
+                    <button type="submit"
+                        class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-medium focus:border-primary-600 block w-full p-2.5 transition">
+                        Filter
+                    </button>
                 </div>
             </div>
+        </form>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr>
+                    <tr class="text-sm">
                         <th scope="col" class="px-6 py-3">ID</th>
                         <th scope="col" class="px-6 py-3">Nama</th>
                         <th scope="col" class="px-6 py-3">Kategori</th>
@@ -148,7 +144,7 @@
                 <tbody>
                     @foreach ($transaksi as $item)
                         <tr @class([
-                            'border-b border-gray-200 text-black text-lg',
+                            'border-b border-gray-200 text-black ',
                             'bg-red-100' => $item->jenis === 'pembelian',
                             'bg-green-100' => $item->jenis !== 'pembelian',
                         ])>
@@ -175,6 +171,11 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="mt-3">
+                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
+                    {{ $transaksi->withQueryString()->links() }}
+                </div>
+            </div>
         </div>
     </div>
 </body>
