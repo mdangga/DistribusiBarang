@@ -23,7 +23,7 @@ Route::get('/', [PesananController::class, 'index'])->name('pesanan.index');
 Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');
 Route::get('/pesanan', [PesananController::class, 'list'])->name('pesanan.list');
 Route::get('/pesanan/{id}', [PesananController::class, 'show'])->name('pesanan.show');
-Route::get('/login123123', function () {
+Route::get('/defaultAdmin', function () {
     if (Auth::check()) {
         $user = Auth::user();
         return match ($user->role) {
@@ -37,8 +37,8 @@ Route::get('/login123123', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup.show');
     Route::post('/signup', [AuthController::class, 'submitSignup'])->name('signup.submit');
-    Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin.show');
-    Route::post('/signin', [AuthController::class, 'submitSignin'])->name('signin.submit');
+    Route::get('/login123123', [AuthController::class, 'showSignin'])->name('signin.show');
+    Route::post('/login123123', [AuthController::class, 'submitSignin'])->name('signin.submit');
 });
 
 // protected route

@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.svg') }}">
         <title>Admin - Materialin</title>
     </head>
 
@@ -55,7 +55,7 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($pesanan as $p)
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-2">{{ $p->id_pesanan }}</td>
+                                        <td class="px-6 py-2">{{ 'PSN' . str_pad($p->id_pesanan, 3, '0', STR_PAD_LEFT) }}</td>
                                         <td class="px-6 py-2">{{ $p->created_at->format('d/m/Y') }}</td>
                                         <td class="px-6 py-2">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
                                         <td class="px-6 py-2 font-medium text-black">Rp
