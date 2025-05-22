@@ -141,58 +141,53 @@
                 </div>
             </div>
         @endif
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <button data-modal-target="addModalBarang" data-modal-toggle="addModalBarang"
-                class="block m-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                type="button">
-                Tambah Barang
-            </button>
+        <button data-modal-target="addModalBarang" data-modal-toggle="addModalBarang"
+            class="block m-3 text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
+            type="button">
+            Tambah Barang
+        </button>
 
-            <form action="" method="GET" class="p-4 bg-white rounded-lg shadow-md">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label for="autocomplete" class="block mb-1 text-sm font-medium text-gray-700">Search by
-                            Nama</label>
-                        <x-autocomplete-input name="barang" :endpoint="route('autocomplete.barang')" placeholder="Cari barang..."
-                            form-field="nama_barang" id-field="id"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
-                    </div>
-
-                    <div>
-                        <label for="nama" class="block mb-1 text-sm font-medium text-gray-700">Filter by
-                            Nama</label>
-                        <input type="text" name="nama" value="{{ request('nama') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
-                    </div>
-
-                    <div>
-                        <label for="kategori" class="block mb-1 text-sm font-medium text-gray-700">Filter by
-                            Kategori</label>
-                        <select name="kategori"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200">
-                            <option value="">ALL</option>
-                            @foreach (['Alat Bantu', 'Bata', 'Besi', 'Cat', 'Gypsum', 'Kayu', 'Keramik', 'Material', 'Pelapis', 'Perekat', 'Perkakas', 'Semen'] as $kategori)
-                                <option value="{{ $kategori }}"
-                                    {{ request('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="flex items-end">
-                        <button type="submit"
-                            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">
-                            Filter
-                        </button>
-                    </div>
+        <form action="" method="GET" class="p-4 bg-white rounded-lg ">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label for="autocomplete" class="block mb-1 text-sm font-medium text-gray-700">Search by
+                        Nama</label>
+                    <x-autocomplete-input name="barang" :endpoint="route('autocomplete.barang')" placeholder="Cari barang..."
+                        form-field="nama_barang" id-field="id"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" />
                 </div>
-            </form>
-            <div class="mt-6">
-                <div class="bg-blue-50 p-4 rounded-md shadow-sm">
-                    {{ $barang->withQueryString()->links() }}
+
+                <div>
+                    <label for="nama" class="block mb-1 text-sm font-medium text-gray-700">Filter by
+                        Nama</label>
+                    <input type="text" name="nama" value="{{ request('nama') }}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" />
+                </div>
+
+                <div>
+                    <label for="kategori" class="block mb-1 text-sm font-medium text-gray-700">Filter by
+                        Kategori</label>
+                    <select name="kategori"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        <option value="">ALL</option>
+                        @foreach (['Alat Bantu', 'Bata', 'Besi', 'Cat', 'Gypsum', 'Kayu', 'Keramik', 'Material', 'Pelapis', 'Perekat', 'Perkakas', 'Semen'] as $kategori)
+                            <option value="{{ $kategori }}"
+                                {{ request('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="flex items-end">
+                    <button type="submit"
+                        class="bg-orange hover:bg-orangehover border border-orange text-white text-sm rounded-lg focus:ring-gree font-bold focus:border-primary-600 block w-full p-2.5 transition">
+                        Filter
+                    </button>
                 </div>
             </div>
+        </form>
 
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -224,6 +219,11 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="mt-3">
+                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
+                    {{ $barang->withQueryString()->links() }}
+                </div>
+            </div>
         </div>
     </div>
 
