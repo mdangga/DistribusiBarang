@@ -4,16 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class PelangganController extends Controller
 {
-    public function tampilkanDataPelanggan()
+    public function tampilkanDataPelanggan(Request $request)
     {
-        $barang = Pelanggan::all();
         $user = Auth::user();
 
-        return view('admin.barang', compact('barang'), [
+        $pelanggan = Pelanggan::withCount([
+            'pesanan as total_pesanan' => function ($query) use ($request) {
+                if ($request->date != null) {
+                    $query->whereDate('updated_at', $request->date);
+                }
+            }
+        ])->get();
+
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 10;
+        $results = $pelanggan->slice(($page - 1) * $perPage, $perPage)->values();
+        $pelanggan = new LengthAwarePaginator($results, $pelanggan->count(), $perPage, $page, [
+            'path' => LengthAwarePaginator::resolveCurrentPath()
+        ]);
+
+        return view('admin.pelanggan', [
+            'pelanggan' => $pelanggan,
             'username' => $user->username,
             'email' => $user->email
         ]);
