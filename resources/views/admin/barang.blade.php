@@ -220,8 +220,8 @@
                 </tbody>
             </table>
             <div class="mt-3">
-                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-                    {{ $barang->withQueryString()->links() }}
+                <div class="flex justify-center bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
+                    {{ $barang->withQueryString()->links('pagination::tailwind-custom') }}
                 </div>
             </div>
         </div>
