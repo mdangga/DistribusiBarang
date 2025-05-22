@@ -32,7 +32,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
                     <input aria-label="disabled input 2" type="text" name="tanggal"
                         value="{{ old('tanggal', date('Y-m-d')) }}" readonly
-                        class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed ">
+                        class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5 cursor-not-allowed ">
                 </div>
             </div>
 
@@ -46,12 +46,12 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah</label>
                     <input type="number" id="jumlahInput" min="1" value="1"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" />
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5" />
                 </div>
                 <div>
                     <button type="button" id="tambahBarang"
-                        class="inline-flex items-center justify-center w-full bg-[#ff9f1c] text-white p-2 rounded-md hover:bg-[#ffa82f] transition text-center">
-                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        class="inline-flex items-center justify-center w-full bg-[#ff9f1c] text-white p-2 rounded-md hover:bg-[#c8821f] focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 transition text-center">
+                        <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path fill="currentColor"
                                 d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
                         </svg>
@@ -92,12 +92,12 @@
             <!-- Tombol Simpan -->
             <div class="flex justify-end mt-6 space-x-3">
                 <button type="submit"
-                    class="bg-green-600 text-white px-5 py-2 rounded-md hover:bg-green-500 transition">
+                    class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 transition">
                     Simpan Pesanan
                 </button>
 
                 <a href="{{ route('pesanan.list') }}"
-                    class="bg-red-600 text-white px-5 py-2 rounded-md hover:bg-red-500">
+                    class="bg-red-600 text-white px-5 py-2 rounded-md focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 hover:bg-red-700 transition">
                     Batal
                 </a>
             </div>
@@ -183,7 +183,7 @@
                         updateGrandTotal();
                     }
                 });
-                
+
                 index++;
                 updateGrandTotal();
 

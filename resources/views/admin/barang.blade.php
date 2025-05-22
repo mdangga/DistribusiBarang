@@ -142,7 +142,7 @@
             </div>
         @endif
         <button data-modal-target="addModalBarang" data-modal-toggle="addModalBarang"
-            class="block m-3 text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
+            class="block m-3 text-white bg-green-600 hover:bg-green-700 focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
             type="button">
             Tambah Barang
         </button>
@@ -154,21 +154,21 @@
                         Nama</label>
                     <x-autocomplete-input name="barang" :endpoint="route('autocomplete.barang')" placeholder="Cari barang..."
                         form-field="nama_barang" id-field="id"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" />
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 active:ring-[#2ec4b6] active:border-blue-500 block w-full p-2.5" />
                 </div>
 
                 <div>
                     <label for="nama" class="block mb-1 text-sm font-medium text-gray-700">Filter by
                         Nama</label>
                     <input type="text" name="nama" value="{{ request('nama') }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" />
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5" />
                 </div>
 
                 <div>
                     <label for="kategori" class="block mb-1 text-sm font-medium text-gray-700">Filter by
                         Kategori</label>
                     <select name="kategori"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
                         <option value="">ALL</option>
                         @foreach (['Alat Bantu', 'Bata', 'Besi', 'Cat', 'Gypsum', 'Kayu', 'Keramik', 'Material', 'Pelapis', 'Perekat', 'Perkakas', 'Semen'] as $kategori)
                             <option value="{{ $kategori }}"
@@ -180,7 +180,7 @@
 
                 <div class="flex items-end">
                     <button type="submit"
-                        class="bg-orange hover:bg-orangehover border border-orange text-white text-sm rounded-lg focus:ring-gree font-bold focus:border-primary-600 block w-full p-2.5 transition">
+                        class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-bold focus:border-primary-600 block w-full p-2.5 transition">
                         Filter
                     </button>
                 </div>

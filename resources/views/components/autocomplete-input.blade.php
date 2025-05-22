@@ -13,7 +13,7 @@
     <!-- Input Pencarian -->
     <input type="text" x-model="search" @input.debounce="fetchData" @keydown.arrow-down.prevent="move(1)"
         @keydown.arrow-up.prevent="move(-1)" @keydown.enter.prevent="select"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 w-full p-2.5"
         placeholder="{{ $placeholder }}" autocomplete="off">
 
     <!-- Loading Indicator -->
