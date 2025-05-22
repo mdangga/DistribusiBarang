@@ -170,9 +170,9 @@
                     <select name="kategori"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
                         <option value="">ALL</option>
-                        @foreach (['Alat Bantu', 'Bata', 'Besi', 'Cat', 'Gypsum', 'Kayu', 'Keramik', 'Material', 'Pelapis', 'Perekat', 'Perkakas', 'Semen'] as $kategori)
+                        @foreach ($kategori as $ktg)
                             <option value="{{ $kategori }}"
-                                {{ request('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}
+                                {{ request('kategori') == $ktg->kategori ? 'selected' : '' }}>{{ $ktg->kategori }}
                             </option>
                         @endforeach
                     </select>
@@ -220,8 +220,8 @@
                 </tbody>
             </table>
             <div class="mt-3">
-                <div class="flex justify-center bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-                    {{ $barang->withQueryString()->links('pagination::tailwind-custom') }}
+                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
+                    {{ $barang->withQueryString()->links() }}
                 </div>
             </div>
         </div>
