@@ -48,7 +48,13 @@ class authController extends Controller
 
     // function signin (start)
     // menampilkan tampilan signin
-    function showSignin() {
+    public function showSignin(Request $request)
+    {
+        $token = $request->query('token');
+        if ($token !== env('ADMIN_ACCESS_TOKEN')) {
+            abort(403, 'Unauthorized access to login page.');
+        }
+
         return view('signin');
     }
     // submit signin

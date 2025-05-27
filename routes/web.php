@@ -23,22 +23,12 @@ Route::get('/', [PesananController::class, 'index'])->name('pesanan.index');
 Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');
 Route::get('/pesanan', [PesananController::class, 'list'])->name('pesanan.list');
 Route::get('/pesanan/{id}', [PesananController::class, 'show'])->name('pesanan.show');
-Route::get('/defaultAdmin', function () {
-    if (Auth::check()) {
-        $user = Auth::user();
-        return match ($user->role) {
-            'admin' => redirect()->route('admin.show'),
-            default => redirect()->route('user.show')
-        };
-    }
-    return redirect()->route('signin.show');
-})->name('default.show');
 
 Route::middleware('guest')->group(function () {
+    Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin.show');
+    Route::post('/signin', [AuthController::class, 'submitSignin'])->name('signin.submit');
     Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup.show');
     Route::post('/signup', [AuthController::class, 'submitSignup'])->name('signup.submit');
-    Route::get('/login123123', [AuthController::class, 'showSignin'])->name('signin.show');
-    Route::post('/login123123', [AuthController::class, 'submitSignin'])->name('signin.submit');
 });
 
 // protected route
