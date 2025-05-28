@@ -2,15 +2,30 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Pembelian extends Model
 {
     // Set nama tabel
     protected $table = 'pembelian';
-    
     // Set primary key
-    protected $primaryKey = 'id_pembelian';
+    public $incrementing = false;
+    protected $primaryKey = 'kode_pembelian';
+    protected $keyType = 'string';
+
+    protected static function boot(){
+        parent::boot();
+
+        static::creating(function($model){
+            $tanggalHariIni = Carbon::now()->format('dmY');
+            $hitungPesananHariIni = DB::table('pesanan')->whereDate('tanggal', Carbon::today())->count();
+            $nomorPembelian = str_pad($hitungPesananHariIni + 1, 4, '0', STR_PAD_LEFT);
+
+            $model->kode_pembelian = "PMB-{$tanggalHariIni}-{$nomorPembelian}";
+        });
+    }
     
     // Set timestamp fields
     const CREATED_AT = 'created_at';

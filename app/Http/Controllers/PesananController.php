@@ -19,7 +19,7 @@ class PesananController extends Controller
         $emptyPesanan = Pesanan::whereDoesntHave('detailPesanan')
             ->where('total_harga', 0)
             ->first();
-        
+
         // Jika tidak ada pesanan kosong, buat satu
         if (!$emptyPesanan) {
             $emptyPesanan = Pesanan::create([
@@ -27,20 +27,21 @@ class PesananController extends Controller
                 'id_pelanggan' => null
             ]);
         }
-        
+
         // Ambil daftar barang untuk dropdown
         $barang = Barang::all();
-        
+        // dd($emptyPesanan);
         return view('form', compact('emptyPesanan', 'barang'));
     }
 
     /**
      * Simpan pesanan dan detail pesanan
      */
-public function store(Request $request)
+    public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
-            'id_pesanan' => 'required|exists:pesanan,id_pesanan',
+            'kode_pesanan' => 'required|exists:pesanan,kode_pesanan',
             'id_pelanggan' => 'nullable|exists:pelanggan,id_pelanggan',
             'items' => 'required|array|min:1',
             'items.*.id_barang' => 'required|exists:barang,id_barang',
@@ -50,7 +51,7 @@ public function store(Request $request)
         DB::beginTransaction();
 
         try {
-            $pesanan = Pesanan::findOrFail($request->id_pesanan);
+            $pesanan = Pesanan::findOrFail($request->kode_pesanan);
 
             // Validasi stok terlebih dahulu
             foreach ($request->items as $item) {
@@ -75,19 +76,13 @@ public function store(Request $request)
                     'jumlah' => $item['jumlah'],
                     'harga' => $barang->harga,
                     'id_barang' => $item['id_barang'],
-                    'id_pesanan' => $request->id_pesanan
+                    'kode_pesanan' => $request->kode_pesanan
                 ]);
 
                 // Kurangi stok barang
                 $barang->stok -= $item['jumlah'];
                 $barang->save();
             }
-
-            // Buat pesanan kosong baru
-            Pesanan::create([
-                'total_harga' => 0,
-                'id_pelanggan' => null
-            ]);
 
             DB::commit();
 
@@ -100,8 +95,8 @@ public function store(Request $request)
                 ->withInput();
         }
     }
-    
-    
+
+
     /**
      * Menampilkan daftar pesanan yang sudah ada
      */
@@ -111,13 +106,11 @@ public function store(Request $request)
         $pesanan = Pesanan::with('Pelanggan')
             ->has('detailPesanan')
             ->orderBy('created_at', 'desc')
-            ->get(
-                
-            );
-        
+            ->get();
+
         return view('list', compact('pesanan'));
     }
-    
+
     /**
      * Menampilkan detail dari satu pesanan
      */
@@ -125,7 +118,7 @@ public function store(Request $request)
     {
         $pesanan = Pesanan::with('detailPesanan.barang', 'Pelanggan')
             ->findOrFail($id);
-        
+
         return view('detail', compact('pesanan'));
     }
 }
