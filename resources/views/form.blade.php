@@ -23,7 +23,7 @@
             <!-- Informasi Umum -->
             <div class="grid grid-cols-2 gap-4">
                 <!-- Input hidden untuk ID pesanan kosong yang akan diisi -->
-                <input type="hidden" name="id_pesanan" value="{{ $emptyPesanan->id_pesanan }}">
+                <input type="hidden" name="kode_pesanan" value="{{ $emptyPesanan->kode_pesanan }}">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">ID Pelanggan</label>
                     <input type="hidden" name="id_pelanggan" id="id_pelanggan" value="">
@@ -115,6 +115,15 @@
             let pelangganTerpilih = null;
             let index = 0;
 
+            // Event delegation untuk tombol hapus (SATU KALI SAJA)
+            const tbody = document.getElementById('daftarBarang');
+            tbody.addEventListener('click', function(e) {
+                if (e.target.matches('button') && e.target.textContent.trim() === 'Hapus') {
+                    e.target.closest('tr').remove();
+                    updateGrandTotal();
+                }
+            });
+
             // Tangkap event sekali untuk kedua autocomplete
             document.addEventListener('autocomplete-selected', function(e) {
                 const {
@@ -123,18 +132,13 @@
                 } = e.detail;
                 console.log('Field:', e.detail.field);
                 console.log('Selected:', e.detail.selected);
+
                 if (field === 'barang') {
-                    // Kalau yang dipilih berasal dari autocomplete barang
                     barangTerpilih = selected;
                     console.log('Barang dipilih:', barangTerpilih);
-
                 } else if (field === 'pelanggan') {
-                    // Kalau yang dipilih berasal dari autocomplete pelanggan
                     pelangganTerpilih = selected;
                     console.log('Pelanggan dipilih:', pelangganTerpilih);
-
-                    // Update input hidden id_pelanggan
-                    console.log(pelangganTerpilih.id)
                     document.querySelector('input[name="id_pelanggan"]').value = pelangganTerpilih.id;
                 }
             });
@@ -157,7 +161,6 @@
                 } = barangTerpilih;
                 const total = harga * jumlah;
 
-                const tbody = document.getElementById('daftarBarang');
                 const row = document.createElement('tr');
                 row.innerHTML = `
             <td class="px-4 py-2">${nama}
@@ -171,21 +174,12 @@
                 <input type="hidden" class="item-total" value="${total}">
             </td>
             <td class="px-4 py-2">
-                <button type="button"
-                    class="text-red-600 hover:text-red-800"
-                    >
+                <button type="button" class="text-red-600 hover:text-red-800">
                     Hapus
                 </button>
             </td>
         `;
                 tbody.appendChild(row);
-
-                tbody.addEventListener('click', function(e) {
-                    if (e.target.matches('button') && e.target.textContent.trim() === 'Hapus') {
-                        e.target.closest('tr').remove();
-                        updateGrandTotal();
-                    }
-                });
 
                 index++;
                 updateGrandTotal();
@@ -196,6 +190,69 @@
                 const searchInput = document.querySelector('#autocomplete-barang input[type="text"]');
                 if (searchInput) searchInput.value = '';
             });
+
+            // TAMBAHAN: Form submit validation dan loading state
+            const form = document.getElementById('pesananForm');
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            form.addEventListener('submit', function(e) {
+                // Validasi: pastikan ada minimal 1 item
+                const items = document.querySelectorAll('input[name^="items["][name$="[id_barang]"]');
+
+                if (items.length === 0) {
+                    e.preventDefault();
+                    alert('Tambahkan minimal 1 barang untuk melanjutkan pesanan.');
+                    return false;
+                }
+
+                // Validasi: pastikan total harga > 0
+                const totalHarga = parseFloat(document.getElementById('totalHargaInput').value);
+                if (totalHarga <= 0) {
+                    e.preventDefault();
+                    alert('Total harga harus lebih dari 0.');
+                    return false;
+                }
+
+                // Tampilkan loading state
+                submitButton.disabled = true;
+                submitButton.innerHTML = `
+    <div class="flex items-center justify-center">
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" 
+             xmlns="http://www.w3.org/2000/svg" 
+             fill="none" 
+             viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" 
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Menyimpan...</span>
+    </div>
+`;
+
+                // Log data yang akan dikirim untuk debug
+                console.log('Form data being submitted:', new FormData(form));
+
+                // Form akan submit secara normal
+                return true;
+            });
+
+            // TAMBAHAN: Tampilkan error jika ada
+            @if (session('error'))
+                alert('Error: {{ session('error') }}');
+            @endif
+
+            @if (session('success'))
+                alert('Success: {{ session('success') }}');
+            @endif
+
+            // TAMBAHAN: Tampilkan validation errors
+            @if ($errors->any())
+                let errorMessages = [];
+                @foreach ($errors->all() as $error)
+                    errorMessages.push('{{ $error }}');
+                @endforeach
+                alert('Validation Errors:\n' + errorMessages.join('\n'));
+            @endif
 
             function updateGrandTotal() {
                 const totalEls = document.querySelectorAll('.item-total');

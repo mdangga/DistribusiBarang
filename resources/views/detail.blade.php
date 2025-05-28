@@ -21,7 +21,7 @@
 
         <div class="bg-white shadow-lg rounded-xl overflow-hidden">
             <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-                <h5 class="text-xl font-semibold">Detail Pesanan #{{ $pesanan->id_pesanan }}</h5>
+                <h5 class="text-xl font-semibold">Detail Pesanan #{{ $pesanan->kode_pesanan }}</h5>
                 <a href="{{ route('pesanan.list') }}"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
                     <i class="bi bi-arrow-left"></i> Kembali

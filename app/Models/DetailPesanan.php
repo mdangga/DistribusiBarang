@@ -24,13 +24,13 @@ class DetailPesanan extends Model
         'jumlah',
         'harga',
         'id_barang',
-        'id_pesanan'
+        'kode_pesanan'
     ];
 
     // Relasi ke pesanan
     public function pesanan()
     {
-        return $this->belongsTo(Pesanan::class, 'id_pesanan', 'id_pesanan');
+        return $this->belongsTo(Pesanan::class, 'kode_pesanan', 'kode_pesanan');
     }
     
     // Relasi ke barang
