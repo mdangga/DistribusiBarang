@@ -98,6 +98,27 @@ class barangController extends Controller
         return redirect()->route('admin.barang')->with('success', 'Data berhasil diupdate!');
     }
 
+    public function addStok(Request $request, $id_barang)
+    {
+        // Validasi
+        $request->validate([
+            'nama_barang' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('barang')->ignore($id_barang, 'id_barang'),
+            ],
+            'stok' => 'required|integer',
+        ]);
+
+        // Update data
+        $barang = Barang::findOrFail($id_barang);
+        $barang->stok += $request->stok;
+        $barang->save();
+        
+        return redirect()->route('admin.barang')->with('success', 'Data berhasil diupdate!');
+    }
+
     public function autocomplete(Request $request)
     {
         $request->validate([
