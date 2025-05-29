@@ -1,3 +1,18 @@
+{{-- @php
+    function sortUrl($column)
+    {
+        $order = request('sort_by') === $column && request('sort_order') === 'asc' ? 'desc' : 'asc';
+        return request()->fullUrlWithQuery(['sort_by' => $column, 'sort_order' => $order]);
+    }
+
+    function sortArrow($column)
+    {
+        if (request('sort_by') === $column) {
+            return request('sort_order') === 'asc' ? '↑' : '↓';
+        }
+        return '';
+    }
+@endphp --}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -122,8 +137,8 @@
                         <span class="sr-only">Close</span>
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                     </button>
                 </div>
@@ -159,7 +174,7 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
                         <option value="">ALL</option>
                         @foreach ($kategori as $ktg)
-                            <option value="{{ $kategori }}"
+                            <option value="{{ $ktg->kategori }}"
                                 {{ request('kategori') == $ktg->kategori ? 'selected' : '' }}>{{ $ktg->kategori }}
                             </option>
                         @endforeach
@@ -179,18 +194,32 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr class="text-sm">
-                        <th scope="col" class="px-6 py-3">ID</th>
-                        <th scope="col" class="px-6 py-3">Nama Barang</th>
-                        <th scope="col" class="px-6 py-3">Kategori</th>
-                        <th scope="col" class="px-6 py-3">Stok</th>
-                        <th scope="col" class="px-6 py-3">Satuan</th>
-                        <th scope="col" class="px-6 py-3">Harga</th>
+                        <th class="px-6 py-3">
+                            <a href="{{ sortUrl('id_barang') }}">ID {{ sortArrow('id_barang') }}</a>
+                        </th>
+                        <th class="px-6 py-3">
+                            <a href="{{ sortUrl('nama_barang') }}">Nama Barang {{ sortArrow('nama_barang') }}</a>
+                        </th>
+                        <th class="px-6 py-3">
+                            <a href="{{ sortUrl('kategori') }}">Kategori {{ sortArrow('kategori') }}</a>
+                        </th>
+                        <th class="px-6 py-3">
+                            <a href="{{ sortUrl('stok') }}">Stok {{ sortArrow('stok') }}</a>
+                        </th>
+                        <th class="px-6 py-3">
+                            <a href="{{ sortUrl('satuan') }}">Satuan {{ sortArrow('satuan') }}</a>
+                        </th>
+                        <th class="px-6 py-3">
+                            <a href="{{ sortUrl('harga') }}">Harga {{ sortArrow('harga') }}</a>
+                        </th>
                     </tr>
+
                 </thead>
                 <tbody>
                     @foreach ($barang as $item)
                         <tr class="bg-white border-b border-gray-200">
-                            <td class="px-6 py-4">{{ 'BRG' . str_pad($item->id_barang, 3, '0', STR_PAD_LEFT) }}</td>
+                            <td class="px-6 py-4">{{ 'BRG' . str_pad($item->id_barang, 3, '0', STR_PAD_LEFT) }}
+                            </td>
                             <td class="px-6 py-4">
                                 <!-- Trigger Modal -->
                                 <a data-modal-target="editModal{{ $item->id_barang }}"
@@ -207,12 +236,16 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="mt-3">
-                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-                    {{ $barang->withQueryString()->links() }}
+            {{-- hilangkan pagi jiak data di bawah 10 --}}
+            @if ($barang->total() > 10)
+                <div class="mt-3">
+                    <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
+                        {{ $barang->withQueryString()->links() }}
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
+    </div>
     </div>
 
     <!-- Modals untuk menambahkan barang -->
@@ -298,7 +331,8 @@
                             d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h11.175q.4 0 .763.15t.637.425l2.85 2.85q.275.275.425.638t.15.762V19q0 .825-.587 1.413T19 21zm7-3q1.25 0 2.125-.875T15 15t-.875-2.125T12 12t-2.125.875T9 15t.875 2.125T12 18m-5-8h7q.425 0 .713-.288T15 9V7q0-.425-.288-.712T14 6H7q-.425 0-.712.288T6 7v2q0 .425.288.713T7 10" />
                 </x-slot:iconbtn>
                 <div class="col-span-2">
-                    <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Nama Barang</label>
+                    <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Nama
+                        Barang</label>
                     <input type="text" name="nama_barang" id="nama_barang" value="{{ $item->nama_barang }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
                 </div>
