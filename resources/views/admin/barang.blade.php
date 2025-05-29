@@ -94,11 +94,11 @@
                     Dashboard
                 </x-button-sidebar>
 
-                <x-button-sidebar route="{{ route('admin.transaksi') }}"
+                {{-- <x-button-sidebar route="{{ route('admin.transaksi') }}"
                     icon='<path fill="currentColor"
                                 d="M535 41c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l64 64c4.5 4.5 7 10.6 7 17s-2.5 12.5-7 17l-64 64c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l23-23l-174-.2c-13.3 0-24-10.7-24-24s10.7-24 24-24h174.1zM105 377l-23 23h174c13.3 0 24 10.7 24 24s-10.7 24-24 24H81.9l23 23c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L7 441c-4.5-4.5-7-10.6-7-17s2.5-12.5 7-17l64-64c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM96 64h241.9c-3.7 7.2-5.9 15.3-5.9 24c0 28.7 23.3 52 52 52h117.4c-4 17 .6 35.5 13.8 48.8c20.3 20.3 53.2 20.3 73.5 0l19.3-19.3V384c0 35.3-28.7 64-64 64H302.1c3.7-7.2 5.9-15.3 5.9-24c0-28.7-23.3-52-52-52H138.6c4-17-.6-35.5-13.8-48.8c-20.3-20.3-53.2-20.3-73.5 0L32 342.5V128c0-35.3 28.7-64 64-64m64 64H96v64c35.3 0 64-28.7 64-64m384 192c-35.3 0-64 28.7-64 64h64zm-224 32a96 96 0 1 0 0-192a96 96 0 1 0 0 192" />'>
                     Transaksi
-                </x-button-sidebar>
+                </x-button-sidebar> --}}
 
                 <x-button-sidebar route="{{ route('admin.barang') }}"
                     icon='<path fill="currentColor"
@@ -249,7 +249,8 @@
     </div>
 
     <!-- Modals untuk menambahkan barang -->
-    <x-modal id="addModalBarang" header="Tambah Barang" button="Tambah">
+    <x-modal id="addModalBarang" header="Tambah Barang" button="Tambah" :actionRoute="route('barang.add')"
+        methodOverride="POST">
         <div class="grid gap-4 mb-4
             grid-cols-2">
             {{-- svg icon di header --}}
@@ -311,8 +312,8 @@
 
     <!-- Modals untuk setiap barang -->
     @foreach ($barang as $item)
-        <x-modal id="editModal{{ $item->id_barang }}" header="Edit {{ $item->nama_barang }}"
-            button="Simpan Perubahan" akses="{{ $item->id_barang }}">
+        <x-modal id="editModal{{ $item->id_barang }}" header="Edit {{ $item->nama_barang }}" button="Update" :actionRoute="route('barang.update', $item->id_barang)"
+        methodOverride="put">
             <div class="grid gap-4 mb-4
             grid-cols-2">
                 {{-- svg icon di header --}}
@@ -331,8 +332,7 @@
                             d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h11.175q.4 0 .763.15t.637.425l2.85 2.85q.275.275.425.638t.15.762V19q0 .825-.587 1.413T19 21zm7-3q1.25 0 2.125-.875T15 15t-.875-2.125T12 12t-2.125.875T9 15t.875 2.125T12 18m-5-8h7q.425 0 .713-.288T15 9V7q0-.425-.288-.712T14 6H7q-.425 0-.712.288T6 7v2q0 .425.288.713T7 10" />
                 </x-slot:iconbtn>
                 <div class="col-span-2">
-                    <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Nama
-                        Barang</label>
+                    <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Nama Barang</label>
                     <input type="text" name="nama_barang" id="nama_barang" value="{{ $item->nama_barang }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
                 </div>
