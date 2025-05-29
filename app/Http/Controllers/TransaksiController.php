@@ -14,8 +14,8 @@ class TransaksiController extends Controller
     public function tampilkanDataTransaksi(Request $request)
     {
         $user = Auth::user();
-        $pembelian = Pembelian::select('id_pembelian as id', 'total_harga', 'updated_at', DB::raw("'pembelian' as jenis"))->get();
-        $penjualan = Pesanan::select('id_pesanan as id', 'total_harga', 'updated_at', DB::raw("'pesanan' as jenis"))->has('detailPesanan')->get();
+        $pembelian = Pembelian::select('kode_pembelian as kode', 'total_harga', 'updated_at', DB::raw("'pembelian' as jenis"))->get();
+        $penjualan = Pesanan::select('kode_pesanan as kode', 'total_harga', 'updated_at', DB::raw("'pesanan' as jenis"))->has('detailPesanan')->get();
 
         $transaksi = $pembelian->concat($penjualan)->sortByDesc('updated_at');
 

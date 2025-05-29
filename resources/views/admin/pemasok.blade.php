@@ -124,7 +124,7 @@
     </aside>
 
     <div class="p-4 sm:ml-64 mt-14">
-        @if ($errors->has('nama_pelanggan'))
+        @if ($errors->has('nama_pemasok'))
             <div id="toast-danger"
                 class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 items-center w-full max-w-xs p-4 text-gray-500 bg-red-100 rounded-lg shadow-sm"
                 role="alert">
@@ -138,7 +138,7 @@
                         </svg>
                         <span class="sr-only">Error icon</span>
                     </div>
-                    <div class="ms-3 text-sm font-normal">{{ $errors->first('nama_pelanggan') }}</div>
+                    <div class="ms-3 text-sm font-normal">{{ $errors->first('nama_pemasok') }}</div>
                     <button type="button"
                         class="ms-auto -mx-1.5 -my-1.5 bg-red-100 text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
                         data-dismiss-target="#toast-danger" aria-label="Close">
@@ -152,10 +152,10 @@
                 </div>
             </div>
         @endif
-        <button data-modal-target="addModalPelanggan" data-modal-toggle="addModalPelanggan"
+        <button data-modal-target="addModalPemasok" data-modal-toggle="addModalPemasok"
             class="block m-3 text-white bg-green-600 hover:bg-green-700 focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
             type="button">
-            Tambah Pelanggan
+            Tambah Pemasok
         </button>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <form action="" method="GET" class="p-4 bg-white rounded-lg shadow-md">
@@ -182,7 +182,7 @@
             </form>
             <div class="mt-6">
                 <div class="bg-blue-50 p-4 rounded-md shadow-sm">
-                    {{ $pelanggan->withQueryString()->links('pagination::tailwind-custom') }}
+                    {{ $pemasok->withQueryString()->links('pagination::tailwind-custom') }}
                 </div>
             </div>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -192,14 +192,14 @@
                         <th scope="col" class="px-6 py-3">Nama</th>
                         <th scope="col" class="px-6 py-3">No Telpon</th>
                         <th scope="col" class="px-6 py-3">Alamat</th>
-                        <th scope="col" class="px-6 py-3">Total Pesanan</th>
+                        <th scope="col" class="px-6 py-3">Total Pengiriman</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($pelanggan as $item)
+                    @foreach ($pemasok as $item)
                         <tr class= "border-b border-gray-200 text-black text-lg">
                             <td class="px-6 py-4">
-                                {{ 'PLG' . str_pad($item->id_pelanggan, 3, '0', STR_PAD_LEFT) }}
+                                {{ 'PLG' . str_pad($item->id_pemasok, 3, '0', STR_PAD_LEFT) }}
                             </td>
                             {{-- <td class="px-6 py-4">
                                 <!-- Trigger Modal -->
@@ -209,14 +209,14 @@
                                     {{ $item->nama_barang }}
                                 </a>
                             </td> --}}
-                            <td class="px-6 py-4"><a data-modal-target="editModal{{ $item->id_pelanggan }}"
-                                    data-modal-toggle="editModal{{ $item->id_pelanggan }}"
+                            <td class="px-6 py-4"><a data-modal-target="editModal{{ $item->id_pemasok }}"
+                                    data-modal-toggle="editModal{{ $item->id_pemasok }}"
                                     class="cursor-pointer font-medium text-blue-600 hover:underline">
-                                    {{ $item->nama_pelanggan }}
+                                    {{ $item->nama_pemasok }}
                                 </a></td>
                             <td class="px-6 py-4">{{ $item->no_telpon }}</td>
                             <td class="px-6 py-4">{{ $item->alamat }}</td>
-                            <td class="px-6 py-4">{{ $item->total_pesanan }}</td>
+                            <td class="px-6 py-4">{{ $item->total_pengiriman }}</td>
                             {{-- <td class="px-6 py-4">{{ 'Rp ' . number_format($item->harga, 2) }}</td> --}}
                         </tr>
                     @endforeach
@@ -225,9 +225,8 @@
         </div>
     </div>
 
-    <!-- Modals untuk menambahkan barang -->
-    <x-modal id="addModalPelanggan" header="Tambah Pelanggan" button="Tambah" :actionRoute="route('pelanggan.add')"
-        methodOverride="POST">
+    <!-- Modals untuk menambahkan pemasok -->
+    <x-modal id="addModalPemasok" header="Tambah Pemasok" button="Tambah" :actionRoute="route('pemasok.add')" methodOverride="POST">
         <div class="grid gap-4 mb-4
             grid-cols-2">
             {{-- svg icon di header --}}
@@ -247,9 +246,9 @@
                 </svg>
             </x-slot:iconbtn>
             <div class="col-span-2">
-                <label for="nama_pelanggan" class="block mb-2 text-sm font-medium text-gray-900">Nama
-                    Pelanggan</label>
-                <input type="text" name="nama_pelanggan" id="nama_pelanggan"
+                <label for="nama_pemasok" class="block mb-2 text-sm font-medium text-gray-900">Nama
+                    Pemasok</label>
+                <input type="text" name="nama_pemasok" id="nama_pemasok"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
             </div>
 
@@ -268,9 +267,9 @@
     </x-modal>
 
     <!-- Modals untuk setiap barang -->
-    @foreach ($pelanggan as $person)
-        <x-modal id="editModal{{ $person->id_pelanggan }}" header="Edit {{ $person->nama_pelanggan }}" button="Update"
-            :actionRoute="route('pelanggan.update', $person->id_pelanggan)" methodOverride="put">
+    @foreach ($pemasok as $person)
+        <x-modal id="editModal{{ $person->id_pemasok }}" header="Edit {{ $person->nama_pemasok }}" button="Update"
+            :actionRoute="route('pemasok.update', $person->id_pemasok)" methodOverride="put">
             <div class="grid gap-4 mb-4
             grid-cols-2">
                 {{-- svg icon di header --}}
@@ -289,9 +288,9 @@
                             d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h11.175q.4 0 .763.15t.637.425l2.85 2.85q.275.275.425.638t.15.762V19q0 .825-.587 1.413T19 21zm7-3q1.25 0 2.125-.875T15 15t-.875-2.125T12 12t-2.125.875T9 15t.875 2.125T12 18m-5-8h7q.425 0 .713-.288T15 9V7q0-.425-.288-.712T14 6H7q-.425 0-.712.288T6 7v2q0 .425.288.713T7 10" />
                 </x-slot:iconbtn>
                 <div class="col-span-2">
-                    <label for="nama_pelanggan" class="block mb-2 text-sm font-medium text-gray-900">Nama
-                        Pelanggan</label>
-                    <input type="text" name="nama_pelanggan" id="nama_pelanggan" value="{{ $person->nama_pelanggan }}"
+                    <label for="nama_pemasok" class="block mb-2 text-sm font-medium text-gray-900">Nama
+                        Pemasok</label>
+                    <input type="text" name="nama_pemasok" id="nama_pemasok" value="{{ $person->nama_pemasok }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
                 </div>
 

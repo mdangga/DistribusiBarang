@@ -12,18 +12,19 @@ class barangController extends Controller
     public function tampilkanDataBarang(Request $request)
     {
         $user = Auth::user();
-
+        // dd($request->all());
+        
         $barang = Barang::when($request->barang_id != null, function ($q) use ($request) {
             return $q->where('id_barang', $request->barang_id);
         })
-            ->when($request->nama != null, function ($q) use ($request) {
+        ->when($request->nama != null, function ($q) use ($request) {
                 return $q->where('nama_barang', 'LIKE', "%{$request->nama}%");
             })
             ->when($request->kategori != null, function ($q) use ($request) {
                 return $q->where('kategori', $request->kategori);
             })
             ->paginate(10);
-        $kategori = Barang::select('kategori')->distinct()->get();
+            $kategori = Barang::select('kategori')->distinct()->get();
         // dd($kategori);
         return view('admin.barang', [
             'barang' => $barang,

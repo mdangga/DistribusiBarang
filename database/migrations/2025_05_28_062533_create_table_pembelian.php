@@ -14,7 +14,7 @@ return new class extends Migration
             Schema::create('pembelian', function (Blueprint $table) {
             $table->string('kode_pembelian')->unique()->primary();
             $table->timestamp('tanggal')->useCurrent();
-            $table->decimal('total_harga', 10, 2);
+            $table->decimal('total_harga', 15, 2);
             $table->unsignedBigInteger('id_pemasok');
             $table->timestamps();
 

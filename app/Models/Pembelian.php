@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+use function PHPSTORM_META\map;
+
 class Pembelian extends Model
 {
     // Set nama tabel
@@ -20,7 +22,7 @@ class Pembelian extends Model
 
         static::creating(function($model){
             $tanggalHariIni = Carbon::now()->format('dmY');
-            $hitungPesananHariIni = DB::table('pesanan')->whereDate('tanggal', Carbon::today())->count();
+            $hitungPesananHariIni = DB::table('pembelian')->whereDate('tanggal', Carbon::today())->count();
             $nomorPembelian = str_pad($hitungPesananHariIni + 1, 4, '0', STR_PAD_LEFT);
 
             $model->kode_pembelian = "PMB-{$tanggalHariIni}-{$nomorPembelian}";
@@ -33,6 +35,13 @@ class Pembelian extends Model
     
     // Set fillable columns
     protected $fillable = [
-        'total_harga',
+        'tanggal',
+        'id_pemasok',
+        'total_harga'
     ];
+
+    public function Pemasok()
+    {
+        return $this->belongsTo(Pemasok::class, 'id_pemasok', 'id_pemasok');
+    }
 }

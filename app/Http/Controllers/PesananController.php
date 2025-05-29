@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\DetailPesanan;
 use App\Models\Pesanan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PesananController extends Controller
@@ -98,7 +100,7 @@ class PesananController extends Controller
 
 
     /**
-     * Menampilkan daftar pesanan yang sudah ada
+     * Menampilkan daftar pesanan yang sudah ada tanpa login
      */
     public function list()
     {
@@ -109,6 +111,31 @@ class PesananController extends Controller
             ->get();
 
         return view('list', compact('pesanan'));
+    }
+
+    /**
+     * Menampilkan daftar pesanan yang sudah ada melalui admin
+     */
+    public function listAdmin(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Pesanan::with('pelanggan')->has('detailPesanan');
+
+        if ($request->has(['dateFrom', 'dateTo'])) {
+            $query->whereBetween('tanggal', [
+                Carbon::parse($request->dateFrom)->startOfDay(),
+                Carbon::parse($request->dateTo)->endOfDay()
+            ]);
+        }
+
+        $pesanan = $query->paginate(10);
+        // dd($pembelian);
+        return view('admin.pesanan', [
+            'pesanan' => $pesanan,
+            'username' => $user->username,
+            'email' => $user->email
+        ]);
     }
 
     /**

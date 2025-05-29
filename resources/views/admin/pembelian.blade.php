@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.svg') }}">
-    <title>Admin - Pelanggan</title>
+    <title>Admin - Transaksi</title>
 </head>
 
 <body>
@@ -124,109 +124,93 @@
     </aside>
 
     <div class="p-4 sm:ml-64 mt-14">
-        @if ($errors->has('nama_pelanggan'))
-            <div id="toast-danger"
-                class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 items-center w-full max-w-xs p-4 text-gray-500 bg-red-100 rounded-lg shadow-sm"
-                role="alert">
-                <div class="flex">
-                    <div
-                        class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg">
-                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 20 20">
-                            <path
-                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
-                        </svg>
-                        <span class="sr-only">Error icon</span>
-                    </div>
-                    <div class="ms-3 text-sm font-normal">{{ $errors->first('nama_pelanggan') }}</div>
-                    <button type="button"
-                        class="ms-auto -mx-1.5 -my-1.5 bg-red-100 text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
-                        data-dismiss-target="#toast-danger" aria-label="Close">
-                        <span class="sr-only">Close</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                        </svg>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <button data-modal-target="addModalPembelian" data-modal-toggle="addModalPembelian"
+            class="block m-3 text-white bg-green-600 hover:bg-green-700 focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
+            type="button">
+            Tambah Pembelian
+        </button>
+
+        <form action="" method="GET" class="p-4 bg-white rounded-lg ">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label for="dateFrom" class="block mb-1 text-sm font-medium text-gray-700">From Date</label>
+                    <input type="date" name="dateFrom" id="dateFrom" value="{{ date('Y-m-d') }}"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
+                </div>
+
+                <div>
+                    <label for="dateTo" class="block mb-1 text-sm font-medium text-gray-700">To Date</label>
+                    <input type="date" name="dateTo" id="dateTo" value="{{ date('Y-m-d') }}"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
+                </div>
+
+                <div class="flex items-end">
+                    <button type="submit"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">
+                        Filter
                     </button>
                 </div>
             </div>
-        @endif
-        <button data-modal-target="addModalPelanggan" data-modal-toggle="addModalPelanggan"
-            class="block m-3 text-white bg-green-600 hover:bg-green-700 focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
-            type="button">
-            Tambah Pelanggan
-        </button>
+        </form>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <form action="" method="GET" class="p-4 bg-white rounded-lg shadow-md">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label for="dateFrom" class="block mb-1 text-sm font-medium text-gray-700">From Date</label>
-                        <input type="date" name="dateFrom" id="dateFrom" value="{{ date('Y-m-d') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
-                    </div>
 
-                    <div>
-                        <label for="dateTo" class="block mb-1 text-sm font-medium text-gray-700">To Date</label>
-                        <input type="date" name="dateTo" id="dateTo" value="{{ date('Y-m-d') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
-                    </div>
-
-                    <div class="flex items-end">
-                        <button type="submit"
-                            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">
-                            Filter
-                        </button>
-                    </div>
-                </div>
-            </form>
-            <div class="mt-6">
-                <div class="bg-blue-50 p-4 rounded-md shadow-sm">
-                    {{ $pelanggan->withQueryString()->links('pagination::tailwind-custom') }}
-                </div>
-            </div>
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
                     <tr>
-                        <th scope="col" class="px-6 py-3">ID</th>
-                        <th scope="col" class="px-6 py-3">Nama</th>
-                        <th scope="col" class="px-6 py-3">No Telpon</th>
-                        <th scope="col" class="px-6 py-3">Alamat</th>
-                        <th scope="col" class="px-6 py-3">Total Pesanan</th>
+                        <th class="px-6 py-3 text-left">Kode Pembelian</th>
+                        <th class="px-6 py-3 text-left">Tanggal</th>
+                        <th class="px-6 py-3 text-left">Pemasok</th>
+                        <th class="px-6 py-3 text-left">Total</th>
+                        <th class="px-6 py-3 text-left">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($pelanggan as $item)
-                        <tr class= "border-b border-gray-200 text-black text-lg">
-                            <td class="px-6 py-4">
-                                {{ 'PLG' . str_pad($item->id_pelanggan, 3, '0', STR_PAD_LEFT) }}
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse ($pembelian as $p)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-2">{{ $p->kode_pembelian }}</td>
+                            <td class="px-6 py-2">{{ $p->created_at->format('d/m/Y') }}</td>
+                            <td class="px-6 py-2">{{ $p->Pemasok->nama_pemasok }}</td>
+                            <td class="px-6 py-2 font-medium text-black">Rp
+                                {{ number_format($p->total_harga, 2, ',', '.') }}</td>
+                            <td class="px-6 py-2">
+                                {{-- <a href="{{ route('pesanan.show', $p->kode_pesanan) }}"
+                                    class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium px-3    py-2 rounded-lg shadow">
+                                    <svg class="text-white mr-2 overflow-visible" xmlns="http://www.w3.org/2000/svg"
+                                        width="16px" height="16px" viewBox="0 0 576 512">
+                                        <path fill="currentColor"
+                                            d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32M144 256a144 144 0 1 1 288 0a144 144 0 1 1-288 0m144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3" />
+                                    </svg></i> Detail
+                                </a> --}}
                             </td>
-                            {{-- <td class="px-6 py-4">
-                                <!-- Trigger Modal -->
-                                <a data-modal-target="editModal{{ $item->id_barang }}"
-                                    data-modal-toggle="editModal{{ $item->id_barang }}"
-                                    class="cursor-pointer font-medium text-blue-600 hover:underline">
-                                    {{ $item->nama_barang }}
-                                </a>
-                            </td> --}}
-                            <td class="px-6 py-4"><a data-modal-target="editModal{{ $item->id_pelanggan }}"
-                                    data-modal-toggle="editModal{{ $item->id_pelanggan }}"
-                                    class="cursor-pointer font-medium text-blue-600 hover:underline">
-                                    {{ $item->nama_pelanggan }}
-                                </a></td>
-                            <td class="px-6 py-4">{{ $item->no_telpon }}</td>
-                            <td class="px-6 py-4">{{ $item->alamat }}</td>
-                            <td class="px-6 py-4">{{ $item->total_pesanan }}</td>
-                            {{-- <td class="px-6 py-4">{{ 'Rp ' . number_format($item->harga, 2) }}</td> --}}
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center px-6 py-4 text-gray-500">Belum ada data
+                                Pembelian</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
+            <div class="mt-3">
+                {{-- <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
+                    {{ $pesanan->withQueryString()->links() }}
+                </div> --}}
+            </div>
         </div>
     </div>
 
     <!-- Modals untuk menambahkan barang -->
-    <x-modal id="addModalPelanggan" header="Tambah Pelanggan" button="Tambah" :actionRoute="route('pelanggan.add')"
+    <x-modal id="addModalPembelian" header="Tambah Pembelian" button="Tambah" :actionRoute="route('pembelian.add')"
         methodOverride="POST">
         <div class="grid gap-4 mb-4
             grid-cols-2">
@@ -247,68 +231,27 @@
                 </svg>
             </x-slot:iconbtn>
             <div class="col-span-2">
-                <label for="nama_pelanggan" class="block mb-2 text-sm font-medium text-gray-900">Nama
-                    Pelanggan</label>
-                <input type="text" name="nama_pelanggan" id="nama_pelanggan"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
+                <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-900">Tanggal</label>
+                <input aria-label="disabled input 2" type="text" name="tanggal"
+                    value="{{ old('tanggal', date('Y-m-d')) }}" readonly
+                    class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5 cursor-not-allowed ">
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
-                <label for="no_telpon" class="block mb-2 text-sm font-medium text-gray-900">No Telpon</label>
-                <input type="text" name="no_telpon" id="no_telpon"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
+            <div class="col-span-2">
+                <label for="harga" class="block mb-2 text-sm font-medium text-gray-900">Nama Pemasok</label>
+                <x-autocomplete-input name="pemasok" endpoint="{{ route('autocomplete.pemasok') }}"
+                    placeholder="Cari pemasok..." form-field="nama_pemasok" id-field="id"
+                    id="autocomplete-pemasok" />
+                <input type="hidden" name="id_pemasok" value="">
             </div>
 
-            <div class="col-span-2 sm:col-span-1">
-                <label for="alamat" class="block mb-2 text-sm font-medium text-gray-900">Alamat</label>
-                <input type="text" name="alamat" id="alamat"
+            <div class="col-span-2">
+                <label for="harga" class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
+                <input type="number" name="harga" id="harga"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
             </div>
         </div>
     </x-modal>
-
-    <!-- Modals untuk setiap barang -->
-    @foreach ($pelanggan as $person)
-        <x-modal id="editModal{{ $person->id_pelanggan }}" header="Edit {{ $person->nama_pelanggan }}" button="Update"
-            :actionRoute="route('pelanggan.update', $person->id_pelanggan)" methodOverride="put">
-            <div class="grid gap-4 mb-4
-            grid-cols-2">
-                {{-- svg icon di header --}}
-                <x-slot:iconheader>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"
-                        class="text-gray-700 mr-3">
-                        <path fill="currentColor"
-                            d="m410.3 231l11.3-11.3l-33.9-33.9l-62.1-62.1l-33.9-33.9l-11.3 11.3l-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2l199.2-199.2zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9l-78.2 23l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7l-14.4 14.5l-22.6 22.6l-11.4 11.3l33.9 33.9l62.1 62.1l33.9 33.9l11.3-11.3l22.6-22.6l14.5-14.5c25-25 25-65.5 0-90.5l-39.3-39.4c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6" />
-                    </svg>
-                </x-slot:iconheader>
-                {{-- svg icon sebelah kiri btn --}}
-                <x-slot:iconbtn>
-                    <svg class="me-1 -ms-1 w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24">
-                        <path fill="currentColor"
-                            d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h11.175q.4 0 .763.15t.637.425l2.85 2.85q.275.275.425.638t.15.762V19q0 .825-.587 1.413T19 21zm7-3q1.25 0 2.125-.875T15 15t-.875-2.125T12 12t-2.125.875T9 15t.875 2.125T12 18m-5-8h7q.425 0 .713-.288T15 9V7q0-.425-.288-.712T14 6H7q-.425 0-.712.288T6 7v2q0 .425.288.713T7 10" />
-                </x-slot:iconbtn>
-                <div class="col-span-2">
-                    <label for="nama_pelanggan" class="block mb-2 text-sm font-medium text-gray-900">Nama
-                        Pelanggan</label>
-                    <input type="text" name="nama_pelanggan" id="nama_pelanggan" value="{{ $person->nama_pelanggan }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
-                </div>
-
-                <div class="col-span-2 sm:col-span-1">
-                    <label for="no_telpon" class="block mb-2 text-sm font-medium text-gray-900">No Telpon</label>
-                    <input type="text" name="no_telpon" id="no_telpon" value="{{ $person->no_telpon }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
-                </div>
-
-                <div class="col-span-2 sm:col-span-1">
-                    <label for="alamat" class="block mb-2 text-sm font-medium text-gray-900">Alamat</label>
-                    <input type="text" name="alamat" id="alamat" value="{{ $person->alamat }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
-                </div>
-            </div>
-        </x-modal>
-    @endforeach
 
     <script>
         function getQueryParam(param) {
@@ -325,6 +268,27 @@
 
             if (dateFrom) document.getElementById('dateFrom').value = dateFrom;
             if (dateTo) document.getElementById('dateTo').value = dateTo;
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variabel untuk menyimpan data terpilih
+            let pemasokTerpilih = null;
+
+            // Tangkap event sekali untuk kedua autocomplete
+            document.addEventListener('autocomplete-selected', function(e) {
+                const {
+                    field,
+                    selected
+                } = e.detail;
+                console.log('Field:', e.detail.field);
+                console.log('Selected:', e.detail.selected);
+
+                if (field === 'pemasok') {
+                    pemasokTerpilih = selected;
+                    console.log('Barang dipilih:', pemasokTerpilih);
+                    document.querySelector('input[name="id_pemasok"]').value = pemasokTerpilih.id;
+                }
+            });
         });
     </script>
 </body>
