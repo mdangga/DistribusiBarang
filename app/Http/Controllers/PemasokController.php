@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pelanggan;
+use App\Models\Pemasok;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class PelangganController extends Controller
+class PemasokController extends Controller
 {
-    public function tampilkanDataPelanggan(Request $request)
+    public function tampilkanDataPemasok(Request $request)
     {
         $user = Auth::user();
 
-        $pelanggan = Pelanggan::withCount([
-            'pesanan as total_pesanan' => function ($query) use ($request) {
+        $pemasok = Pemasok::withCount([
+            'pembelian as total_pengiriman' => function ($query) use ($request) {
                 if (!empty($request->dateFrom) && !empty($request->dateTo)) {
                     $query->whereBetween('updated_at', [
                         Carbon::parse($request->dateFrom)->startOfDay(),
@@ -28,68 +28,68 @@ class PelangganController extends Controller
 
         $page = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;
-        $results = $pelanggan->slice(($page - 1) * $perPage, $perPage)->values();
-        $pelanggan = new LengthAwarePaginator($results, $pelanggan->count(), $perPage, $page, [
+        $results = $pemasok->slice(($page - 1) * $perPage, $perPage)->values();
+        $pemasok = new LengthAwarePaginator($results, $pemasok->count(), $perPage, $page, [
             'path' => LengthAwarePaginator::resolveCurrentPath()
         ]);
 
-        return view('admin.pelanggan', [
-            'pelanggan' => $pelanggan,
+        return view('admin.pemasok', [
+            'pemasok' => $pemasok,
             'username' => $user->username,
             'email' => $user->email
         ]);
     }
 
-    public function addDataPelanggan(Request $request)
+    public function addDataPemasok(Request $request)
     {
         // Validasi
         $request->validate([
-            'nama_pelanggan' => [
+            'nama_pemasok' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('pelanggan'),
-            ],
-            'no_telpon' => 'required|string',
-            'alamat' => 'required|string',
-        ]);
-        // dd($request->all());
-
-        $pelanggan = new Pelanggan();
-        $pelanggan->nama_pelanggan = $request->nama_pelanggan;
-        $pelanggan->no_telpon = $request->no_telpon;
-        $pelanggan->alamat = $request->alamat;
-        $pelanggan->save();
-
-        return redirect()->route('admin.pelanggan')->with('success', 'Pelanggan berhasil ditambahkan');
-    }
-
-    public function updateDataPel(Request $request, $id_pelanggan)
-    {
-        // Validasi
-        // dd($request->all());
-        $request->validate([
-            'nama_pelanggan' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('pelanggan'),
+                Rule::unique('pemasok'),
             ],
             'no_telpon' => 'required|string',
             'alamat' => 'required|string',
         ], [
-            'nama_pelanggan.unique' => 'Pelanggan telah terdaftar.',
+            'nama_pemasok.unique' => 'Pemasok telah terdaftar.',
+        ]);
+        // dd($request->all());
+
+        $pemasok = new Pemasok();
+        $pemasok->nama_pemasok = $request->nama_pemasok;
+        $pemasok->no_telpon = $request->no_telpon;
+        $pemasok->alamat = $request->alamat;
+        $pemasok->save();
+
+        return redirect()->route('admin.pemasok')->with('success', 'Pemasok berhasil ditambahkan');
+    }
+
+    public function updateDataPemasok(Request $request, $id_pemasok)
+    {
+        // Validasi
+        // dd($request->all());
+        $request->validate([
+            'nama_pemasok' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('pemasok'),
+            ],
+            'no_telpon' => 'required|string',
+            'alamat' => 'required|string',
         ]);
 
         // Update data
-        $pelanggan = Pelanggan::findOrFail($id_pelanggan);
-        $pelanggan->update([
-            'nama_pelanggan' => $request->nama_pelanggan,
+        $pemasok = Pemasok::findOrFail($id_pemasok);
+        $pemasok->update([
+            'nama_pemasok' => $request->nama_pemasok,
             'no_telpon' => $request->no_telpon,
             'alamat' => $request->alamat,
         ]);
 
-        return redirect()->route('admin.pelanggan')->with('success', 'Data berhasil diupdate!');
+        return redirect()->route('admin.pemasok')->with('success', 'Data berhasil diupdate!');
     }
 
     public function autocomplete(Request $request)
@@ -100,13 +100,13 @@ class PelangganController extends Controller
 
         $term = $request->input('term');
 
-        $results = Pelanggan::query()
-            ->where('nama_pelanggan', 'LIKE', "%{$term}%")
-            ->orderBy('nama_pelanggan')
+        $results = Pemasok::query()
+            ->where('nama_pemasok', 'LIKE', "%{$term}%")
+            ->orderBy('nama_pemasok')
             ->take(10)
             ->get([
-                'id_pelanggan as id',
-                'nama_pelanggan',
+                'id_pemasok as id',
+                'nama_pemasok',
                 'alamat',
                 'no_telpon'
             ]);

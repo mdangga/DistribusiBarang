@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pesanan', function (Blueprint $table) {
             $table->string('kode_pesanan')->unique()->primary();
             $table->timestamp('tanggal')->useCurrent();
-            $table->decimal('total_harga', 10, 2);
+            $table->decimal('total_harga', 15, 2);
             $table->unsignedBigInteger('id_pelanggan')->nullable();
             $table->timestamps();
 

@@ -1,4 +1,4 @@
-@props(['id', 'akses' => null, 'header', 'button'])
+@props(['id', 'header', 'button', 'actionRoute', 'methodOverride' => 'POST'])
 <div id="{{ $id }}" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-16 md:top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
@@ -20,12 +20,13 @@
             </div>
 
             <!-- Form -->
-            <form class="p-4 md:p-5"
-                @if ($akses) action="{{ route('barang.update', $akses) }}" @else action="{{ route('barang.add') }}" @endif
-                method="POST">
+            <form class="p-4 md:p-5" action="{{ $actionRoute }}" method="POST">
                 @csrf
-                @if ($akses)
-                    @method('PUT')
+
+                @if (strtoupper($methodOverride) === 'PUT' ||
+                        strtoupper($methodOverride) === 'PATCH' ||
+                        strtoupper($methodOverride) === 'DELETE')
+                    @method($methodOverride)
                 @endif
                 {!! $slot !!}
                 <button type="submit"
