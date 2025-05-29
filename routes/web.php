@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/barang', [barangController::class, 'tampilkanDataBarang'])->name('admin.barang');
         Route::post('/admin/barang/', [barangController::class, 'addDataBarang'])->name('barang.add');
         Route::put('/admin/barang/{id_barang}', [barangController::class, 'updateDataBarang'])->name('barang.update');
+        Route::put('/admin/barang/stok/{id_barang}', [barangController::class, 'addStok'])->name('stok.add');
 
         Route::get('/admin/pesanan', [PesananController::class, 'listAdmin'])->name('admin.pesanan');
         
