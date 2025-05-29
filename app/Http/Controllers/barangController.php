@@ -12,19 +12,23 @@ class barangController extends Controller
     public function tampilkanDataBarang(Request $request)
     {
         $user = Auth::user();
-        // dd($request->all());
-        
+        $sortBy = $request->get('sort_by', 'id_barang'); // default: urut berdasarkan ID
+        $sortOrder = $request->get('sort_order', 'asc'); // default: naik
+
         $barang = Barang::when($request->barang_id != null, function ($q) use ($request) {
             return $q->where('id_barang', $request->barang_id);
         })
-        ->when($request->nama != null, function ($q) use ($request) {
+            ->when($request->nama != null, function ($q) use ($request) {
                 return $q->where('nama_barang', 'LIKE', "%{$request->nama}%");
             })
             ->when($request->kategori != null, function ($q) use ($request) {
                 return $q->where('kategori', $request->kategori);
             })
-            ->paginate(10);
-            $kategori = Barang::select('kategori')->distinct()->get();
+            ->orderBy($sortBy, $sortOrder)
+            ->paginate(10)
+            ->appends($request->all());
+            
+        $kategori = Barang::select('kategori')->distinct()->get();
         // dd($kategori);
         return view('admin.barang', [
             'barang' => $barang,
