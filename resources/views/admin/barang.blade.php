@@ -283,14 +283,12 @@
                                 yang sesuai</td>
                         </tr>
                     @endforelse
-
                 </tbody>
             </table>
 
-
-            <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-                {{ $barang->withQueryString()->links() }}
-            </div>
+        </div>
+        <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
+            {{ $barang->withQueryString()->links() }}
         </div>
     </div>
 
