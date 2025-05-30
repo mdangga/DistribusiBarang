@@ -139,9 +139,17 @@
                     <div>
                         <p class="text-gray-500 text-sm">Total Pesanan</p>
                         <h3 class="font-bold text-2xl">{{ $pesanan['total_pesanan'] }}</h3>
-                        <p
-                            class="{{ $pesanan['persentase'] >= 0 ? 'text-green-500' : 'text-red-500' }} text-xs flex items-center">
-                            <i class="fas fa-arrow-up mr-1"></i> {{ $pesanan['persentase'] }}% from last month
+                        <p x-data="{ persentase: {{ $pesanan['persentase'] }} }" :class="persentase >= 0 ? 'text-green-500' : 'text-red-500'"
+                            class="text-xs flex items-center">
+                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 10 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    :d="persentase >= 0 ?
+                                        'M5 13V1m0 0L1 5m4-4 4 4' :
+                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                            </svg>
+                            <span x-text="persentase + '% from last month'"></span>
                         </p>
                     </div>
                 </div>
@@ -154,9 +162,17 @@
                     <div>
                         <p class="text-gray-500 text-sm">Total Pembelian</p>
                         <h3 class="font-bold text-2xl">{{ $pembelian['total_pembelian'] }}</h3>
-                        <p
-                            class="{{ $pembelian['persentase'] <= 0 ? 'text-green-500' : 'text-red-500' }} text-xs flex items-center">
-                            <i class="fas fa-arrow-up mr-1"></i> {{ $pembelian['persentase'] }}% from last month
+                        <p x-data="{ persentase: {{ $pembelian['persentase'] }} }" :class="persentase <= 0 ? 'text-green-500' : 'text-red-500'"
+                            class="text-xs flex items-center">
+                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 10 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    :d="persentase >= 0 ?
+                                        'M5 13V1m0 0L1 5m4-4 4 4' :
+                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                            </svg>
+                            <span x-text="persentase + '% from last month'"></span>
                         </p>
                     </div>
                 </div>
@@ -169,8 +185,17 @@
                     <div>
                         <p class="text-gray-500 text-sm">Total Pendapatan</p>
                         <h3 class="font-bold text-xl">Rp. {{ number_format($pendapatan['total'], 2, ',', '.') }}</h3>
-                        <p class="text-red-500 text-xs flex items-center">
-                            <i class="fas fa-arrow-down mr-1"></i> {{ $pendapatan['persentase'] }}% from last month
+                        <p x-data="{ persentase: {{ $pendapatan['persentase'] }} }" :class="persentase >= 0 ? 'text-green-500' : 'text-red-500'"
+                            class="text-xs flex items-center">
+                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 10 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    :d="persentase >= 0 ?
+                                        'M5 13V1m0 0L1 5m4-4 4 4' :
+                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                            </svg>
+                            <span x-text="persentase + '% from last month'"></span>
                         </p>
                     </div>
                 </div>
@@ -183,9 +208,17 @@
                     <div>
                         <p class="text-gray-500 text-sm">Total Pengeluaran</p>
                         <h3 class="font-bold text-xl">Rp. {{ number_format($pengeluaran['total'], 2, ',', '.') }}</h3>
-                        <p
-                            class="{{ $pengeluaran['persentase'] <= 0 ? 'text-green-500' : 'text-red-500' }} text-xs flex items-center">
-                            <i class="fas fa-arrow-up mr-1"></i> {{ $pengeluaran['persentase'] }}% from last month
+                        <p x-data="{ persentase: {{ $pengeluaran['persentase'] }} }" :class="persentase <= 0 ? 'text-green-500' : 'text-red-500'"
+                            class="text-xs flex items-center">
+                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 10 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    :d="persentase >= 0 ?
+                                        'M5 13V1m0 0L1 5m4-4 4 4' :
+                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                            </svg>
+                            <span x-text="persentase + '% from last month'"></span>
                         </p>
                     </div>
                 </div>
@@ -253,7 +286,7 @@
 
                     {{-- Chart Section --}}
                     <div id="labels-chart" class="px-2.5">
-                        <canvas id="salesChart" class="h-[300px]"></canvas>
+                        <canvas id="profitChart" class="h-[300px]"></canvas>
                     </div>
                 </div>
 
@@ -261,8 +294,8 @@
                 <!-- Kategori Terlaris -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-lg font-semibold mb-4">Kategori Terlaris</h2>
-                    <div class="h-64">
-                        <canvas id="revenueChart"></canvas>
+                    <div class="h-[500px] ">
+                        <canvas id="kategoriChart" class=""></canvas>
                     </div>
                 </div>
             </div>
@@ -379,16 +412,16 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Sales Chart
-            const salesCtx = document.getElementById('salesChart').getContext('2d');
-            const revenueGradient = salesCtx.createLinearGradient(0, 0, 0, 400);
+            const profitCtx = document.getElementById('profitChart').getContext('2d');
+            const revenueGradient = profitCtx.createLinearGradient(0, 0, 0, 400);
             revenueGradient.addColorStop(0, 'rgba(75, 192, 192, 0.3)');
             revenueGradient.addColorStop(1, 'rgba(75, 192, 192, 0.05)');
 
-            const expenseGradient = salesCtx.createLinearGradient(0, 0, 0, 400);
+            const expenseGradient = profitCtx.createLinearGradient(0, 0, 0, 400);
             expenseGradient.addColorStop(0, 'rgba(255, 99, 132, 0.3)');
             expenseGradient.addColorStop(1, 'rgba(255, 99, 132, 0.05)');
 
-            new Chart(salesCtx, {
+            new Chart(profitCtx, {
                 type: 'line',
                 data: {
                     labels: @json($grafik_line['labels']),
@@ -505,9 +538,9 @@
             });
 
             // Revenue Chart
-            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-            new Chart(revenueCtx, {
-                type: 'doughnut',
+            const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
+            new Chart(kategoriCtx, {
+                type: 'pie',
                 data: {
                     labels: @json($grafik_pie['labels']),
                     datasets: [{
@@ -517,20 +550,16 @@
                             'rgba(16, 185, 129, 0.8)', // Green
                             'rgba(245, 158, 11, 0.8)', // Amber
                             'rgba(139, 92, 246, 0.8)', // Purple
-                            'rgba(156, 163, 175, 0.8)', // Gray
-                            'rgba(239, 68, 68, 0.8)', // Red
                             'rgba(236, 72, 153, 0.8)', // Pink
-                            'rgba(6, 182, 212, 0.8)' // Cyan
+                            'rgba(156, 163, 175, 0.8)', // Gray
                         ],
                         borderColor: [
                             'rgba(59, 130, 246, 1)',
                             'rgba(16, 185, 129, 1)',
                             'rgba(245, 158, 11, 1)',
                             'rgba(139, 92, 246, 1)',
-                            'rgba(156, 163, 175, 1)',
                             'rgba(239, 68, 68, 1)',
-                            'rgba(236, 72, 153, 1)',
-                            'rgba(6, 182, 212, 1)'
+                            'rgba(156, 163, 175, 1)',
                         ],
                         borderWidth: 2,
                         hoverBorderWidth: 3,
@@ -538,11 +567,14 @@
                     }]
                 },
                 options: {
+                    layout: {
+                        padding: 20
+                    },
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'right',
+                            position: 'bottom',
                             labels: {
                                 usePointStyle: true,
                                 padding: 20,
@@ -566,7 +598,7 @@
                             }
                         }
                     },
-                    cutout: '70%',
+                    cutout: '0%',
                     animation: {
                         animateRotate: true,
                         duration: 1000

@@ -205,8 +205,8 @@ class DashboardController extends Controller
             ->get();
 
         // Pisahkan 3 teratas dan gabungkan sisanya sebagai "Other"
-        $topKategori = $allKategori->take(3);
-        $otherKategori = $allKategori->slice(3);
+        $topKategori = $allKategori->take(5);
+        $otherKategori = $allKategori->slice(5);
 
         // Hitung total untuk "Other"
         $totalOther = $otherKategori->sum('total_terjual');
