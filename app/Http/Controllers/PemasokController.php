@@ -14,19 +14,25 @@ class PemasokController extends Controller
     public function tampilkanDataPemasok(Request $request)
     {
         $user = Auth::user();
+        $sortBy = $request->get('sort_by', 'id_pemasok'); // default: urut berdasarkan ID
+        $sortOrder = $request->get('sort_order', 'asc'); // default: naik
 
         $pemasok = Pemasok::withCount([
-            'pembelian as total_pengiriman' => function ($query) use ($request) {
-                if (!empty($request->dateFrom) && !empty($request->dateTo)) {
-                    $query->whereBetween('updated_at', [
-                        Carbon::parse($request->dateFrom)->startOfDay(),
-                        Carbon::parse($request->dateTo)->endOfDay()
-                    ]);
+                'pembelian as total_pengiriman' => function ($query) use ($request) {
+                    if (!empty($request->dateFrom) && !empty($request->dateTo)) {
+                        $query->whereBetween('updated_at', [
+                            Carbon::parse($request->dateFrom)->startOfDay(),
+                            Carbon::parse($request->dateTo)->endOfDay()
+                        ]);
+                    }
                 }
-            }
-        ])->when(!empty($request->nama), function ($query) use ($request) {
-            $query->where('nama_pemasok', 'like', '%' . $request->nama . '%');
-        })->get();
+            ])
+            ->when(!empty($request->nama), function ($query) use ($request) {
+                $query->where('nama_pemasok', 'like', '%' . $request->nama . '%');
+            })
+            ->orderBy($sortBy, $sortOrder)
+            ->paginate(10)
+            ->appends($request->all());
 
         $page = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;

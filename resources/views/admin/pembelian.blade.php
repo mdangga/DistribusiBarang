@@ -11,7 +11,7 @@
     <title>Admin - Transaksi</title>
 </head>
 
-<body>
+<body class="bg-graymain">
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200  ">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
@@ -139,7 +139,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 640 512"
                     class="text-gray-700">
                     <path fill="currentColor"
-                        d="M58.9 42.1c3-6.1 9.6-9.6 16.3-8.7L320 64l244.8-30.6c6.7-.8 13.3 2.7 16.3 8.7l41.7 83.4c9 17.9-.6 39.6-19.8 45.1l-163.4 46.7c-13.9 4-28.8-1.9-36.2-14.3L320 64l-83.4 139c-7.4 12.4-22.3 18.3-36.2 14.3L37.1 170.6c-19.3-5.5-28.8-27.2-19.8-45.1zM321.1 128l54.9 91.4c14.9 24.8 44.6 36.6 72.5 28.6L576 211.6v167c0 22-15 41.2-36.4 46.6l-204.1 51c-10.2 2.6-20.9 2.6-31 0l-204.1-51C79 419.7 64 400.5 64 378.5v-167L191.6 248c27.8 8 57.6-3.8 72.5-28.6l54.8-91.4z" />
+                        d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8V64c0-17.7-14.3-32-32-32s-32 14.3-32 32v306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
                 </svg>
                 Pembelian
             </h1>
@@ -153,18 +153,19 @@
             </button>
         </div>
 
-        <form action="" method="GET" class="p-4 bg-white rounded-lg ">
+        <form action="" method="GET"
+            class="block p-6 mb-5 bg-white border border-gray-200 rounded-lg shadow-sm">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label for="dateFrom" class="block mb-1 text-sm font-medium text-gray-700">From Date</label>
                     <input type="date" name="dateFrom" id="dateFrom" value="{{ date('Y-m-d') }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5" />
                 </div>
 
                 <div>
                     <label for="dateTo" class="block mb-1 text-sm font-medium text-gray-700">To Date</label>
                     <input type="date" name="dateTo" id="dateTo" value="{{ date('Y-m-d') }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5" />
                 </div>
 
                 <div class="flex items-end">
@@ -175,38 +176,38 @@
                 </div>
             </div>
         </form>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-                <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
-                    <tr>
-                        <th class="px-6 py-3 text-left">Kode Pembelian</th>
-                        <th class="px-6 py-3 text-left">Tanggal</th>
-                        <th class="px-6 py-3 text-left">Pemasok</th>
-                        <th class="px-6 py-3 text-left">Total</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse ($pembelian as $p)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-2">{{ $p->kode_pembelian }}</td>
-                            <td class="px-6 py-2">{{ \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y') }}</td>
-                            <td class="px-6 py-2">{{ $p->Pemasok->nama_pemasok }}</td>
-                            <td class="px-6 py-2 font-medium text-black">Rp
-                                {{ number_format($p->total_harga, 2, ',', '.') }}</td>
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <thead class=" text-gray-700 uppercase bg-gray-50">
+                        <tr class="text-sm">
+                            <th class="px-6 py-3 text-left">Kode Pembelian</th>
+                            <th class="px-6 py-3 text-left">Tanggal</th>
+                            <th class="px-6 py-3 text-left">Pemasok</th>
+                            <th class="px-6 py-3 text-left">Total</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center px-6 py-4 text-gray-500">Belum ada data
-                                Pembelian</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            <div class="mt-3">
-                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-                    {{ $pembelian->withQueryString()->links() }}
-                </div>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse ($pembelian as $p)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-2">{{ $p->kode_pembelian }}</td>
+                                <td class="px-6 py-2">{{ \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y') }}</td>
+                                <td class="px-6 py-2">{{ $p->Pemasok->nama_pemasok }}</td>
+                                <td class="px-6 py-2 font-medium text-black">Rp
+                                    {{ number_format($p->total_harga, 2, ',', '.') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center px-6 py-4 text-gray-500">Tidak ada data
+                                    Pembelian</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-[#cbf3f07a] py-2 px-6">
+                {{ $pembelian->withQueryString()->links() }}
             </div>
         </div>
     </div>

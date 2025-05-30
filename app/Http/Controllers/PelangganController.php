@@ -14,6 +14,8 @@ class PelangganController extends Controller
     public function tampilkanDataPelanggan(Request $request)
     {
         $user = Auth::user();
+        $sortBy = $request->get('sort_by', 'id_pelanggan'); // default: urut berdasarkan ID
+        $sortOrder = $request->get('sort_order', 'asc'); // default: naik
 
         $pelanggan = Pelanggan::withCount([
             'pesanan as total_pesanan' => function ($query) use ($request) {
@@ -24,9 +26,12 @@ class PelangganController extends Controller
                     ]);
                 }
             }
-        ])->when(!empty($request->nama), function ($query) use ($request) {
-            $query->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
-        })->get();
+            ])->when(!empty($request->nama), function ($query) use ($request) {
+                $query->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
+            })
+            ->orderBy($sortBy, $sortOrder)
+            ->paginate(10)
+            ->appends($request->all());
 
         $page = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;

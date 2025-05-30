@@ -11,7 +11,7 @@
     <title>Admin - Transaksi</title>
 </head>
 
-<body>
+<body class="bg-graymain">
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200  ">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
@@ -124,12 +124,16 @@
     </aside>
 
     <div class="p-4 sm:ml-64 mt-14">
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
             <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
                 <h5 class="text-xl font-semibold">Detail Pesanan #{{ $pesanan->kode_pesanan }}</h5>
                 <a href="{{ route('admin.pesanan') }}"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
-                    Kembali
+                    class="bg-[#2ab6a9] hover:bg-[#1e8379] text-white p-2 rounded-full text-sm font-medium flex items-center gap-2"><svg
+                        class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                        fill="currentColor">
+                        <path fill="currentColor"
+                            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H109.3l105.3-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
                 </a>
             </div>
 
@@ -137,28 +141,29 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div>
                         <div class="font-semibold mb-1">Tanggal</div>
-                        <div class="bg-gray-100 px-4 py-2 rounded">{{ \Carbon\Carbon::parse($pesanan->tanggal)->format('d/m/Y') }}</div>
+                        <div class="bg-gray-100 px-4 py-2">
+                            {{ \Carbon\Carbon::parse($pesanan->tanggal)->format('d/m/Y') }}</div>
                     </div>
                     <div>
                         <div class="font-semibold mb-1">ID Pelanggan</div>
-                        <div class="bg-gray-100 px-4 py-2 rounded">{{ $pesanan->id_pelanggan ?? 'Tidak ada' }}</div>
+                        <div class="bg-gray-100 px-4 py-2">{{ $pesanan->id_pelanggan ?? 'Tidak ada' }}</div>
                     </div>
                     <div>
                         <div class="font-semibold mb-1">Nama Pelanggan</div>
-                        <div class="bg-gray-100 px-4 py-2 rounded">
+                        <div class="bg-gray-100 px-4 py-2">
                             {{ $pesanan->Pelanggan->nama_pelanggan ?? 'Tidak ada' }}</div>
                     </div>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 rounded-s-lg">No</th>
+                        <thead class="text-gray-700 uppercase bg-gray-50">
+                            <tr class="text-sm">
+                                <th scope="col" class="px-6 py-3 ">No</th>
                                 <th scope="col" class="px-6 py-3 ">Nama Barang</th>
                                 <th scope="col" class="px-6 py-3 ">Jumlah</th>
                                 <th scope="col" class="px-6 py-3 ">Harga Satuan</th>
-                                <th scope="col" class="px-6 py-3 rounded-e-lg">Total</th>
+                                <th scope="col" class="px-6 py-3 ">Total</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">

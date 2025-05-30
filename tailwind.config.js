@@ -30,6 +30,7 @@ export default {
                 ],
             },
             colors: {
+                graymain: "#f3f4f6",
                 sidebar: "#CBF3F0",
                 orange: "#ff9f1c",
                 orangehover: "#c8821f",
