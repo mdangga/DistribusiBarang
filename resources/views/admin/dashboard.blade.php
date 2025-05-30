@@ -294,7 +294,7 @@
                 <!-- Kategori Terlaris -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-lg font-semibold mb-4">Kategori Terlaris Bulan Ini</h2>
-                    <div class="h-[500px] ">
+                    <div class="h-[450px] ">
                         <canvas id="kategoriChart" class=""></canvas>
                     </div>
                 </div>
