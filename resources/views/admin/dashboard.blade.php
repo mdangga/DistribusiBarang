@@ -139,9 +139,17 @@
                     <div>
                         <p class="text-gray-500 text-sm">Total Pesanan</p>
                         <h3 class="font-bold text-2xl">{{ $pesanan['total_pesanan'] }}</h3>
-                        <p
-                            class="{{ $pesanan['persentase'] >= 0 ? 'text-green-500' : 'text-red-500' }} text-xs flex items-center">
-                            <i class="fas fa-arrow-up mr-1"></i> {{ $pesanan['persentase'] }}% from last month
+                        <p x-data="{ persentase: {{ $pesanan['persentase'] }} }" :class="persentase >= 0 ? 'text-green-500' : 'text-red-500'"
+                            class="text-xs flex items-center">
+                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 10 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    :d="persentase >= 0 ?
+                                        'M5 13V1m0 0L1 5m4-4 4 4' :
+                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                            </svg>
+                            <span x-text="persentase + '% from last month'"></span>
                         </p>
                     </div>
                 </div>
@@ -154,9 +162,17 @@
                     <div>
                         <p class="text-gray-500 text-sm">Total Pembelian</p>
                         <h3 class="font-bold text-2xl">{{ $pembelian['total_pembelian'] }}</h3>
-                        <p
-                            class="{{ $pembelian['persentase'] <= 0 ? 'text-green-500' : 'text-red-500' }} text-xs flex items-center">
-                            <i class="fas fa-arrow-up mr-1"></i> {{ $pembelian['persentase'] }}% from last month
+                        <p x-data="{ persentase: {{ $pembelian['persentase'] }} }" :class="persentase <= 0 ? 'text-green-500' : 'text-red-500'"
+                            class="text-xs flex items-center">
+                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 10 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    :d="persentase >= 0 ?
+                                        'M5 13V1m0 0L1 5m4-4 4 4' :
+                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                            </svg>
+                            <span x-text="persentase + '% from last month'"></span>
                         </p>
                     </div>
                 </div>
@@ -169,8 +185,17 @@
                     <div>
                         <p class="text-gray-500 text-sm">Total Pendapatan</p>
                         <h3 class="font-bold text-xl">Rp. {{ number_format($pendapatan['total'], 2, ',', '.') }}</h3>
-                        <p class="text-red-500 text-xs flex items-center">
-                            <i class="fas fa-arrow-down mr-1"></i> {{ $pendapatan['persentase'] }}% from last month
+                        <p x-data="{ persentase: {{ $pendapatan['persentase'] }} }" :class="persentase >= 0 ? 'text-green-500' : 'text-red-500'"
+                            class="text-xs flex items-center">
+                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 10 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    :d="persentase >= 0 ?
+                                        'M5 13V1m0 0L1 5m4-4 4 4' :
+                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                            </svg>
+                            <span x-text="persentase + '% from last month'"></span>
                         </p>
                     </div>
                 </div>
@@ -183,9 +208,17 @@
                     <div>
                         <p class="text-gray-500 text-sm">Total Pengeluaran</p>
                         <h3 class="font-bold text-xl">Rp. {{ number_format($pengeluaran['total'], 2, ',', '.') }}</h3>
-                        <p
-                            class="{{ $pengeluaran['persentase'] <= 0 ? 'text-green-500' : 'text-red-500' }} text-xs flex items-center">
-                            <i class="fas fa-arrow-up mr-1"></i> {{ $pengeluaran['persentase'] }}% from last month
+                        <p x-data="{ persentase: {{ $pengeluaran['persentase'] }} }" :class="persentase <= 0 ? 'text-green-500' : 'text-red-500'"
+                            class="text-xs flex items-center">
+                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 10 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    :d="persentase >= 0 ?
+                                        'M5 13V1m0 0L1 5m4-4 4 4' :
+                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                            </svg>
+                            <span x-text="persentase + '% from last month'"></span>
                         </p>
                     </div>
                 </div>
@@ -253,16 +286,16 @@
 
                     {{-- Chart Section --}}
                     <div id="labels-chart" class="px-2.5">
-                        <canvas id="salesChart" class="h-[300px]"></canvas>
+                        <canvas id="profitChart" class="h-[300px]"></canvas>
                     </div>
                 </div>
 
 
                 <!-- Kategori Terlaris -->
                 <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-lg font-semibold mb-4">Kategori Terlaris</h2>
-                    <div class="h-64">
-                        <canvas id="revenueChart"></canvas>
+                    <h2 class="text-lg font-semibold mb-4">Kategori Terlaris Bulan Ini</h2>
+                    <div class="h-[500px] ">
+                        <canvas id="kategoriChart" class=""></canvas>
                     </div>
                 </div>
             </div>
@@ -317,59 +350,21 @@
                 <!-- Activity Timeline -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-lg font-semibold mb-4">Recent Activity</h2>
-                    <div class="space-y-4">
-                        <div class="flex">
-                            <div class="flex-shrink-0 mr-3">
+                    <div class="space-y-2">
+                        @foreach ($transaksi as $p)
+                            <div class="grid grid-cols-[auto_1fr] gap-3 items-center">
                                 <div
-                                    class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                                    <i class="fas fa-user-plus"></i>
+                                    class="h-8 w-8 rounded-full flex items-center justify-center text-blue-600 {{ $p->jenis == 'pesanan' ? 'bg-green-300' : 'bg-red-300' }}">
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">{{ $p->jenis }}</p>
+                                    <p class="text-sm text-gray-500">{{ $p->kode }}</p>
+                                    <p class="text-xs text-gray-400 mt-1">{{ \Carbon\Carbon::parse($p->tanggal)->diffForHumans() }}</p>
                                 </div>
                             </div>
-                            <div class="flex-1 pt-1">
-                                <p class="text-sm font-medium text-gray-900">New user registered</p>
-                                <p class="text-sm text-gray-500">John Doe just signed up</p>
-                                <p class="text-xs text-gray-400 mt-1">2 minutes ago</p>
-                            </div>
-                        </div>
-                        <div class="flex">
-                            <div class="flex-shrink-0 mr-3">
-                                <div
-                                    class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </div>
-                            </div>
-                            <div class="flex-1 pt-1">
-                                <p class="text-sm font-medium text-gray-900">New order received</p>
-                                <p class="text-sm text-gray-500">Order #ORD-0005 for $156.00</p>
-                                <p class="text-xs text-gray-400 mt-1">15 minutes ago</p>
-                            </div>
-                        </div>
-                        <div class="flex">
-                            <div class="flex-shrink-0 mr-3">
-                                <div
-                                    class="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
-                                    <i class="fas fa-truck"></i>
-                                </div>
-                            </div>
-                            <div class="flex-1 pt-1">
-                                <p class="text-sm font-medium text-gray-900">Order shipped</p>
-                                <p class="text-sm text-gray-500">Order #ORD-0003 has been shipped</p>
-                                <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
-                            </div>
-                        </div>
-                        <div class="flex">
-                            <div class="flex-shrink-0 mr-3">
-                                <div
-                                    class="h-8 w-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                </div>
-                            </div>
-                            <div class="flex-1 pt-1">
-                                <p class="text-sm font-medium text-gray-900">Payment failed</p>
-                                <p class="text-sm text-gray-500">Payment for order #ORD-0006 failed</p>
-                                <p class="text-xs text-gray-400 mt-1">3 hours ago</p>
-                            </div>
-                        </div>
+                            <hr>
+                        @endforeach
+
                     </div>
                 </div>
             </div>
@@ -379,16 +374,16 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Sales Chart
-            const salesCtx = document.getElementById('salesChart').getContext('2d');
-            const revenueGradient = salesCtx.createLinearGradient(0, 0, 0, 400);
+            const profitCtx = document.getElementById('profitChart').getContext('2d');
+            const revenueGradient = profitCtx.createLinearGradient(0, 0, 0, 400);
             revenueGradient.addColorStop(0, 'rgba(75, 192, 192, 0.3)');
             revenueGradient.addColorStop(1, 'rgba(75, 192, 192, 0.05)');
 
-            const expenseGradient = salesCtx.createLinearGradient(0, 0, 0, 400);
+            const expenseGradient = profitCtx.createLinearGradient(0, 0, 0, 400);
             expenseGradient.addColorStop(0, 'rgba(255, 99, 132, 0.3)');
             expenseGradient.addColorStop(1, 'rgba(255, 99, 132, 0.05)');
 
-            new Chart(salesCtx, {
+            new Chart(profitCtx, {
                 type: 'line',
                 data: {
                     labels: @json($grafik_line['labels']),
@@ -505,9 +500,9 @@
             });
 
             // Revenue Chart
-            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-            new Chart(revenueCtx, {
-                type: 'doughnut',
+            const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
+            new Chart(kategoriCtx, {
+                type: 'pie',
                 data: {
                     labels: @json($grafik_pie['labels']),
                     datasets: [{
@@ -517,20 +512,16 @@
                             'rgba(16, 185, 129, 0.8)', // Green
                             'rgba(245, 158, 11, 0.8)', // Amber
                             'rgba(139, 92, 246, 0.8)', // Purple
-                            'rgba(156, 163, 175, 0.8)', // Gray
-                            'rgba(239, 68, 68, 0.8)', // Red
                             'rgba(236, 72, 153, 0.8)', // Pink
-                            'rgba(6, 182, 212, 0.8)' // Cyan
+                            'rgba(156, 163, 175, 0.8)', // Gray
                         ],
                         borderColor: [
                             'rgba(59, 130, 246, 1)',
                             'rgba(16, 185, 129, 1)',
                             'rgba(245, 158, 11, 1)',
                             'rgba(139, 92, 246, 1)',
-                            'rgba(156, 163, 175, 1)',
                             'rgba(239, 68, 68, 1)',
-                            'rgba(236, 72, 153, 1)',
-                            'rgba(6, 182, 212, 1)'
+                            'rgba(156, 163, 175, 1)',
                         ],
                         borderWidth: 2,
                         hoverBorderWidth: 3,
@@ -538,11 +529,14 @@
                     }]
                 },
                 options: {
+                    layout: {
+                        padding: 20
+                    },
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'right',
+                            position: 'bottom',
                             labels: {
                                 usePointStyle: true,
                                 padding: 20,
@@ -566,7 +560,7 @@
                             }
                         }
                     },
-                    cutout: '70%',
+                    cutout: '0%',
                     animation: {
                         animateRotate: true,
                         duration: 1000

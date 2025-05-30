@@ -124,136 +124,76 @@
     </aside>
 
     <div class="p-4 sm:ml-64 mt-14">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+                <h5 class="text-xl font-semibold">Detail Pesanan #{{ $pesanan->kode_pesanan }}</h5>
+                <a href="{{ route('admin.pesanan') }}"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    Kembali
+                </a>
             </div>
-        @endif
 
-        <div class="flex items-center justify-between ml-2 mb-2">
-            <h1 class="text-2xl font-semibold flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 640 512"
-                    class="text-gray-700">
-                    <path fill="currentColor"
-                        d="M58.9 42.1c3-6.1 9.6-9.6 16.3-8.7L320 64l244.8-30.6c6.7-.8 13.3 2.7 16.3 8.7l41.7 83.4c9 17.9-.6 39.6-19.8 45.1l-163.4 46.7c-13.9 4-28.8-1.9-36.2-14.3L320 64l-83.4 139c-7.4 12.4-22.3 18.3-36.2 14.3L37.1 170.6c-19.3-5.5-28.8-27.2-19.8-45.1zM321.1 128l54.9 91.4c14.9 24.8 44.6 36.6 72.5 28.6L576 211.6v167c0 22-15 41.2-36.4 46.6l-204.1 51c-10.2 2.6-20.9 2.6-31 0l-204.1-51C79 419.7 64 400.5 64 378.5v-167L191.6 248c27.8 8 57.6-3.8 72.5-28.6l54.8-91.4z" />
-                </svg>
-                Pembelian
-            </h1>
-            <button data-modal-target="addModalPembelian" data-modal-toggle="addModalPembelian" type="button"
-                class="inline-flex items-center justify-center sm:justify-start m-3 text-white bg-[#2ab6a9] hover:bg-[#1e8379] focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-full text-sm px-3 md:px-3.5 py-3 text-center transition">
-                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-                    <path
-                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
-                </svg>
-                <span class="hidden sm:inline ml-2">Tambah Pembelian</span>
-            </button>
-        </div>
-
-        <form action="" method="GET" class="p-4 bg-white rounded-lg ">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <label for="dateFrom" class="block mb-1 text-sm font-medium text-gray-700">From Date</label>
-                    <input type="date" name="dateFrom" id="dateFrom" value="{{ date('Y-m-d') }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <div class="font-semibold mb-1">Tanggal</div>
+                        <div class="bg-gray-100 px-4 py-2 rounded">{{ \Carbon\Carbon::parse($pesanan->tanggal)->format('d/m/Y') }}</div>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-1">ID Pelanggan</div>
+                        <div class="bg-gray-100 px-4 py-2 rounded">{{ $pesanan->id_pelanggan ?? 'Tidak ada' }}</div>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-1">Nama Pelanggan</div>
+                        <div class="bg-gray-100 px-4 py-2 rounded">
+                            {{ $pesanan->Pelanggan->nama_pelanggan ?? 'Tidak ada' }}</div>
+                    </div>
                 </div>
 
-                <div>
-                    <label for="dateTo" class="block mb-1 text-sm font-medium text-gray-700">To Date</label>
-                    <input type="date" name="dateTo" id="dateTo" value="{{ date('Y-m-d') }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
-                </div>
-
-                <div class="flex items-end">
-                    <button type="submit"
-                        class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-medium focus:border-primary-600 block w-full p-2.5 transition">
-                        Filter
-                    </button>
-                </div>
-            </div>
-        </form>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-                <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
-                    <tr>
-                        <th class="px-6 py-3 text-left">Kode Pembelian</th>
-                        <th class="px-6 py-3 text-left">Tanggal</th>
-                        <th class="px-6 py-3 text-left">Pemasok</th>
-                        <th class="px-6 py-3 text-left">Total</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse ($pembelian as $p)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-2">{{ $p->kode_pembelian }}</td>
-                            <td class="px-6 py-2">{{ \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y') }}</td>
-                            <td class="px-6 py-2">{{ $p->Pemasok->nama_pemasok }}</td>
-                            <td class="px-6 py-2 font-medium text-black">Rp
-                                {{ number_format($p->total_harga, 2, ',', '.') }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center px-6 py-4 text-gray-500">Belum ada data
-                                Pembelian</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            <div class="mt-3">
-                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-                    {{ $pembelian->withQueryString()->links() }}
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 rounded-s-lg">No</th>
+                                <th scope="col" class="px-6 py-3 ">Nama Barang</th>
+                                <th scope="col" class="px-6 py-3 ">Jumlah</th>
+                                <th scope="col" class="px-6 py-3 ">Harga Satuan</th>
+                                <th scope="col" class="px-6 py-3 rounded-e-lg">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse ($pesanan->detailPesanan as $index => $detail)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2">{{ $index + 1 }}</td>
+                                    <td class="px-4 py-2">
+                                        {{ $detail->barang->nama_barang ?? 'Barang tidak ditemukan' }}
+                                    </td>
+                                    <td class="px-4 py-2">{{ $detail->jumlah }}</td>
+                                    <td class="px-4 py-2">Rp {{ number_format($detail->harga, 2, ',', '.') }}</td>
+                                    <td class="px-4 py-2">Rp
+                                        {{ number_format($detail->jumlah * $detail->harga, 2, ',', '.') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center px-4 py-4 text-gray-500">Tidak ada detail
+                                        pesanan</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="1" class="text-left px-4 py-2">Total:</th>
+                                <th colspan="5" class="px-4 py-2 text-right">Rp
+                                    <span
+                                        class="text-2xl ">{{ number_format($pesanan->total_harga, 2, ',', '.') }}</span>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Modals untuk menambahkan barang -->
-    <x-modal id="addModalPembelian" header="Tambah Pembelian" button="Tambah" :actionRoute="route('pembelian.add')"
-        methodOverride="POST">
-        <div class="grid gap-4 mb-4
-            grid-cols-2">
-            {{-- svg icon di header --}}
-            <x-slot:iconheader>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"
-                    class="text-gray-700 mr-3 overflow-visible">
-                    <path fill="currentColor"
-                        d="M50.7 58.5L0 160h208V32H93.7c-18.2 0-34.8 10.3-43 26.5M240 160h208L397.3 58.5c-8.2-16.2-24.8-26.5-43-26.5H240zm208 32H0v224c0 35.3 28.7 64 64 64h320c35.3 0 64-28.7 64-64z" />
-                </svg>
-            </x-slot:iconheader>
-            {{-- svg icon sebelah kiri btn --}}
-            <x-slot:iconbtn>
-                <svg class="me-1 -ms-1 w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    viewBox="0 0 512 512" class="text-gray-700 mr-3">
-                    <path fill="currentColor"
-                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
-                </svg>
-            </x-slot:iconbtn>
-            <div class="col-span-2">
-                <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-900">Tanggal</label>
-                <input aria-label="disabled input 2" type="text" name="tanggal"
-                    value="{{ old('tanggal', date('Y-m-d')) }}" readonly
-                    class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5 cursor-not-allowed ">
-            </div>
-
-            <div class="col-span-2">
-                <label for="harga" class="block mb-2 text-sm font-medium text-gray-900">Nama Pemasok</label>
-                <x-autocomplete-input name="pemasok" endpoint="{{ route('autocomplete.pemasok') }}"
-                    placeholder="Cari pemasok..." form-field="nama_pemasok" id-field="id"
-                    id="autocomplete-pemasok" />
-                <input type="hidden" name="id_pemasok" value="">
-            </div>
-
-            <div class="col-span-2">
-                <label for="harga" class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
-                <input type="number" name="harga" id="harga"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
-            </div>
-        </div>
-    </x-modal>
 
     <script>
         function getQueryParam(param) {
@@ -270,27 +210,6 @@
 
             if (dateFrom) document.getElementById('dateFrom').value = dateFrom;
             if (dateTo) document.getElementById('dateTo').value = dateTo;
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Variabel untuk menyimpan data terpilih
-            let pemasokTerpilih = null;
-
-            // Tangkap event sekali untuk kedua autocomplete
-            document.addEventListener('autocomplete-selected', function(e) {
-                const {
-                    field,
-                    selected
-                } = e.detail;
-                console.log('Field:', e.detail.field);
-                console.log('Selected:', e.detail.selected);
-
-                if (field === 'pemasok') {
-                    pemasokTerpilih = selected;
-                    console.log('Barang dipilih:', pemasokTerpilih);
-                    document.querySelector('input[name="id_pemasok"]').value = pemasokTerpilih.id;
-                }
-            });
         });
     </script>
 </body>

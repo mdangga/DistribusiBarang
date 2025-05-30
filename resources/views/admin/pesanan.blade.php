@@ -140,7 +140,7 @@
 
                 <div class="flex items-end">
                     <button type="submit"
-                        class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">
+                        class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-medium focus:border-primary-600 block w-full p-2.5 transition">
                         Filter
                     </button>
                 </div>
@@ -162,13 +162,13 @@
                     @forelse ($pesanan as $p)
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-2">{{ $p->kode_pesanan }}</td>
-                            <td class="px-6 py-2">{{ $p->created_at->format('d/m/Y') }}</td>
+                            <td class="px-6 py-2">{{ \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y') }}</td>
                             <td class="px-6 py-2">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
                             <td class="px-6 py-2 font-medium text-black">Rp
                                 {{ number_format($p->total_harga, 2, ',', '.') }}</td>
                             <td class="px-6 py-2">
-                                <a href="{{ route('pesanan.show', $p->kode_pesanan) }}"
-                                    class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium px-3    py-2 rounded-lg shadow">
+                                <a href="{{ route('adminPesanan.show', $p->kode_pesanan) }}"
+                                    class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium px-3 py-2 rounded-lg shadow">
                                     <svg class="text-white mr-2 overflow-visible" xmlns="http://www.w3.org/2000/svg"
                                         width="16px" height="16px" viewBox="0 0 576 512">
                                         <path fill="currentColor"
@@ -186,9 +186,9 @@
                 </tbody>
             </table>
             <div class="mt-3">
-                {{-- <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
+                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
                     {{ $pesanan->withQueryString()->links() }}
-                </div> --}}
+                </div>
             </div>
         </div>
     </div>
