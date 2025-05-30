@@ -124,70 +124,72 @@
     </aside>
 
     <div class="p-4 sm:ml-64 mt-14">
-        <form action="" method="GET" class="p-4 bg-white rounded-lg ">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <label for="dateFrom" class="block mb-1 text-sm font-medium text-gray-700">From Date</label>
-                    <input type="date" name="dateFrom" id="dateFrom" value="{{ date('Y-m-d') }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
-                </div>
-
-                <div>
-                    <label for="dateTo" class="block mb-1 text-sm font-medium text-gray-700">To Date</label>
-                    <input type="date" name="dateTo" id="dateTo" value="{{ date('Y-m-d') }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
-                </div>
-
-                <div class="flex items-end">
-                    <button type="submit"
-                        class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-medium focus:border-primary-600 block w-full p-2.5 transition">
-                        Filter
-                    </button>
-                </div>
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+                <h5 class="text-xl font-semibold">Detail Pesanan #{{ $pesanan->kode_pesanan }}</h5>
+                <a href="{{ route('admin.pesanan') }}"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    Kembali
+                </a>
             </div>
-        </form>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-                <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
-                    <tr>
-                        <th class="px-6 py-3 text-left">Kode Pesanan</th>
-                        <th class="px-6 py-3 text-left">Tanggal</th>
-                        <th class="px-6 py-3 text-left">Pelanggan</th>
-                        <th class="px-6 py-3 text-left">Total</th>
-                        <th class="px-6 py-3 text-left">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse ($pesanan as $p)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-2">{{ $p->kode_pesanan }}</td>
-                            <td class="px-6 py-2">{{ \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y') }}</td>
-                            <td class="px-6 py-2">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
-                            <td class="px-6 py-2 font-medium text-black">Rp
-                                {{ number_format($p->total_harga, 2, ',', '.') }}</td>
-                            <td class="px-6 py-2">
-                                <a href="{{ route('adminPesanan.show', $p->kode_pesanan) }}"
-                                    class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium px-3 py-2 rounded-lg shadow">
-                                    <svg class="text-white mr-2 overflow-visible" xmlns="http://www.w3.org/2000/svg"
-                                        width="16px" height="16px" viewBox="0 0 576 512">
-                                        <path fill="currentColor"
-                                            d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32M144 256a144 144 0 1 1 288 0a144 144 0 1 1-288 0m144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3" />
-                                    </svg></i> Detail
-                                </a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center px-6 py-4 text-gray-500">Belum ada data
-                                pesanan</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            <div class="mt-3">
-                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-                    {{ $pesanan->withQueryString()->links() }}
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <div class="font-semibold mb-1">Tanggal</div>
+                        <div class="bg-gray-100 px-4 py-2 rounded">{{ \Carbon\Carbon::parse($pesanan->tanggal)->format('d/m/Y') }}</div>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-1">ID Pelanggan</div>
+                        <div class="bg-gray-100 px-4 py-2 rounded">{{ $pesanan->id_pelanggan ?? 'Tidak ada' }}</div>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-1">Nama Pelanggan</div>
+                        <div class="bg-gray-100 px-4 py-2 rounded">
+                            {{ $pesanan->Pelanggan->nama_pelanggan ?? 'Tidak ada' }}</div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 rounded-s-lg">No</th>
+                                <th scope="col" class="px-6 py-3 ">Nama Barang</th>
+                                <th scope="col" class="px-6 py-3 ">Jumlah</th>
+                                <th scope="col" class="px-6 py-3 ">Harga Satuan</th>
+                                <th scope="col" class="px-6 py-3 rounded-e-lg">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse ($pesanan->detailPesanan as $index => $detail)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2">{{ $index + 1 }}</td>
+                                    <td class="px-4 py-2">
+                                        {{ $detail->barang->nama_barang ?? 'Barang tidak ditemukan' }}
+                                    </td>
+                                    <td class="px-4 py-2">{{ $detail->jumlah }}</td>
+                                    <td class="px-4 py-2">Rp {{ number_format($detail->harga, 2, ',', '.') }}</td>
+                                    <td class="px-4 py-2">Rp
+                                        {{ number_format($detail->jumlah * $detail->harga, 2, ',', '.') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center px-4 py-4 text-gray-500">Tidak ada detail
+                                        pesanan</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="1" class="text-left px-4 py-2">Total:</th>
+                                <th colspan="5" class="px-4 py-2 text-right">Rp
+                                    <span
+                                        class="text-2xl ">{{ number_format($pesanan->total_harga, 2, ',', '.') }}</span>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>

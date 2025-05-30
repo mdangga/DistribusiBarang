@@ -8,6 +8,7 @@ use App\Models\Pesanan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -238,16 +239,24 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
+        
+        // Data untuk list aktivitas
+        $tabelPembelian = Pembelian::select('kode_pembelian as kode', 'total_harga', 'tanggal', DB::raw("'pembelian' as jenis"))->get();
+        $tabelPesanan = Pesanan::select('kode_pesanan as kode', 'total_harga', 'tanggal', DB::raw("'pesanan' as jenis"))->has('detailPesanan')->get();
+
+        $transaksi = $tabelPembelian->concat($tabelPesanan)->sortByDesc('tanggal')->take(5);
+        // dd($transaksi);
 
         return view('admin.dashboard', [
             'pesanan' => $pesanan,
             'pembelian' => $pembelian,
             'pendapatan' => $pendapatan,
             'pengeluaran' => $pengeluaran,
-            'daftar_pesanan' => $daftarPesanan,
             'profit' => $profit,
             'grafik_line' => $grafikLine,
             'grafik_pie' => $grafikPie,
+            'daftar_pesanan' => $daftarPesanan,
+            'transaksi' => $transaksi,
             'username' => $user->username,
             'email' => $user->email
         ]);

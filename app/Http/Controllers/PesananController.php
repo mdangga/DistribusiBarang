@@ -148,4 +148,20 @@ class PesananController extends Controller
 
         return view('detail', compact('pesanan'));
     }
+
+    /**
+     * Menampilkan detail dari satu pesanan dari admin
+     */
+    public function showAdmin($id)
+    {
+        $user = Auth::user();
+        $pesanan = Pesanan::with('detailPesanan.barang', 'Pelanggan')
+            ->findOrFail($id);
+
+        return view('admin.detailPesanan', [
+            'pesanan' => $pesanan,
+            'username' => $user->username,
+            'email' => $user->email
+        ]);
+    }
 }

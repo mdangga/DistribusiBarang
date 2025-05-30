@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/admin/barang/stok/{id_barang}', [barangController::class, 'addStok'])->name('stok.add');
 
         Route::get('/admin/pesanan', [PesananController::class, 'listAdmin'])->name('admin.pesanan');
+        Route::get('/admin/pesanan/{id}', [PesananController::class, 'showAdmin'])->name('adminPesanan.show');
         
         Route::get('/admin/pembelian', [PembelianController::class, 'listAdmin'])->name('admin.pembelian');
         Route::post('/admin/pembelian/store', [PembelianController::class, 'addDataPembelian'])->name('pembelian.add');

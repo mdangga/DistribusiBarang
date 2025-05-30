@@ -293,7 +293,7 @@
 
                 <!-- Kategori Terlaris -->
                 <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-lg font-semibold mb-4">Kategori Terlaris</h2>
+                    <h2 class="text-lg font-semibold mb-4">Kategori Terlaris Bulan Ini</h2>
                     <div class="h-[500px] ">
                         <canvas id="kategoriChart" class=""></canvas>
                     </div>
@@ -350,59 +350,21 @@
                 <!-- Activity Timeline -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-lg font-semibold mb-4">Recent Activity</h2>
-                    <div class="space-y-4">
-                        <div class="flex">
-                            <div class="flex-shrink-0 mr-3">
+                    <div class="space-y-2">
+                        @foreach ($transaksi as $p)
+                            <div class="grid grid-cols-[auto_1fr] gap-3 items-center">
                                 <div
-                                    class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                                    <i class="fas fa-user-plus"></i>
+                                    class="h-8 w-8 rounded-full flex items-center justify-center text-blue-600 {{ $p->jenis == 'pesanan' ? 'bg-green-300' : 'bg-red-300' }}">
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">{{ $p->jenis }}</p>
+                                    <p class="text-sm text-gray-500">{{ $p->kode }}</p>
+                                    <p class="text-xs text-gray-400 mt-1">{{ \Carbon\Carbon::parse($p->tanggal)->diffForHumans() }}</p>
                                 </div>
                             </div>
-                            <div class="flex-1 pt-1">
-                                <p class="text-sm font-medium text-gray-900">New user registered</p>
-                                <p class="text-sm text-gray-500">John Doe just signed up</p>
-                                <p class="text-xs text-gray-400 mt-1">2 minutes ago</p>
-                            </div>
-                        </div>
-                        <div class="flex">
-                            <div class="flex-shrink-0 mr-3">
-                                <div
-                                    class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </div>
-                            </div>
-                            <div class="flex-1 pt-1">
-                                <p class="text-sm font-medium text-gray-900">New order received</p>
-                                <p class="text-sm text-gray-500">Order #ORD-0005 for $156.00</p>
-                                <p class="text-xs text-gray-400 mt-1">15 minutes ago</p>
-                            </div>
-                        </div>
-                        <div class="flex">
-                            <div class="flex-shrink-0 mr-3">
-                                <div
-                                    class="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
-                                    <i class="fas fa-truck"></i>
-                                </div>
-                            </div>
-                            <div class="flex-1 pt-1">
-                                <p class="text-sm font-medium text-gray-900">Order shipped</p>
-                                <p class="text-sm text-gray-500">Order #ORD-0003 has been shipped</p>
-                                <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
-                            </div>
-                        </div>
-                        <div class="flex">
-                            <div class="flex-shrink-0 mr-3">
-                                <div
-                                    class="h-8 w-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                </div>
-                            </div>
-                            <div class="flex-1 pt-1">
-                                <p class="text-sm font-medium text-gray-900">Payment failed</p>
-                                <p class="text-sm text-gray-500">Payment for order #ORD-0006 failed</p>
-                                <p class="text-xs text-gray-400 mt-1">3 hours ago</p>
-                            </div>
-                        </div>
+                            <hr>
+                        @endforeach
+
                     </div>
                 </div>
             </div>
