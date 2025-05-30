@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\authController;
 use App\Http\Controllers\barangController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemasokController;
 use App\Http\Controllers\PembelianController;
@@ -38,7 +39,7 @@ Route::middleware('auth')->group(function () {
     
     // admin
     Route::middleware('role:admin')->group(function () {
-        Route::get('/admin', [AuthController::class, 'showAdmin'])->name('admin.show');
+        Route::get('/admin', [DashboardController::class, 'showDashboard'])->name('admin.show');
         
         Route::get('/admin/barang', [barangController::class, 'tampilkanDataBarang'])->name('admin.barang');
         Route::post('/admin/barang/', [barangController::class, 'addDataBarang'])->name('barang.add');

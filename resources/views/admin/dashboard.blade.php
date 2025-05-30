@@ -137,10 +137,11 @@
                         <i class="fas fa-users text-xl"></i>
                     </div>
                     <div>
-                        <p class="text-gray-500 text-sm">Total Users</p>
-                        <h3 class="font-bold text-2xl">1,254</h3>
-                        <p class="text-green-500 text-xs flex items-center">
-                            <i class="fas fa-arrow-up mr-1"></i> 12.5% from last month
+                        <p class="text-gray-500 text-sm">Total Pesanan</p>
+                        <h3 class="font-bold text-2xl">{{ $pesanan['total_pesanan'] }}</h3>
+                        <p
+                            class="{{ $pesanan['persentase'] >= 0 ? 'text-green-500' : 'text-red-500' }} text-xs flex items-center">
+                            <i class="fas fa-arrow-up mr-1"></i> {{ $pesanan['persentase'] }}% from last month
                         </p>
                     </div>
                 </div>
@@ -151,10 +152,11 @@
                         <i class="fas fa-shopping-cart text-xl"></i>
                     </div>
                     <div>
-                        <p class="text-gray-500 text-sm">Total Orders</p>
-                        <h3 class="font-bold text-2xl">3,456</h3>
-                        <p class="text-green-500 text-xs flex items-center">
-                            <i class="fas fa-arrow-up mr-1"></i> 8.3% from last month
+                        <p class="text-gray-500 text-sm">Total Pembelian</p>
+                        <h3 class="font-bold text-2xl">{{ $pembelian['total_pembelian'] }}</h3>
+                        <p
+                            class="{{ $pembelian['persentase'] <= 0 ? 'text-green-500' : 'text-red-500' }} text-xs flex items-center">
+                            <i class="fas fa-arrow-up mr-1"></i> {{ $pembelian['persentase'] }}% from last month
                         </p>
                     </div>
                 </div>
@@ -165,10 +167,10 @@
                         <i class="fas fa-dollar-sign text-xl"></i>
                     </div>
                     <div>
-                        <p class="text-gray-500 text-sm">Total Revenue</p>
-                        <h3 class="font-bold text-2xl">$45,678</h3>
+                        <p class="text-gray-500 text-sm">Total Pendapatan</p>
+                        <h3 class="font-bold text-xl">Rp. {{ number_format($pendapatan['total'], 2, ',', '.') }}</h3>
                         <p class="text-red-500 text-xs flex items-center">
-                            <i class="fas fa-arrow-down mr-1"></i> 2.1% from last month
+                            <i class="fas fa-arrow-down mr-1"></i> {{ $pendapatan['persentase'] }}% from last month
                         </p>
                     </div>
                 </div>
@@ -179,10 +181,11 @@
                         <i class="fas fa-chart-line text-xl"></i>
                     </div>
                     <div>
-                        <p class="text-gray-500 text-sm">Conversion Rate</p>
-                        <h3 class="font-bold text-2xl">3.42%</h3>
-                        <p class="text-green-500 text-xs flex items-center">
-                            <i class="fas fa-arrow-up mr-1"></i> 0.5% from last month
+                        <p class="text-gray-500 text-sm">Total Pengeluaran</p>
+                        <h3 class="font-bold text-xl">Rp. {{ number_format($pengeluaran['total'], 2, ',', '.') }}</h3>
+                        <p
+                            class="{{ $pengeluaran['persentase'] <= 0 ? 'text-green-500' : 'text-red-500' }} text-xs flex items-center">
+                            <i class="fas fa-arrow-up mr-1"></i> {{ $pengeluaran['persentase'] }}% from last month
                         </p>
                     </div>
                 </div>
@@ -191,86 +194,73 @@
             <!-- Charts Row -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
                 <!-- Sales Chart -->
-                <div class="bg-white rounded-lg shadow p-6">
-                    <div class="flex justify-between p-4 md:p-6 pb-0 md:pb-0">
-                        <div>
-                            <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">$12,423</h5>
-                            <p class="text-base font-normal text-gray-500 dark:text-gray-400">Sales this week</p>
-                        </div>
-                        <div
-                            class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                            23%
-                            <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-                            </svg>
-                        </div>
+                @php
+                    $labels = ['Bulan Ini', '3 Bulan Terakhir', 'Tahun Ini'];
+                    $colors = ['text-blue-500', 'text-yellow-500', 'text-purple-500'];
+                    $defaultIndex = 0; // default: Bulan Ini
+                @endphp
+
+                <div x-data="{ selectedIndex: {{ $defaultIndex }} }" class="bg-white rounded-lg shadow p-6 space-y-6">
+                    {{-- Select dropdown --}}
+                    <div class="mb-4">
+                        <label for="periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih
+                            Periode:</label>
+                        <select x-model="selectedIndex" id="periode"
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500 focus:outline-none px-3 py-2">
+                            @foreach ($labels as $i => $label)
+                                <option value="{{ $i }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div id="labels-chart" class="px-2.5">
-                        <canvas id="salesChart"></canvas>
-                    </div>
-                    <div
-                        class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-5 p-4 md:p-6 pt-0 md:pt-0">
-                        <div class="flex justify-between items-center pt-5">
-                            <!-- Button -->
-                            <button id="dropdownDefaultButton" data-dropdown-toggle="lastDaysdropdown"
-                                data-dropdown-placement="bottom"
-                                class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
-                                type="button">
-                                Last 7 days
-                                <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 4 4 4-4" />
-                                </svg>
-                            </button>
-                            <!-- Dropdown menu -->
-                            <div id="lastDaysdropdown"
-                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                    aria-labelledby="dropdownDefaultButton">
-                                    <li>
-                                        <a href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last
-                                            7 days</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last
-                                            30 days</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last
-                                            90 days</a>
-                                    </li>
-                                </ul>
+
+                    {{-- Tampilan Keuntungan Berdasarkan Pilihan --}}
+                    <div x-data="{
+                        profits: {{ Js::from($profit['profit']) }},
+                        percentages: {{ Js::from($profit['persentase']) }},
+                        labels: {{ Js::from($labels) }},
+                    }">
+                        <template x-for="(label, index) in labels" :key="index">
+                            <div x-show="selectedIndex == index" class="flex justify-between items-center">
+                                <div>
+                                    <h5 class="leading-none text-3xl font-bold pb-2"
+                                        :class="(profits[index] >= 0) ? 'text-green-500' : 'text-red-500'">
+                                        <span
+                                            x-text="new Intl.NumberFormat('id-ID', { 
+                            style: 'currency', 
+                            currency: 'IDR',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                        }).format(profits[index])"></span>
+                                    </h5>
+                                    <p class="text-base font-normal text-gray-500" x-text="`Keuntungan ${label}`"></p>
+                                </div>
+
+                                <div class="flex items-center px-2.5 py-0.5 text-xl font-semibold text-center"
+                                    :class="(percentages[index] >= 0) ? 'text-green-500' : 'text-red-500'">
+                                    <span
+                                        x-text="`${percentages[index] >= 0 ? '+' : ''}${percentages[index]}%`"></span>
+                                    <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 10 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            :d="(percentages[index] >= 0) ? 'M5 13V1m0 0L1 5m4-4 4 4' :
+                                            'M5 1v12m0 0L1 9m4 4 4-4'" />
+                                    </svg>
+                                </div>
                             </div>
-                            <a href="#"
-                                class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2">
-                                Sales Report
-                                <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 9 4-4-4-4" />
-                                </svg>
-                            </a>
-                        </div>
+                        </template>
+                    </div>
+
+                    {{-- Chart Section --}}
+                    <div id="labels-chart" class="px-2.5">
+                        <canvas id="salesChart" class="h-[300px]"></canvas>
                     </div>
                 </div>
 
-                <!-- Revenue Sources -->
+
+                <!-- Kategori Terlaris -->
                 <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-lg font-semibold mb-4">Revenue Sources</h2>
+                    <h2 class="text-lg font-semibold mb-4">Kategori Terlaris</h2>
                     <div class="h-64">
                         <canvas id="revenueChart"></canvas>
                     </div>
@@ -282,8 +272,9 @@
                 <!-- Recent Orders -->
                 <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">Recent Orders</h2>
-                        <button class="text-blue-600 text-sm font-medium">View All</button>
+                        <h2 class="text-lg font-semibold">Pesanan Terbaru</h2>
+                        <a type="button" href="{{ route('admin.pesanan') }}"
+                            class="text-blue-600 text-sm font-medium">View All</a>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
@@ -291,59 +282,33 @@
                                 <tr>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Order ID</th>
+                                        Kode Pesanan</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Customer</th>
+                                        Tanggal</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Status</th>
+                                        Pelanggan</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Amount</th>
+                                        Total</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-0001
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">John Doe</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span
-                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$125.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-0002
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jane Smith</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span
-                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Processing</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$89.99</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-0003
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Robert Johnson</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span
-                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Shipped</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$245.50</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-0004
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Emily Davis</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span
-                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Cancelled</span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$67.30</td>
-                                </tr>
+                                @forelse ($daftar_pesanan as $p)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-2">{{ $p->kode_pesanan }}</td>
+                                        <td class="px-6 py-2">{{ $p->tanggal }}</td>
+                                        <td class="px-6 py-2">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
+                                        <td class="px-6 py-2 font-medium text-black">Rp.
+                                            {{ number_format($p->total_harga, 2, ',', '.') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center px-6 py-4 text-gray-500">Belum ada data
+                                            pesanan</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -415,45 +380,124 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Sales Chart
             const salesCtx = document.getElementById('salesChart').getContext('2d');
+            const revenueGradient = salesCtx.createLinearGradient(0, 0, 0, 400);
+            revenueGradient.addColorStop(0, 'rgba(75, 192, 192, 0.3)');
+            revenueGradient.addColorStop(1, 'rgba(75, 192, 192, 0.05)');
+
+            const expenseGradient = salesCtx.createLinearGradient(0, 0, 0, 400);
+            expenseGradient.addColorStop(0, 'rgba(255, 99, 132, 0.3)');
+            expenseGradient.addColorStop(1, 'rgba(255, 99, 132, 0.05)');
+
             new Chart(salesCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
-                        'Dec'
-                    ],
+                    labels: @json($grafik_line['labels']),
                     datasets: [{
-                        label: 'Sales',
-                        data: [12000, 19000, 15000, 18000, 22000, 25000, 28000, 26000, 30000, 32000,
-                            35000, 40000
-                        ],
-                        backgroundColor: 'rgba(59, 130, 246, 0.05)',
-                        borderColor: 'rgba(59, 130, 246, 1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true,
-                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
+                            label: 'Pesanan',
+                            data: @json($grafik_line['pesanan']),
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: revenueGradient,
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 3,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointHoverBackgroundColor: 'rgba(75, 192, 192, 1)',
+                            pointHoverBorderColor: '#fff',
+                            pointHoverBorderWidth: 3
+                        },
+                        {
+                            label: 'Pembelian',
+                            data: @json($grafik_line['pembelian']),
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            backgroundColor: expenseGradient,
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 3,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
+                            pointHoverBorderColor: '#fff',
+                            pointHoverBorderWidth: 3
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
                     plugins: {
                         legend: {
-                            display: false
+                            display: true,
+                            position: 'top',
+                            align: 'end',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                padding: 20,
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            cornerRadius: 12,
+                            padding: 12,
+                            displayColors: true,
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ' ' + context.parsed.y
+                                        .toLocaleString();
+                                }
+                            }
                         }
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
                             grid: {
+                                color: 'rgba(0, 0, 0, 0.05)',
                                 drawBorder: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    weight: '500',
+                                    height: '300'
+                                },
+                                color: '#6b7280',
+                                padding: 10,
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
                             }
                         },
                         x: {
                             grid: {
                                 display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    weight: '600'
+                                },
+                                color: '#374151',
+                                padding: 10
                             }
                         }
                     }
@@ -465,24 +509,32 @@
             new Chart(revenueCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Electronics', 'Fashion', 'Home & Garden', 'Books', 'Other'],
+                    labels: @json($grafik_pie['labels']),
                     datasets: [{
-                        data: [35, 25, 20, 15, 5],
+                        data: @json($grafik_pie['data']),
                         backgroundColor: [
-                            'rgba(59, 130, 246, 0.8)',
-                            'rgba(16, 185, 129, 0.8)',
-                            'rgba(245, 158, 11, 0.8)',
-                            'rgba(139, 92, 246, 0.8)',
-                            'rgba(156, 163, 175, 0.8)'
+                            'rgba(59, 130, 246, 0.8)', // Blue
+                            'rgba(16, 185, 129, 0.8)', // Green
+                            'rgba(245, 158, 11, 0.8)', // Amber
+                            'rgba(139, 92, 246, 0.8)', // Purple
+                            'rgba(156, 163, 175, 0.8)', // Gray
+                            'rgba(239, 68, 68, 0.8)', // Red
+                            'rgba(236, 72, 153, 0.8)', // Pink
+                            'rgba(6, 182, 212, 0.8)' // Cyan
                         ],
                         borderColor: [
                             'rgba(59, 130, 246, 1)',
                             'rgba(16, 185, 129, 1)',
                             'rgba(245, 158, 11, 1)',
                             'rgba(139, 92, 246, 1)',
-                            'rgba(156, 163, 175, 1)'
+                            'rgba(156, 163, 175, 1)',
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(236, 72, 153, 1)',
+                            'rgba(6, 182, 212, 1)'
                         ],
-                        borderWidth: 1
+                        borderWidth: 2,
+                        hoverBorderWidth: 3,
+                        hoverOffset: 4
                     }]
                 },
                 options: {
@@ -490,10 +542,35 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'right'
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.raw / total) * 100).toFixed(1);
+                                    return `${context.label}: ${context.raw} (${percentage}%)`;
+                                }
+                            }
                         }
                     },
-                    cutout: '70%'
+                    cutout: '70%',
+                    animation: {
+                        animateRotate: true,
+                        duration: 1000
+                    }
                 }
             });
         });
