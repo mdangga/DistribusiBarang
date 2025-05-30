@@ -1,18 +1,3 @@
-{{-- @php
-    function sortUrl($column)
-    {
-        $order = request('sort_by') === $column && request('sort_order') === 'asc' ? 'desc' : 'asc';
-        return request()->fullUrlWithQuery(['sort_by' => $column, 'sort_order' => $order]);
-    }
-
-    function sortArrow($column)
-    {
-        if (request('sort_by') === $column) {
-            return request('sort_order') === 'asc' ? '↑' : '↓';
-        }
-        return '';
-    }
-@endphp --}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,11 +11,11 @@
     <title>Admin - Barang</title>
 </head>
 
-<body>
+<body class="bg-[#f3f4f6]">
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200  ">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
-                <div class="flex items-center justify-start rtl:justify-end">
+                <div class="flex items-center justify-start rtl:justify-end font-sans">
                     <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
                         aria-controls="logo-sidebar" type="button"
                         class="inline-flex items-center p-2 text-sm text-gray-700 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200   ">
@@ -147,8 +132,8 @@
                 <div class="flex">
                     <div
                         class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg">
-                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 20 20">
+                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 20">
                             <path
                                 d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
                         </svg>
@@ -161,34 +146,42 @@
                         <span class="sr-only">Close</span>
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                     </button>
                 </div>
             </div>
         @endif
-        <button data-modal-target="addModalBarang" data-modal-toggle="addModalBarang"
-            class="block m-3 text-white bg-green-600 hover:bg-green-700 focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
-            type="button">
-            Tambah Barang
-        </button>
 
-        <form action="" method="GET" class="p-4 bg-white rounded-lg ">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                    <label for="autocomplete" class="block mb-1 text-sm font-medium text-gray-700">Search by
-                        Nama</label>
-                    <x-autocomplete-input name="barang" :endpoint="route('autocomplete.barang')" placeholder="Cari barang..."
-                        form-field="nama_barang" id-field="id"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 active:ring-[#2ec4b6] active:border-blue-500 block w-full p-2.5" />
-                </div>
+        <div class="flex items-center justify-between ml-2 mb-2">
+            <h1 class="text-2xl font-semibold flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 640 512"
+                    class="text-gray-700">
+                    <path fill="currentColor"
+                        d="M58.9 42.1c3-6.1 9.6-9.6 16.3-8.7L320 64l244.8-30.6c6.7-.8 13.3 2.7 16.3 8.7l41.7 83.4c9 17.9-.6 39.6-19.8 45.1l-163.4 46.7c-13.9 4-28.8-1.9-36.2-14.3L320 64l-83.4 139c-7.4 12.4-22.3 18.3-36.2 14.3L37.1 170.6c-19.3-5.5-28.8-27.2-19.8-45.1zM321.1 128l54.9 91.4c14.9 24.8 44.6 36.6 72.5 28.6L576 211.6v167c0 22-15 41.2-36.4 46.6l-204.1 51c-10.2 2.6-20.9 2.6-31 0l-204.1-51C79 419.7 64 400.5 64 378.5v-167L191.6 248c27.8 8 57.6-3.8 72.5-28.6l54.8-91.4z" />
+                </svg>
+                Manajemen Barang
+            </h1>
+            <button data-modal-target="addModalBarang" data-modal-toggle="addModalBarang" type="button"
+                class="inline-flex items-center justify-center sm:justify-start m-3 text-white bg-[#2ab6a9] hover:bg-[#1e8379] focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-full text-sm px-3 md:px-3.5 py-3 text-center transition">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+                    <path
+                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
+                </svg>
+                <span class="hidden sm:inline ml-2">Tambah Barang</span>
+            </button>
+        </div>
 
+        <form action="" method="GET"
+            class="block p-6 mb-5 bg-white border border-gray-200 rounded-lg shadow-sm">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label for="nama" class="block mb-1 text-sm font-medium text-gray-700">Filter by
                         Nama</label>
                     <input type="text" name="nama" value="{{ request('nama') }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5" />
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5"
+                        placeholder="Cari barang..." />
                 </div>
 
                 <div>
@@ -214,7 +207,7 @@
             </div>
         </form>
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="relative overflow-x-auto border border-gray-200 sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr class="text-sm">
@@ -243,7 +236,7 @@
 
                 </thead>
                 <tbody>
-                    @foreach ($barang as $item)
+                    @forelse($barang as $item)
                         <tr class="bg-white border-b border-gray-200">
                             <td class="px-6 py-4">{{ 'BRG' . str_pad($item->id_barang, 3, '0', STR_PAD_LEFT) }}
                             </td>
@@ -255,39 +248,50 @@
                             <td class="px-6 py-4">{{ $item->satuan }}</td>
                             <td class="px-6 py-4">{{ 'Rp ' . number_format($item->harga, 2) }}</td>
                             <td class="px-6 py-4">
-                                <a data-modal-target="editModal{{ $item->id_barang }}"
-                                    data-modal-toggle="editModal{{ $item->id_barang }}"
-                                    class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium px-3    py-2 rounded-lg shadow">
-                                    <svg class="text-white mr-2 overflow-visible" xmlns="http://www.w3.org/2000/svg"
-                                        width="16px" height="16px" viewBox="0 0 576 512">
-                                        <path fill="currentColor"
-                                            d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32M144 256a144 144 0 1 1 288 0a144 144 0 1 1-288 0m144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3" />
-                                    </svg></i> Edit
-                                </a>
-                                <a data-modal-target="addModalStok{{ $item->id_barang }}"
-                                    data-modal-toggle="addModalStok{{ $item->id_barang }}"
-                                    class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium px-3    py-2 rounded-lg shadow">
-                                    <svg class="text-white mr-2 overflow-visible" xmlns="http://www.w3.org/2000/svg"
-                                        width="16px" height="16px" viewBox="0 0 576 512">
-                                        <path fill="currentColor"
-                                            d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32M144 256a144 144 0 1 1 288 0a144 144 0 1 1-288 0m144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3" />
-                                    </svg></i> tambah
-                                </a>
+                                <div
+                                    class="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-2 sm:space-y-0">
+                                    <!-- Tombol Edit -->
+                                    <a data-modal-target="editModal{{ $item->id_barang }}"
+                                        data-modal-toggle="editModal{{ $item->id_barang }}"
+                                        class="flex items-center justify-center w-full sm:w-auto bg-[#ff9f1c] hover:bg-[#cc7f16] text-white text-xs font-medium px-3 py-2 rounded-lg shadow transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16"
+                                            viewBox="0 0 512 512" class="mr-2">
+                                            <path fill="currentColor"
+                                                d="m410.3 231l11.3-11.3l-33.9-33.9l-62.1-62.1l-33.9-33.9l-11.3 11.3l-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2l199.2-199.2zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9l-78.2 23l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7l-14.4 14.5l-22.6 22.6l-11.4 11.3l33.9 33.9l62.1 62.1l33.9 33.9l11.3-11.3l22.6-22.6l14.5-14.5c25-25 25-65.5 0-90.5l-39.3-39.4c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6" />
+                                        </svg>
+                                        Edit
+                                    </a>
+
+                                    <!-- Tombol Stok -->
+                                    <a data-modal-target="addModalStok{{ $item->id_barang }}"
+                                        data-modal-toggle="addModalStok{{ $item->id_barang }}"
+                                        class="flex items-center justify-center w-full sm:w-auto bg-[#2ab6a9] hover:bg-[#1e8379] text-white text-xs font-medium px-3 py-2 rounded-lg shadow transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16"
+                                            viewBox="0 0 448 512" class="mr-2">
+                                            <path fill="currentColor"
+                                                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
+                                        </svg>
+                                        Stok
+                                    </a>
+                                </div>
                             </td>
+
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="7" class="bg-white text-center text-gray-500 py-6">Tidak ditemukan data
+                                yang sesuai</td>
+                        </tr>
+                    @endforelse
+
                 </tbody>
             </table>
-            {{-- hilangkan pagi jiak data di bawah 10 --}}
-            @if ($barang->total() > 10)
-                <div class="mt-3">
-                    <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-                        {{ $barang->withQueryString()->links() }}
-                    </div>
-                </div>
-            @endif
+
+
+            <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
+                {{ $barang->withQueryString()->links() }}
+            </div>
         </div>
-    </div>
     </div>
 
     <!-- Modals untuk menambahkan barang -->
@@ -416,8 +420,8 @@
 
     <!-- Modals untuk setiap barang -->
     @foreach ($barang as $item)
-        <x-modal id="addModalStok{{ $item->id_barang }}" header="Tambah Stok {{ $item->nama_barang }}" button="Tambah"
-            :actionRoute="route('stok.add', $item->id_barang)" methodOverride="put">
+        <x-modal id="addModalStok{{ $item->id_barang }}" header="Tambah Stok {{ $item->nama_barang }}"
+            button="Tambah" :actionRoute="route('stok.add', $item->id_barang)" methodOverride="put">
             <div class="grid gap-4 mb-4
             grid-cols-2">
                 {{-- svg icon di header --}}
@@ -437,7 +441,8 @@
                 </x-slot:iconbtn>
                 <div class="col-span-2">
                     <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Nama Barang</label>
-                    <input type="text" name="nama_barang" id="nama_barang" value="{{ $item->nama_barang }}" readonly
+                    <input type="text" name="nama_barang" id="nama_barang" value="{{ $item->nama_barang }}"
+                        readonly
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
                 </div>
 
