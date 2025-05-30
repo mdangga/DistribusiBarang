@@ -33,11 +33,6 @@
                         <div
                             class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg mb-4 relative">
                             {{ session('success') }}
-                            <button type="button"
-                                class="absolute top-2 right-3 text-lg font-bold text-green-800 hover:text-green-900"
-                                data-bs-dismiss="alert">
-                                &times;
-                            </button>
                         </div>
                     @endif
 

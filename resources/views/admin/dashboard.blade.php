@@ -236,10 +236,10 @@
                 <div x-data="{ selectedIndex: {{ $defaultIndex }} }" class="bg-white rounded-lg shadow p-6 space-y-6">
                     {{-- Select dropdown --}}
                     <div class="mb-4">
-                        <label for="periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih
+                        <label for="periode" class="block mb-2 text-sm font-medium text-gray-900 ">Pilih
                             Periode:</label>
                         <select x-model="selectedIndex" id="periode"
-                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500 focus:outline-none px-3 py-2">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                             @foreach ($labels as $i => $label)
                                 <option value="{{ $i }}">{{ $label }}</option>
                             @endforeach

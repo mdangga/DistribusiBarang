@@ -84,11 +84,20 @@
             </div>
 
             <!-- Total Harga -->
-            <div class="flex justify-end mt-4">
+            <div class="grid grid-rows-3 mt-4">
+                <div class="text-right">
+                    <div class="text-sm text-gray-700">Tunai:</div>
+                    <input type="number" id="tunaiInput" min="1" value="0"
+                        class="ml-auto text-right bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 block w-48 p-2.5" />
+                </div>
                 <div class="text-right">
                     <div class="text-sm text-gray-700">Total Harga:</div>
                     <div class="text-3xl font-bold text-gray-900">Rp <span id="grandTotal">0,00</span></div>
                     <input type="hidden" name="total_harga" id="totalHargaInput" value="0">
+                </div>
+                <div class="text-right">
+                    <div class="text-sm text-gray-700">Kembalian:</div>
+                    <div class="text-3xl font-bold text-gray-900">Rp <span id="kembalian">0,00</span></div>
                 </div>
             </div>
 
@@ -115,6 +124,33 @@
             let pelangganTerpilih = null;
             let index = 0;
 
+            // Referensi elemen
+            const tunaiInput = document.getElementById('tunaiInput');
+            const totalHargaHidden = document.getElementById('totalHargaInput');
+            const kembalianSpan = document.getElementById('kembalian');
+            const grandTotalSpan = document.getElementById('grandTotal');
+
+            // Event listener untuk input tunai - hitung kembalian real-time
+            tunaiInput.addEventListener('input', function() {
+                hitungKembalian();
+            });
+
+            // Fungsi untuk menghitung kembalian
+            function hitungKembalian() {
+                const tunai = parseFloat(tunaiInput.value) || 0;
+                const totalHarga = parseFloat(totalHargaHidden.value) || 0;
+                const kembalian = tunai - totalHarga;
+
+                // Update tampilan kembalian
+                if (kembalian >= 0) {
+                    kembalianSpan.textContent = formatRupiah(kembalian);
+                    kembalianSpan.parentElement.style.color = ''; // Reset warna
+                } else {
+                    kembalianSpan.textContent = '-' + formatRupiah(Math.abs(kembalian));
+                    kembalianSpan.parentElement.style.color = 'red'; // Warna merah jika kurang
+                }
+            }
+
             // Event delegation untuk tombol hapus (SATU KALI SAJA)
             const tbody = document.getElementById('daftarBarang');
             tbody.addEventListener('click', function(e) {
@@ -130,15 +166,15 @@
                     field,
                     selected
                 } = e.detail;
-                console.log('Field:', e.detail.field);
-                console.log('Selected:', e.detail.selected);
+                // console.log('Field:', e.detail.field);
+                // console.log('Selected:', e.detail.selected);
 
                 if (field === 'barang') {
                     barangTerpilih = selected;
-                    console.log('Barang dipilih:', barangTerpilih);
+                    // console.log('Barang dipilih:', barangTerpilih);
                 } else if (field === 'pelanggan') {
                     pelangganTerpilih = selected;
-                    console.log('Pelanggan dipilih:', pelangganTerpilih);
+                    // console.log('Pelanggan dipilih:', pelangganTerpilih);
                     document.querySelector('input[name="id_pelanggan"]').value = pelangganTerpilih.id;
                 }
             });
@@ -242,7 +278,7 @@
 `;
 
                 // Log data yang akan dikirim untuk debug
-                console.log('Form data being submitted:', new FormData(form));
+                // console.log('Form data being submitted:', new FormData(form));
 
                 // Form akan submit secara normal
                 return true;
