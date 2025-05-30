@@ -11,7 +11,7 @@
     <title>Admin - Barang</title>
 </head>
 
-<body class="bg-[#f3f4f6]">
+<body class="bg-graymain">
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200  ">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
@@ -207,88 +207,89 @@
             </div>
         </form>
 
-        <div class="relative overflow-x-auto border border-gray-200 sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr class="text-sm">
-                        <th class="px-6 py-3">
-                            <a href="{{ sortUrl('id_barang') }}">ID {{ sortArrow('id_barang') }}</a>
-                        </th>
-                        <th class="px-6 py-3">
-                            <a href="{{ sortUrl('nama_barang') }}">Nama Barang {{ sortArrow('nama_barang') }}</a>
-                        </th>
-                        <th class="px-6 py-3">
-                            <a href="{{ sortUrl('kategori') }}">Kategori {{ sortArrow('kategori') }}</a>
-                        </th>
-                        <th class="px-6 py-3">
-                            <a href="{{ sortUrl('stok') }}">Stok {{ sortArrow('stok') }}</a>
-                        </th>
-                        <th class="px-6 py-3">
-                            <a href="{{ sortUrl('satuan') }}">Satuan {{ sortArrow('satuan') }}</a>
-                        </th>
-                        <th class="px-6 py-3">
-                            <a href="{{ sortUrl('harga') }}">Harga {{ sortArrow('harga') }}</a>
-                        </th>
-                        <th class="px-6 py-3">
-                            aksi
-                        </th>
-                    </tr>
-
-                </thead>
-                <tbody>
-                    @forelse($barang as $item)
-                        <tr class="bg-white border-b border-gray-200">
-                            <td class="px-6 py-4">{{ 'BRG' . str_pad($item->id_barang, 3, '0', STR_PAD_LEFT) }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $item->nama_barang }}
-                            </td>
-                            <td class="px-6 py-4">{{ $item->kategori }}</td>
-                            <td class="px-6 py-4">{{ $item->stok }}</td>
-                            <td class="px-6 py-4">{{ $item->satuan }}</td>
-                            <td class="px-6 py-4">{{ 'Rp ' . number_format($item->harga, 2) }}</td>
-                            <td class="px-6 py-4">
-                                <div
-                                    class="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-2 sm:space-y-0">
-                                    <!-- Tombol Edit -->
-                                    <a data-modal-target="editModal{{ $item->id_barang }}"
-                                        data-modal-toggle="editModal{{ $item->id_barang }}"
-                                        class="flex items-center justify-center w-full sm:w-auto bg-[#ff9f1c] hover:bg-[#cc7f16] text-white text-xs font-medium px-3 py-2 rounded-lg shadow transition">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16"
-                                            viewBox="0 0 512 512" class="mr-2">
-                                            <path fill="currentColor"
-                                                d="m410.3 231l11.3-11.3l-33.9-33.9l-62.1-62.1l-33.9-33.9l-11.3 11.3l-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2l199.2-199.2zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9l-78.2 23l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7l-14.4 14.5l-22.6 22.6l-11.4 11.3l33.9 33.9l62.1 62.1l33.9 33.9l11.3-11.3l22.6-22.6l14.5-14.5c25-25 25-65.5 0-90.5l-39.3-39.4c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6" />
-                                        </svg>
-                                        Edit
-                                    </a>
-
-                                    <!-- Tombol Stok -->
-                                    <a data-modal-target="addModalStok{{ $item->id_barang }}"
-                                        data-modal-toggle="addModalStok{{ $item->id_barang }}"
-                                        class="flex items-center justify-center w-full sm:w-auto bg-[#2ab6a9] hover:bg-[#1e8379] text-white text-xs font-medium px-3 py-2 rounded-lg shadow transition">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16"
-                                            viewBox="0 0 448 512" class="mr-2">
-                                            <path fill="currentColor"
-                                                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
-                                        </svg>
-                                        Stok
-                                    </a>
-                                </div>
-                            </td>
-
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <thead class="text-gray-700 uppercase bg-gray-50">
+                        <tr class="text-sm">
+                            <th class="px-6 py-3">
+                                <a href="{{ sortUrl('id_barang') }}">ID {{ sortArrow('id_barang') }}</a>
+                            </th>
+                            <th class="px-6 py-3">
+                                <a href="{{ sortUrl('nama_barang') }}">Nama Barang {{ sortArrow('nama_barang') }}</a>
+                            </th>
+                            <th class="px-6 py-3">
+                                <a href="{{ sortUrl('kategori') }}">Kategori {{ sortArrow('kategori') }}</a>
+                            </th>
+                            <th class="px-6 py-3">
+                                <a href="{{ sortUrl('stok') }}">Stok {{ sortArrow('stok') }}</a>
+                            </th>
+                            <th class="px-6 py-3">
+                                <a href="{{ sortUrl('satuan') }}">Satuan {{ sortArrow('satuan') }}</a>
+                            </th>
+                            <th class="px-6 py-3">
+                                <a href="{{ sortUrl('harga') }}">Harga {{ sortArrow('harga') }}</a>
+                            </th>
+                            <th class="px-6 py-3">
+                                aksi
+                            </th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="bg-white text-center text-gray-500 py-6">Tidak ditemukan data
-                                yang sesuai</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
 
-        </div>
-        <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-            {{ $barang->withQueryString()->links() }}
+                    </thead>
+                    <tbody>
+                        @forelse($barang as $item)
+                            <tr class="bg-white border-b border-gray-200">
+                                <td class="px-6 py-4">{{ 'BRG' . str_pad($item->id_barang, 3, '0', STR_PAD_LEFT) }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->nama_barang }}
+                                </td>
+                                <td class="px-6 py-4">{{ $item->kategori }}</td>
+                                <td class="px-6 py-4">{{ $item->stok }}</td>
+                                <td class="px-6 py-4">{{ $item->satuan }}</td>
+                                <td class="px-6 py-4">{{ 'Rp ' . number_format($item->harga, 2) }}</td>
+                                <td class="px-6 py-4">
+                                    <div
+                                        class="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-2 sm:space-y-0">
+                                        <!-- Tombol Edit -->
+                                        <a data-modal-target="editModal{{ $item->id_barang }}"
+                                            data-modal-toggle="editModal{{ $item->id_barang }}"
+                                            class="flex items-center justify-center w-full sm:w-auto bg-[#ff9f1c] hover:bg-[#cc7f16] text-white text-xs font-medium px-3 py-2 rounded-lg shadow transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16"
+                                                viewBox="0 0 512 512" class="mr-2">
+                                                <path fill="currentColor"
+                                                    d="m410.3 231l11.3-11.3l-33.9-33.9l-62.1-62.1l-33.9-33.9l-11.3 11.3l-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2l199.2-199.2zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9l-78.2 23l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7l-14.4 14.5l-22.6 22.6l-11.4 11.3l33.9 33.9l62.1 62.1l33.9 33.9l11.3-11.3l22.6-22.6l14.5-14.5c25-25 25-65.5 0-90.5l-39.3-39.4c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6" />
+                                            </svg>
+                                            Edit
+                                        </a>
+
+                                        <!-- Tombol Stok -->
+                                        <a data-modal-target="addModalStok{{ $item->id_barang }}"
+                                            data-modal-toggle="addModalStok{{ $item->id_barang }}"
+                                            class="flex items-center justify-center w-full sm:w-auto bg-[#2ab6a9] hover:bg-[#1e8379] text-white text-xs font-medium px-3 py-2 rounded-lg shadow transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16"
+                                                viewBox="0 0 448 512" class="mr-2">
+                                                <path fill="currentColor"
+                                                    d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
+                                            </svg>
+                                            Stok
+                                        </a>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="bg-white text-center text-gray-500 py-6">Data barang tidak
+                                    ada</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-[#cbf3f07a] py-2 px-6">
+                {{ $barang->withQueryString()->links() }}
+            </div>
         </div>
     </div>
 

@@ -11,7 +11,7 @@
     <title>Admin - Transaksi</title>
 </head>
 
-<body>
+<body class="bg-graymain">
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200  ">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
@@ -124,18 +124,37 @@
     </aside>
 
     <div class="p-4 sm:ml-64 mt-14">
-        <form action="" method="GET" class="p-4 bg-white rounded-lg ">
+        <div class="flex items-center justify-between ml-2 mb-2">
+            <h1 class="text-2xl font-semibold flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 640 512"
+                    class="text-gray-700">
+                    <path fill="currentColor"
+                        d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.3l105.4 105.3c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z" />
+                </svg>
+                Manajemen Pesanan
+            </h1>
+            <!-- Dummy button replacement -->
+            <div class="m-3 px-3 md:px-3.5 py-3">
+                <svg class="w-5 h-5 opacity-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                    fill="currentColor">
+                    <path d="M0 0h512v512H0z" />
+                </svg>
+            </div>
+        </div>
+
+        <form action="" method="GET"
+            class="block p-6 mb-5 bg-white border border-gray-200 rounded-lg shadow-sm">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label for="dateFrom" class="block mb-1 text-sm font-medium text-gray-700">From Date</label>
                     <input type="date" name="dateFrom" id="dateFrom" value="{{ date('Y-m-d') }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5" />
                 </div>
 
                 <div>
                     <label for="dateTo" class="block mb-1 text-sm font-medium text-gray-700">To Date</label>
                     <input type="date" name="dateTo" id="dateTo" value="{{ date('Y-m-d') }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5" />
                 </div>
 
                 <div class="flex items-end">
@@ -146,49 +165,50 @@
                 </div>
             </div>
         </form>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-                <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
-                    <tr>
-                        <th class="px-6 py-3 text-left">Kode Pesanan</th>
-                        <th class="px-6 py-3 text-left">Tanggal</th>
-                        <th class="px-6 py-3 text-left">Pelanggan</th>
-                        <th class="px-6 py-3 text-left">Total</th>
-                        <th class="px-6 py-3 text-left">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse ($pesanan as $p)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-2">{{ $p->kode_pesanan }}</td>
-                            <td class="px-6 py-2">{{ \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y') }}</td>
-                            <td class="px-6 py-2">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
-                            <td class="px-6 py-2 font-medium text-black">Rp
-                                {{ number_format($p->total_harga, 2, ',', '.') }}</td>
-                            <td class="px-6 py-2">
-                                <a href="{{ route('adminPesanan.show', $p->kode_pesanan) }}"
-                                    class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium px-3 py-2 rounded-lg shadow">
-                                    <svg class="text-white mr-2 overflow-visible" xmlns="http://www.w3.org/2000/svg"
-                                        width="16px" height="16px" viewBox="0 0 576 512">
-                                        <path fill="currentColor"
-                                            d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32M144 256a144 144 0 1 1 288 0a144 144 0 1 1-288 0m144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3" />
-                                    </svg></i> Detail
-                                </a>
-                            </td>
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr class="text-sm">
+                            <th class="px-6 py-3 text-left">Kode Pesanan</th>
+                            <th class="px-6 py-3 text-left">Tanggal</th>
+                            <th class="px-6 py-3 text-left">Pelanggan</th>
+                            <th class="px-6 py-3 text-left">Total</th>
+                            <th class="px-6 py-3 text-left">Aksi</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center px-6 py-4 text-gray-500">Belum ada data
-                                pesanan</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            <div class="mt-3">
-                <div class="bg-[#cbf3f07a] py-2 px-6 rounded-b-sm">
-                    {{ $pesanan->withQueryString()->links() }}
-                </div>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse ($pesanan as $p)
+                            <tr class="bg-white border-b border-gray-200">
+                                <td class="px-6 py-2">{{ $p->kode_pesanan }}</td>
+                                <td class="px-6 py-2">{{ \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y') }}</td>
+                                <td class="px-6 py-2">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
+                                <td class="px-6 py-2 font-medium text-black">Rp
+                                    {{ number_format($p->total_harga, 2, ',', '.') }}</td>
+                                <td class="px-6 py-2">
+                                    <a href="{{ route('adminPesanan.show', $p->kode_pesanan) }}"
+                                        class="inline-flex items-center bg-[#2ab6a9] hover:bg-[#1e8379] text-white text-xs font-medium px-3 py-2 rounded-lg shadow">
+                                        <svg class="text-white mr-2 overflow-visible"
+                                            xmlns="http://www.w3.org/2000/svg" width="14" height="16"
+                                            viewBox="0 0 576 512">
+                                            <path fill="currentColor"
+                                                d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32M144 256a144 144 0 1 1 288 0a144 144 0 1 1-288 0m144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3" />
+                                        </svg></i> Detail
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center px-6 py-4 text-gray-500">Belum ada data
+                                    pesanan</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-[#cbf3f07a] py-2 px-6">
+                {{ $pesanan->withQueryString()->links() }}
             </div>
         </div>
     </div>
