@@ -24,7 +24,8 @@ class barangController extends Controller
             ->when($request->kategori != null, function ($q) use ($request) {
                 return $q->where('kategori', $request->kategori);
             })
-            ->orderBy($sortBy, $sortOrder)
+            
+            ->orderBy($sortBy == 'total_pengiriman' ? 'total_pengiriman' : $sortBy, $sortOrder)
             ->paginate(10)
             ->appends($request->all());
             
