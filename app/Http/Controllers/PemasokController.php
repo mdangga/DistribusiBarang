@@ -24,7 +24,9 @@ class PemasokController extends Controller
                     ]);
                 }
             }
-        ])->get();
+        ])->when(!empty($request->nama), function ($query) use ($request) {
+            $query->where('nama_pemasok', 'like', '%' . $request->nama . '%');
+        })->get();
 
         $page = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;
@@ -75,7 +77,6 @@ class PemasokController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('pemasok'),
             ],
             'no_telpon' => 'required|string',
             'alamat' => 'required|string',

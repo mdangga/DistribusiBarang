@@ -24,7 +24,9 @@ class PelangganController extends Controller
                     ]);
                 }
             }
-        ])->get();
+        ])->when(!empty($request->nama), function ($query) use ($request) {
+            $query->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
+        })->get();
 
         $page = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;
@@ -64,7 +66,7 @@ class PelangganController extends Controller
         return redirect()->route('admin.pelanggan')->with('success', 'Pelanggan berhasil ditambahkan');
     }
 
-    public function updateDataPel(Request $request, $id_pelanggan)
+    public function updateDataPelanggan(Request $request, $id_pelanggan)
     {
         // Validasi
         // dd($request->all());
@@ -73,7 +75,6 @@ class PelangganController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('pelanggan'),
             ],
             'no_telpon' => 'required|string',
             'alamat' => 'required|string',

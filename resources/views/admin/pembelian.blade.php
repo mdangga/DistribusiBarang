@@ -134,11 +134,24 @@
             </div>
         @endif
 
-        <button data-modal-target="addModalPembelian" data-modal-toggle="addModalPembelian"
-            class="block m-3 text-white bg-green-600 hover:bg-green-700 focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition"
-            type="button">
-            Tambah Pembelian
-        </button>
+        <div class="flex items-center justify-between ml-2 mb-2">
+            <h1 class="text-2xl font-semibold flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 640 512"
+                    class="text-gray-700">
+                    <path fill="currentColor"
+                        d="M58.9 42.1c3-6.1 9.6-9.6 16.3-8.7L320 64l244.8-30.6c6.7-.8 13.3 2.7 16.3 8.7l41.7 83.4c9 17.9-.6 39.6-19.8 45.1l-163.4 46.7c-13.9 4-28.8-1.9-36.2-14.3L320 64l-83.4 139c-7.4 12.4-22.3 18.3-36.2 14.3L37.1 170.6c-19.3-5.5-28.8-27.2-19.8-45.1zM321.1 128l54.9 91.4c14.9 24.8 44.6 36.6 72.5 28.6L576 211.6v167c0 22-15 41.2-36.4 46.6l-204.1 51c-10.2 2.6-20.9 2.6-31 0l-204.1-51C79 419.7 64 400.5 64 378.5v-167L191.6 248c27.8 8 57.6-3.8 72.5-28.6l54.8-91.4z" />
+                </svg>
+                Pembelian
+            </h1>
+            <button data-modal-target="addModalPembelian" data-modal-toggle="addModalPembelian" type="button"
+                class="inline-flex items-center justify-center sm:justify-start m-3 text-white bg-[#2ab6a9] hover:bg-[#1e8379] focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-full text-sm px-3 md:px-3.5 py-3 text-center transition">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+                    <path
+                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
+                </svg>
+                <span class="hidden sm:inline ml-2">Tambah Pembelian</span>
+            </button>
+        </div>
 
         <form action="" method="GET" class="p-4 bg-white rounded-lg ">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
