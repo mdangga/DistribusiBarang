@@ -18,8 +18,9 @@ class DashboardController extends Controller
         $now = Carbon::now();
 
         // Bulan lalu
-        $startBulanSebelumnya = $now->copy()->subMonth()->startOfMonth();
-        $endBulanSebelumnya = $now->copy()->subMonth()->endOfMonth();
+        $startBulanSebelumnya = $now->copy()->subMonthNoOverflow()->startOfMonth();
+        $endBulanSebelumnya = $now->copy()->subMonthNoOverflow()->endOfMonth();
+
         // pesanan
         $psnBulanSebelumnya = Pesanan::whereBetween('tanggal', [$startBulanSebelumnya, $endBulanSebelumnya]);
         $pesananBulanSebelumnya = $psnBulanSebelumnya->count();
@@ -32,6 +33,8 @@ class DashboardController extends Controller
         // Bulan ini
         $startBulanSekarang = $now->copy()->startOfMonth();
         $endBulanSekarang = $now->copy()->endOfMonth();
+
+        // dump($startBulanSebelumnya, $endBulanSebelumnya, $startBulanSekarang, $endBulanSekarang);
         // pesanan
         $psnBulanSekarang = Pesanan::whereBetween('tanggal', [$startBulanSekarang, $endBulanSekarang]);
         $pesananBulanSekarang = $psnBulanSekarang->count();
@@ -41,6 +44,7 @@ class DashboardController extends Controller
         $pembelianBulanSekarang = $pblBulanSekarang->count();
         $pengeluaranBulanSekarang = $pblBulanSekarang->sum('total_harga');
 
+        // dump($pesananBulanSebelumnya, $pesananBulanSekarang, $pembelianBulanSebelumnya, $pembelianBulanSekarang, $pendapatanBulanSebelumnya, $pendapatanBulanSekarang, $pengeluaranBulanSebelumnya, $pengeluaranBulanSekarang);
         // menghitung persentase peningkatan
         // pesanan
         if ($pesananBulanSebelumnya == 0) {
@@ -83,8 +87,8 @@ class DashboardController extends Controller
         $ProfitTigaBulan = [];
 
         for ($i = 3; $i >= 1; $i--) {
-            $start = $now->copy()->subMonths($i)->startOfMonth();
-            $end = $now->copy()->subMonths($i)->endOfMonth();
+            $start = $now->copy()->subMonthNoOverflow($i)->startOfMonth();
+            $end = $now->copy()->subMonthNoOverflow($i)->endOfMonth();
 
             $pendapatan = Pesanan::whereBetween('tanggal', [$start, $end])->sum('total_harga');
             $pengeluaran = Pembelian::whereBetween('tanggal', [$start, $end])->sum('total_harga');
@@ -106,8 +110,8 @@ class DashboardController extends Controller
         $ProfitSatuTahun = [];
 
         for ($i = 12; $i >= 1; $i--) {
-            $start = $now->copy()->subMonths($i)->startOfMonth();
-            $end = $now->copy()->subMonths($i)->endOfMonth();
+            $start = $now->copy()->subMonthNoOverflow($i)->startOfMonth();
+            $end = $now->copy()->subMonthNoOverflow($i)->endOfMonth();
 
             $pendapatan = Pesanan::whereBetween('tanggal', [$start, $end])->sum('total_harga');
             $pengeluaran = Pembelian::whereBetween('tanggal', [$start, $end])->sum('total_harga');
@@ -153,7 +157,7 @@ class DashboardController extends Controller
         ];
 
         // --- Data Grafik Pendapatan & Pengeluaran (12 Bulan Terakhir) ---
-        $startDate = $now->copy()->subMonths(11)->startOfMonth(); // 12 bulan terakhir
+        $startDate = $now->copy()->subMonthNoOverflow(11)->startOfMonth(); // 12 bulan terakhir
         $endDate = $now->copy()->endOfMonth();
 
         // Data Pendapatan per Bulan
@@ -236,7 +240,7 @@ class DashboardController extends Controller
         // Data untuk list pesanan
         $daftarPesanan = Pesanan::with('Pelanggan')
             ->has('detailPesanan')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('tanggal', 'desc')
             ->take(5)
             ->get();
         
@@ -245,7 +249,7 @@ class DashboardController extends Controller
         $tabelPesanan = Pesanan::select('kode_pesanan as kode', 'total_harga', 'tanggal', DB::raw("'pesanan' as jenis"))->has('detailPesanan')->get();
 
         $transaksi = $tabelPembelian->concat($tabelPesanan)->sortByDesc('tanggal')->take(5);
-        // dd($transaksi);
+        // dd($pesanan, $pembelian, $pendapatan, $pengeluaran);
 
         return view('admin.dashboard', [
             'pesanan' => $pesanan,

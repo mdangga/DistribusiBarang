@@ -24,7 +24,7 @@
                 <div class="flex justify-between items-center px-6 py-5 border-b border-gray-200">
                     <h5 class="text-xl font-semibold">Daftar Pesanan</h5>
                     <a href="{{ route('pesanan.index') }}"
-                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                        class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-medium focus:border-primary-600 p-2.5 transition flex items-center gap-2">
                         <i class="bi bi-plus"></i> Buat Pesanan
                     </a>
                 </div>
@@ -57,9 +57,9 @@
                                             {{ number_format($p->total_harga, 2, ',', '.') }}</td>
                                         <td class="px-6 py-2">
                                             <a href="{{ route('pesanan.show', $p->kode_pesanan) }}"
-                                                class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium px-3    py-2 rounded-lg shadow">
+                                                class="inline-flex items-center bg-[#2ab6a9] hover:bg-[#1e8379] text-white text-xs font-medium px-3 py-2 rounded-lg shadow">
                                                 <svg class="text-white mr-2 overflow-visible"
-                                                    xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"
+                                                    xmlns="http://www.w3.org/2000/svg" width="14" height="16"
                                                     viewBox="0 0 576 512">
                                                     <path fill="currentColor"
                                                         d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32M144 256a144 144 0 1 1 288 0a144 144 0 1 1-288 0m144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3" />

@@ -15,11 +15,10 @@ class PembelianController extends Controller
     {
         try {
             $request->validate([
-                'tanggal' => 'required|date_format:Y-m-d',
+                'tanggal' => 'required|date_format:Y-m-d H:i:s',
                 'id_pemasok' => 'required|integer|exists:pemasok,id_pemasok',
                 'harga' => 'required|numeric|min:0',
             ]);
-
             Pembelian::create([
                 'tanggal' => $request->tanggal,
                 'id_pemasok' => $request->id_pemasok,
@@ -44,7 +43,7 @@ class PembelianController extends Controller
             ]);
         }
 
-        $pembelian = $query->paginate(10);
+        $pembelian = $query->orderBy('tanggal', 'desc')->paginate(10);
         // dd($pembelian);
         return view('admin.pembelian', [
             'pembelian' => $pembelian,

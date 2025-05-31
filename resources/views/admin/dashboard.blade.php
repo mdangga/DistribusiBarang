@@ -359,7 +359,8 @@
                                 <div>
                                     <p class="text-sm font-medium text-gray-900">{{ $p->jenis }}</p>
                                     <p class="text-sm text-gray-500">{{ $p->kode }}</p>
-                                    <p class="text-xs text-gray-400 mt-1">{{ \Carbon\Carbon::parse($p->tanggal)->diffForHumans() }}</p>
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        {{ \Carbon\Carbon::parse($p->tanggal)->diffForHumans() }}</p>
                                 </div>
                             </div>
                             <hr>
@@ -373,15 +374,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Sales Chart
+            // Profit Chart
             const profitCtx = document.getElementById('profitChart').getContext('2d');
-            const revenueGradient = profitCtx.createLinearGradient(0, 0, 0, 400);
-            revenueGradient.addColorStop(0, 'rgba(75, 192, 192, 0.3)');
-            revenueGradient.addColorStop(1, 'rgba(75, 192, 192, 0.05)');
 
+            // Enhanced gradient untuk Pesanan
+            const revenueGradient = profitCtx.createLinearGradient(0, 0, 0, 400);
+            revenueGradient.addColorStop(0, 'rgba(34, 197, 94, 0.4)');
+            revenueGradient.addColorStop(0.3, 'rgba(34, 197, 94, 0.25)');
+            revenueGradient.addColorStop(0.7, 'rgba(34, 197, 94, 0.1)');
+            revenueGradient.addColorStop(1, 'rgba(34, 197, 94, 0.02)');
+
+            // Enhanced gradient untuk Pembelian
             const expenseGradient = profitCtx.createLinearGradient(0, 0, 0, 400);
-            expenseGradient.addColorStop(0, 'rgba(255, 99, 132, 0.3)');
-            expenseGradient.addColorStop(1, 'rgba(255, 99, 132, 0.05)');
+            expenseGradient.addColorStop(0, 'rgba(239, 68, 68, 0.4)');
+            expenseGradient.addColorStop(0.3, 'rgba(239, 68, 68, 0.25)');
+            expenseGradient.addColorStop(0.7, 'rgba(239, 68, 68, 0.1)');
+            expenseGradient.addColorStop(1, 'rgba(239, 68, 68, 0.02)');
+
+            // Gradient untuk glow effect
+            const glowGradient = profitCtx.createRadialGradient(0, 0, 0, 0, 0, 20);
+            glowGradient.addColorStop(0, 'rgba(34, 197, 94, 0.8)');
+            glowGradient.addColorStop(1, 'rgba(34, 197, 94, 0)');
 
             new Chart(profitCtx, {
                 type: 'line',
@@ -390,36 +403,48 @@
                     datasets: [{
                             label: 'Pesanan',
                             data: @json($grafik_line['pesanan']),
-                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderColor: 'rgba(34, 197, 94, 1)',
                             backgroundColor: revenueGradient,
-                            borderWidth: 3,
+                            borderWidth: 4,
                             fill: true,
-                            tension: 0.4,
-                            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 3,
-                            pointRadius: 6,
-                            pointHoverRadius: 8,
-                            pointHoverBackgroundColor: 'rgba(75, 192, 192, 1)',
-                            pointHoverBorderColor: '#fff',
-                            pointHoverBorderWidth: 3
+                            tension: 0.5,
+                            pointBackgroundColor: 'rgba(34, 197, 94, 1)',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 4,
+                            pointRadius: 8,
+                            pointHoverRadius: 12,
+                            pointHoverBackgroundColor: 'rgba(34, 197, 94, 1)',
+                            pointHoverBorderColor: '#ffffff',
+                            pointHoverBorderWidth: 6,
+                            // Enhanced point styling
+                            pointStyle: 'circle',
+                            pointShadowOffsetX: 3,
+                            pointShadowOffsetY: 3,
+                            pointShadowBlur: 6,
+                            pointShadowColor: 'rgba(34, 197, 94, 0.3)'
                         },
                         {
                             label: 'Pembelian',
                             data: @json($grafik_line['pembelian']),
-                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderColor: 'rgba(239, 68, 68, 1)',
                             backgroundColor: expenseGradient,
-                            borderWidth: 3,
+                            borderWidth: 4,
                             fill: true,
-                            tension: 0.4,
-                            pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 3,
-                            pointRadius: 6,
-                            pointHoverRadius: 8,
-                            pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
-                            pointHoverBorderColor: '#fff',
-                            pointHoverBorderWidth: 3
+                            tension: 0.5,
+                            pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 4,
+                            pointRadius: 8,
+                            pointHoverRadius: 12,
+                            pointHoverBackgroundColor: 'rgba(239, 68, 68, 1)',
+                            pointHoverBorderColor: '#ffffff',
+                            pointHoverBorderWidth: 6,
+                            // Enhanced point styling
+                            pointStyle: 'circle',
+                            pointShadowOffsetX: 3,
+                            pointShadowOffsetY: 3,
+                            pointShadowBlur: 6,
+                            pointShadowColor: 'rgba(239, 68, 68, 0.3)'
                         }
                     ]
                 },
@@ -430,56 +455,162 @@
                         intersect: false,
                         mode: 'index'
                     },
+                    // Enhanced animations
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart',
+                        delay: (context) => {
+                            return context.type === 'data' && context.mode === 'default' ?
+                                context.dataIndex * 200 :
+                                0;
+                        }
+                    },
+                    animations: {
+                        tension: {
+                            duration: 1000,
+                            easing: 'linear',
+                            from: 1,
+                            to: 0.5,
+                            loop: false
+                        },
+                        radius: {
+                            duration: 1000,
+                            easing: 'linear',
+                            from: 12,
+                            to: 8,
+                            loop: false
+                        }
+                    },
                     plugins: {
                         legend: {
                             display: true,
                             position: 'top',
-                            align: 'end',
+                            align: 'center',
                             labels: {
                                 usePointStyle: true,
-                                pointStyle: 'circle',
-                                padding: 20,
+                                pointStyle: 'rectRounded',
+                                padding: 25,
                                 font: {
-                                    size: 14,
-                                    weight: '600'
+                                    size: 16,
+                                    weight: '700',
+                                    family: 'system-ui, -apple-system, sans-serif'
+                                },
+                                color: '#1f2937',
+                                boxWidth: 15,
+                                boxHeight: 15,
+                                generateLabels: function(chart) {
+                                    const original = Chart.defaults.plugins.legend.labels
+                                        .generateLabels;
+                                    const labels = original.call(this, chart);
+
+                                    labels.forEach((label, index) => {
+                                        // Add glow effect
+                                        label.borderRadius = 8;
+                                        label.borderWidth = 3;
+                                    });
+
+                                    return labels;
                                 }
+                            },
+                            onHover: (event, legendItem, legend) => {
+                                legend.chart.canvas.style.cursor = 'pointer';
+                            },
+                            onLeave: (event, legendItem, legend) => {
+                                legend.chart.canvas.style.cursor = 'default';
                             }
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(17, 24, 39, 0.95)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            cornerRadius: 12,
-                            padding: 12,
+                            backgroundColor: 'rgba(17, 24, 39, 0.98)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#e5e7eb',
+                            cornerRadius: 16,
+                            padding: 16,
                             displayColors: true,
-                            borderColor: 'rgba(255, 255, 255, 0.1)',
-                            borderWidth: 1,
+                            borderColor: 'rgba(75, 85, 99, 0.3)',
+                            borderWidth: 2,
+                            titleFont: {
+                                size: 16,
+                                weight: '700'
+                            },
+                            bodyFont: {
+                                size: 14,
+                                weight: '600'
+                            },
+                            // Enhanced box styling
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            boxWidth: 12,
+                            boxHeight: 12,
+                            boxPadding: 8,
+                            caretSize: 10,
+                            caretPadding: 12,
+                            // Custom callbacks
                             callbacks: {
+                                title: function(context) {
+                                    return `${context[0].label}`;
+                                },
                                 label: function(context) {
-                                    return context.dataset.label + ' ' + context.parsed.y
-                                        .toLocaleString();
+                                    const label = context.dataset.label;
+                                    const value = context.parsed.y;
+
+                                    return `${label}: ${value}`;
+                                },
+                                afterBody: function(context) {
+                                    // Calculate difference between datasets if both exist
+                                    if (context.length === 2) {
+                                        const pesanan = context.find(c => c.dataset.label.includes(
+                                            'Pesanan'))?.parsed.y || 0;
+                                        const pembelian = context.find(c => c.dataset.label.includes(
+                                            'Pembelian'))?.parsed.y || 0;
+                                    }
+                                    return '';
                                 }
+                            },
+                            // Animation for tooltip
+                            animation: {
+                                duration: 300,
+                                easing: 'easeOutQuart'
                             }
                         }
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
+                            grace: '10%',
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)',
-                                drawBorder: false
+                                color: function(context) {
+                                    // Gradient grid lines
+                                    if (context.tick.value === 0) {
+                                        return 'rgba(17, 24, 39, 0.2)';
+                                    }
+                                    return 'rgba(17, 24, 39, 0.05)';
+                                },
+                                drawBorder: false,
+                                lineWidth: function(context) {
+                                    return context.tick.value === 0 ? 2 : 1;
+                                }
                             },
                             ticks: {
                                 font: {
-                                    size: 12,
-                                    weight: '500',
-                                    height: '300'
+                                    size: 13,
+                                    weight: '600',
+                                    family: 'system-ui, -apple-system, sans-serif'
                                 },
                                 color: '#6b7280',
-                                padding: 10,
+                                padding: 15,
                                 callback: function(value) {
-                                    return value.toLocaleString();
+                                    // Format with K/M notation for large numbers
+                                    if (value >= 1000000) {
+                                        return (value / 1000000).toFixed(1) + 'M';
+                                    } else if (value >= 1000) {
+                                        return (value / 1000).toFixed(0) + 'K';
+                                    }
+                                    return value.toLocaleString('id-ID');
                                 }
+                            },
+                            // Enhanced axis styling
+                            border: {
+                                display: false
                             }
                         },
                         x: {
@@ -488,82 +619,327 @@
                             },
                             ticks: {
                                 font: {
-                                    size: 12,
-                                    weight: '600'
+                                    size: 13,
+                                    weight: '700',
+                                    family: 'system-ui, -apple-system, sans-serif'
                                 },
                                 color: '#374151',
-                                padding: 10
+                                padding: 15,
+                                maxRotation: 0,
+                                minRotation: 0
+                            },
+                            border: {
+                                color: 'rgba(17, 24, 39, 0.1)',
+                                width: 2
                             }
+                        }
+                    },
+                    // Enhanced hover effects
+                    onHover: (event, elements, chart) => {
+                        chart.canvas.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+
+                        // Add subtle zoom effect on hover
+                        if (elements.length > 0) {
+                            chart.canvas.style.transform = 'scale(1.01)';
+                            chart.canvas.style.transition = 'transform 0.2s ease';
+                        } else {
+                            chart.canvas.style.transform = 'scale(1)';
+                        }
+                    },
+                    // Click interaction
+                    onClick: (event, elements, chart) => {
+                        if (elements.length > 0) {
+                            const element = elements[0];
+                            const datasetIndex = element.datasetIndex;
+                            const dataIndex = element.index;
+                            const value = chart.data.datasets[datasetIndex].data[dataIndex];
+                            const label = chart.data.labels[dataIndex];
+
+                            // Add click feedback animation
+                            chart.update('none');
+                            setTimeout(() => {
+                                chart.update();
+                            }, 200);
+
+                            console.log(
+                                `Clicked: ${chart.data.datasets[datasetIndex].label} - ${label}: ${value}`
+                            );
                         }
                     }
                 }
             });
 
-            // Revenue Chart
+            // Kategori Chart
             const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
+
+            // Enhanced color palette dengan gradient effects
+            const createGradient = (ctx, color1, color2) => {
+                const gradient = ctx.createRadialGradient(150, 150, 0, 150, 150, 150);
+                gradient.addColorStop(0, color1);
+                gradient.addColorStop(0.7, color2);
+                gradient.addColorStop(1, color1);
+                return gradient;
+            };
+
+            // Dynamic colors dengan gradient
+            const gradientColors = [
+                createGradient(kategoriCtx, 'rgba(59, 130, 246, 0.9)', 'rgba(59, 130, 246, 0.6)'), // Blue
+                createGradient(kategoriCtx, 'rgba(16, 185, 129, 0.9)', 'rgba(16, 185, 129, 0.6)'), // Green
+                createGradient(kategoriCtx, 'rgba(245, 158, 11, 0.9)', 'rgba(245, 158, 11, 0.6)'), // Amber
+                createGradient(kategoriCtx, 'rgba(139, 92, 246, 0.9)', 'rgba(139, 92, 246, 0.6)'), // Purple
+                createGradient(kategoriCtx, 'rgba(236, 72, 153, 0.9)', 'rgba(236, 72, 153, 0.6)'), // Pink
+                createGradient(kategoriCtx, 'rgba(239, 68, 68, 0.9)', 'rgba(239, 68, 68, 0.6)'), // Red
+                createGradient(kategoriCtx, 'rgba(14, 165, 233, 0.9)', 'rgba(14, 165, 233, 0.6)'), // Sky
+                createGradient(kategoriCtx, 'rgba(168, 85, 247, 0.9)', 'rgba(168, 85, 247, 0.6)'), // Violet
+            ];
+
+            // Enhanced hover colors
+            const hoverColors = [
+                'rgba(59, 130, 246, 1)', // Blue
+                'rgba(16, 185, 129, 1)', // Green  
+                'rgba(245, 158, 11, 1)', // Amber
+                'rgba(139, 92, 246, 1)', // Purple
+                'rgba(236, 72, 153, 1)', // Pink
+                'rgba(239, 68, 68, 1)', // Red
+                'rgba(14, 165, 233, 1)', // Sky
+                'rgba(168, 85, 247, 1)', // Violet
+            ];
+
             new Chart(kategoriCtx, {
-                type: 'pie',
+                type: 'doughnut', // Changed to doughnut for modern look
                 data: {
                     labels: @json($grafik_pie['labels']),
                     datasets: [{
                         data: @json($grafik_pie['data']),
-                        backgroundColor: [
-                            'rgba(59, 130, 246, 0.8)', // Blue
-                            'rgba(16, 185, 129, 0.8)', // Green
-                            'rgba(245, 158, 11, 0.8)', // Amber
-                            'rgba(139, 92, 246, 0.8)', // Purple
-                            'rgba(236, 72, 153, 0.8)', // Pink
-                            'rgba(156, 163, 175, 0.8)', // Gray
-                        ],
+                        backgroundColor: gradientColors,
                         borderColor: [
                             'rgba(59, 130, 246, 1)',
                             'rgba(16, 185, 129, 1)',
                             'rgba(245, 158, 11, 1)',
                             'rgba(139, 92, 246, 1)',
+                            'rgba(236, 72, 153, 1)',
                             'rgba(239, 68, 68, 1)',
-                            'rgba(156, 163, 175, 1)',
+                            'rgba(14, 165, 233, 1)',
+                            'rgba(168, 85, 247, 1)',
                         ],
-                        borderWidth: 2,
-                        hoverBorderWidth: 3,
-                        hoverOffset: 4
+                        hoverBackgroundColor: hoverColors,
+                        borderWidth: 3,
+                        hoverBorderWidth: 5,
+                        hoverOffset: 15,
+                        borderRadius: 8,
+                        hoverBorderRadius: 12,
+                        // Enhanced spacing
+                        spacing: 3,
+                        // Segment styling
+                        borderAlign: 'inner',
+                        borderJoinStyle: 'round'
                     }]
                 },
                 options: {
                     layout: {
-                        padding: 20
+                        padding: {
+                            top: 20,
+                            bottom: 30,
+                            left: 20,
+                            right: 20
+                        }
                     },
                     responsive: true,
                     maintainAspectRatio: false,
+                    // Enhanced interactions
+                    interaction: {
+                        intersect: true,
+                        mode: 'point'
+                    },
                     plugins: {
                         legend: {
                             position: 'bottom',
+                            align: 'center',
                             labels: {
                                 usePointStyle: true,
-                                padding: 20,
+                                pointStyle: 'rectRounded',
+                                padding: 25,
                                 font: {
-                                    size: 12
+                                    size: 14,
+                                    weight: '600',
+                                    family: 'system-ui, -apple-system, sans-serif'
+                                },
+                                color: '#374151',
+                                boxWidth: 18,
+                                boxHeight: 18,
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        const dataset = data.datasets[0];
+                                        const total = dataset.data.reduce((a, b) => a + b, 0);
+
+                                        return data.labels.map((label, i) => {
+                                            const value = dataset.data[i];
+
+                                            return {
+                                                text: `${label}`,
+                                                fillStyle: dataset.backgroundColor[i],
+                                                strokeStyle: dataset.borderColor[i],
+                                                lineWidth: dataset.borderWidth,
+                                                pointStyle: 'rectRounded',
+                                                hidden: isNaN(value) || chart.getDatasetMeta(0)
+                                                    .data[i].hidden,
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
                                 }
+                            },
+                            onHover: (event, legendItem, legend) => {
+                                legend.chart.canvas.style.cursor = 'pointer';
+                            },
+                            onLeave: (event, legendItem, legend) => {
+                                legend.chart.canvas.style.cursor = 'default';
+                            },
+                            onClick: (event, legendItem, legend) => {
+                                // Enhanced click animation
+                                const index = legendItem.index;
+                                const ci = legend.chart;
+                                const meta = ci.getDatasetMeta(0);
+                                const segment = meta.data[index];
+
+                                // Toggle with animation
+                                segment.hidden = !segment.hidden;
+                                ci.update('active');
                             }
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: 'white',
-                            bodyColor: 'white',
-                            borderColor: 'rgba(255, 255, 255, 0.1)',
-                            borderWidth: 1,
+                            backgroundColor: 'rgba(17, 24, 39, 0.98)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#e5e7eb',
+                            cornerRadius: 16,
+                            padding: 20,
+                            borderColor: 'rgba(75, 85, 99, 0.3)',
+                            borderWidth: 2,
+                            displayColors: true,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            boxWidth: 15,
+                            boxHeight: 15,
+                            boxPadding: 10,
+                            titleFont: {
+                                size: 16,
+                                weight: '700',
+                                family: 'system-ui, -apple-system, sans-serif'
+                            },
+                            bodyFont: {
+                                size: 14,
+                                weight: '600',
+                                family: 'system-ui, -apple-system, sans-serif'
+                            },
+                            // Enhanced callbacks
                             callbacks: {
+                                title: function(context) {
+                                    const label = context[0].label;
+                                    return `${label}`;
+                                },
                                 label: function(context) {
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((context.raw / total) * 100).toFixed(1);
-                                    return `${context.label}: ${context.raw} (${percentage}%)`;
+                                    const value = context.raw;
+
+                                    // Format value based on size
+                                    let formattedValue;
+                                    if (value >= 1000000) {
+                                        formattedValue = (value / 1000000).toFixed(1) + 'M';
+                                    } else if (value >= 1000) {
+                                        formattedValue = (value / 1000).toFixed(1) + 'K';
+                                    } else {
+                                        formattedValue = value.toLocaleString('id-ID');
+                                    }
+
+                                    return `Jumlah: ${formattedValue}`;
+                                },
+                                afterLabel: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const value = context.raw;
+                                    const rank = context.dataset.data
+                                        .map((val, idx) => ({
+                                            val,
+                                            idx
+                                        }))
+                                        .sort((a, b) => b.val - a.val)
+                                        .findIndex(item => item.idx === context.dataIndex) + 1;
+
+                                    return `Peringkat: #${rank} dari ${context.dataset.data.length}`;
                                 }
+                            },
+                            // Smooth tooltip animation
+                            animation: {
+                                duration: 400,
+                                easing: 'easeOutQuart'
                             }
                         }
                     },
-                    cutout: '0%',
+                    // Modern doughnut styling
+                    cutout: '65%',
+                    radius: '90%',
+
+                    // Enhanced animations
                     animation: {
                         animateRotate: true,
-                        duration: 1000
+                        animateScale: true,
+                        duration: 2000,
+                        easing: 'easeInOutQuart',
+                        delay: (context) => {
+                            return context.type === 'data' && context.mode === 'default' ?
+                                context.dataIndex * 300 :
+                                0;
+                        }
+                    },
+                    animations: {
+                        tension: {
+                            duration: 1000,
+                            easing: 'linear',
+                            from: 1,
+                            to: 0,
+                            loop: false
+                        }
+                    },
+
+                    // Enhanced hover effects
+                    onHover: (event, elements, chart) => {
+                        chart.canvas.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+
+                        // Scale effect on hover
+                        if (elements.length > 0) {
+                            chart.canvas.style.transform = 'scale(1.02)';
+                            chart.canvas.style.transition = 'transform 0.3s ease';
+                        } else {
+                            chart.canvas.style.transform = 'scale(1)';
+                        }
+                    },
+
+                    // Click interactions
+                    onClick: (event, elements, chart) => {
+                        if (elements.length > 0) {
+                            const element = elements[0];
+                            const dataIndex = element.index;
+                            const value = chart.data.datasets[0].data[dataIndex];
+                            const label = chart.data.labels[dataIndex];
+                            const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+
+                            // Pulse animation on click
+                            const segment = chart.getDatasetMeta(0).data[dataIndex];
+                            const originalOffset = segment.options.hoverOffset || 0;
+
+                            // Animate segment
+                            segment.options.hoverOffset = 25;
+                            chart.update('none');
+
+                            setTimeout(() => {
+                                segment.options.hoverOffset = originalOffset;
+                                chart.update();
+                            }, 300);
+
+                            console.log(`Clicked: ${label} - ${value} (${percentage}%)`);
+                        }
                     }
                 }
             });

@@ -48,6 +48,7 @@ class PesananController extends Controller
             'items' => 'required|array|min:1',
             'items.*.id_barang' => 'required|exists:barang,id_barang',
             'items.*.jumlah' => 'required|integer|min:1',
+            'tanggal' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
         DB::beginTransaction();
@@ -65,7 +66,8 @@ class PesananController extends Controller
 
             $pesanan->update([
                 'total_harga' => $request->total_harga,
-                'id_pelanggan' => $request->id_pelanggan
+                'id_pelanggan' => $request->id_pelanggan,
+                'tanggal' => $request->tanggal
             ]);
 
             foreach ($request->items as $item) {
@@ -107,7 +109,7 @@ class PesananController extends Controller
         // Ambil semua pesanan yang memiliki detail pesanan
         $pesanan = Pesanan::with('Pelanggan')
             ->has('detailPesanan')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('tanggal', 'desc')
             ->get();
 
         return view('list', compact('pesanan'));
@@ -129,7 +131,7 @@ class PesananController extends Controller
             ]);
         }
 
-        $pesanan = $query->paginate(10);
+        $pesanan = $query->orderBy('tanggal', 'desc')->paginate(10);
         // dd($pembelian);
         return view('admin.pesanan', [
             'pesanan' => $pesanan,
