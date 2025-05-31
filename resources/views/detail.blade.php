@@ -23,8 +23,12 @@
             <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
                 <h5 class="text-xl font-semibold">Detail Pesanan #{{ $pesanan->kode_pesanan }}</h5>
                 <a href="{{ route('pesanan.list') }}"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
-                    <i class="bi bi-arrow-left"></i> Kembali
+                    class="bg-[#2ab6a9] hover:bg-[#1e8379] text-white p-2 rounded-full text-sm font-medium flex items-center gap-2"><svg
+                        class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                        fill="currentColor">
+                        <path fill="currentColor"
+                            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H109.3l105.3-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
                 </a>
             </div>
 
