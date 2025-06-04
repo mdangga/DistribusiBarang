@@ -59,6 +59,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/pemasok', [PemasokController::class, 'tampilkanDataPemasok' ])->name('admin.pemasok');
         Route::post('/admin/pemasok/', [PemasokController::class, 'addDataPemasok'])->name('pemasok.add');
         Route::put('/admin/pemasok/{id_pemasok}', [PemasokController::class, 'updateDataPemasok'])->name('pemasok.update');
+    
+        Route::get('/admin/cetakBarang', [barangController::class, 'tampilkanDataCetakBarang'])->name('admin.cetakBarang');
+        Route::get('/barang/cetak-pdf', [barangController::class, 'cetakPDF'])->name('barang.cetakPDF');
     });
     // user
     Route::middleware('role:user')->group(function () {
