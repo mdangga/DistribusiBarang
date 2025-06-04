@@ -23,7 +23,7 @@
             <!-- Informasi Umum -->
             <div class="grid grid-cols-2 gap-4">
                 <!-- Input hidden untuk ID pesanan kosong yang akan diisi -->
-                <input type="hidden" name="kode_pesanan" value="{{ $emptyPesanan->kode_pesanan }}">
+                {{-- <input type="hidden" name="kode_pesanan" value="{{ $emptyPesanan->kode_pesanan }}"> --}}
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Nama Pelanggan</label>
                     <input type="hidden" name="id_pelanggan" id="id_pelanggan" value="">
