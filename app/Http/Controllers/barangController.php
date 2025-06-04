@@ -6,6 +6,7 @@ use App\Models\Barang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class barangController extends Controller
 {
@@ -140,4 +141,47 @@ class barangController extends Controller
 
         return response()->json($results);
     }
+
+    public function tampilkanDataCetakBarang(Request $request)
+    {
+        $user = Auth::user();
+
+        $barang = Barang::when($request->barang_id != null, function ($q) use ($request) {
+            return $q->where('id_barang', $request->barang_id);
+        })
+            ->when($request->filter_stok === 'minimum', function ($q) {
+                return $q->where('stok', '<', 50);
+            })
+            
+            ->paginate(10)
+            ->appends($request->all());
+
+        $kategori = Barang::select('kategori')->distinct()->get();
+        // dd($kategori);
+        return view('admin.cetakBarang', [
+            'barang' => $barang,
+            'username' => $user->username,
+            'email' => $user->email
+        ]);
+    }
+
+    public function cetakPDF(Request $request)
+    {
+        $filterStok = $request->input('filter_stok');
+
+        $barang = Barang::query()
+            ->when($filterStok == 'minimum', function ($q) {
+                return $q->where('stok', '<', 50);
+            })
+            ->orderBy('id_barang', 'asc')
+            ->get();
+
+        $pdf = Pdf::loadView('admin.pdfBarang', [
+            'barang' => $barang,
+            'filter_stok' => $filterStok,
+        ]);
+
+        return $pdf->stream('laporan-barang.pdf');
+    }
+
 }
