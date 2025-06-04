@@ -29,8 +29,7 @@ class barangController extends Controller
             ->paginate(10)
             ->appends($request->all());
             
-        $kategori = Barang::select('kategori')->distinct()->get();
-        // dd($kategori);
+        $kategori = ['Cat', 'Semen', 'Perkakas', 'Kayu', 'Gypsum', 'Besi', 'Keramik', 'Material', 'Alat Bantu', 'Pelapis', 'Perekat'];
         return view('admin.barang', [
             'barang' => $barang,
             'kategori' => $kategori,
