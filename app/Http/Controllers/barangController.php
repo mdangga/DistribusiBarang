@@ -25,16 +25,12 @@ class barangController extends Controller
             ->when($request->kategori != null, function ($q) use ($request) {
                 return $q->where('kategori', $request->kategori);
             })
-            ->when($request->filter_stok === 'minimum', function ($q) {
-                return $q->where('stok', '<', 50);
-            })
             
             ->orderBy($sortBy == 'total_pengiriman' ? 'total_pengiriman' : $sortBy, $sortOrder)
             ->paginate(10)
             ->appends($request->all());
-
-        $kategori = Barang::select('kategori')->distinct()->get();
-        // dd($kategori);
+            
+        $kategori = ['Cat', 'Semen', 'Perkakas', 'Kayu', 'Gypsum', 'Besi', 'Keramik', 'Material', 'Alat Bantu', 'Pelapis', 'Perekat'];
         return view('admin.barang', [
             'barang' => $barang,
             'kategori' => $kategori,

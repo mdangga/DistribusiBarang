@@ -191,8 +191,8 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
                         <option value="">ALL</option>
                         @foreach ($kategori as $ktg)
-                            <option value="{{ $ktg->kategori }}"
-                                {{ request('kategori') == $ktg->kategori ? 'selected' : '' }}>{{ $ktg->kategori }}
+                            <option value="{{ $ktg }}"
+                                {{ request('kategori') == $ktg ? 'selected' : '' }}>{{ $ktg }}
                             </option>
                         @endforeach
                     </select>
@@ -345,10 +345,9 @@
                 <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900">Kategori</label>
                 <select name="kategori" id="kategori"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
-                    <option value="Cat">Cat</option>
-                    <option value="Semen">Semen</option>
-                    <option value="Tools">Tools</option>
-                    <option value="Pasir">Pasir</option>
+                    @foreach($kategori as $ktg)
+                        <option value="{{ $ktg }}">{{ $ktg }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -407,10 +406,9 @@
                     <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900">Kategori</label>
                     <select name="kategori" id="kategori"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
-                        <option value="Cat" @if ($item->kategori === 'Cat') selected @endif>Cat</option>
-                        <option value="Semen" @if ($item->kategori === 'Semen') selected @endif>Semen</option>
-                        <option value="Tools" @if ($item->kategori === 'Tools') selected @endif>Tools</option>
-                        <option value="Pasir" @if ($item->kategori === 'Pasir') selected @endif>Pasir</option>
+                        @foreach($kategori as $ktg)
+                            <option value="{{ $ktg }}" @selected($item->kategori === $ktg)>{{ $ktg }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
