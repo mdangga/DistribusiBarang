@@ -37,7 +37,7 @@ class DashboardController extends Controller
         // dump($startBulanSebelumnya, $endBulanSebelumnya, $startBulanSekarang, $endBulanSekarang);
         // pesanan
         $psnBulanSekarang = Pesanan::whereBetween('tanggal', [$startBulanSekarang, $endBulanSekarang]);
-        $pesananBulanSekarang = $psnBulanSekarang->count();
+        $pesananBulanSekarang = $psnBulanSekarang->has('detailPesanan')->count();
         $pendapatanBulanSekarang = $psnBulanSekarang->sum('total_harga');
         // pembelian
         $pblBulanSekarang = Pembelian::whereBetween('tanggal', [$startBulanSekarang, $endBulanSekarang]);
