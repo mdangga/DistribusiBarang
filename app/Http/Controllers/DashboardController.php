@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetailPesanan;
+use App\Helpers\PieGraphDashboard;
 use App\Models\Pembelian;
 use App\Models\Pesanan;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -74,7 +73,7 @@ class DashboardController extends Controller
         // net profit bulan ini
         $netProfitBulanIni = $pendapatanBulanSekarang - $pengeluaranBulanSekarang;
         $ProfitBulanLalu = $pendapatanBulanSebelumnya - $pengeluaranBulanSebelumnya;
-        
+
         // net profit dengan bulan sebelumnya
         $netProfitMoM = $netProfitBulanIni - $ProfitBulanLalu;
         if ($ProfitBulanLalu == 0) {
@@ -102,13 +101,12 @@ class DashboardController extends Controller
 
         if ($rataRataProfitTigaBulan == 0) {
             $persentaseProfitTigaBulan = $netProfitBulanIni > 0 ? 100 : 0;
-        }else {
+        } else {
             $persentaseProfitTigaBulan = (($netProfitBulanIni - $rataRataProfitTigaBulan) / abs($rataRataProfitTigaBulan)) * 100;
         }
 
         // net profit dengan 1 tahun sebelumnya
         $ProfitSatuTahun = [];
-
         for ($i = 12; $i >= 1; $i--) {
             $start = $now->copy()->subMonthNoOverflow($i)->startOfMonth();
             $end = $now->copy()->subMonthNoOverflow($i)->endOfMonth();
@@ -125,7 +123,7 @@ class DashboardController extends Controller
 
         if ($rataRataProfitSatuTahun == 0) {
             $persentaseProfitSatuTahun = $netProfitBulanIni > 0 ? 100 : 0;
-        }else {
+        } else {
             $persentaseProfitSatuTahun = (($netProfitBulanIni - $rataRataProfitSatuTahun) / abs($rataRataProfitSatuTahun)) * 100;
         }
 
@@ -199,32 +197,11 @@ class DashboardController extends Controller
         }
 
         // --- Data Kategori Barang Paling Banyak Dibeli ---
-        $allKategori = DetailPesanan::selectRaw('
-            barang.kategori,
-            SUM(detail_pesanan.jumlah) as total_terjual
-        ')
-            ->join('barang', 'detail_pesanan.id_barang', '=', 'barang.id_barang')
-            ->whereBetween('detail_pesanan.created_at', [$startBulanSekarang, $endBulanSekarang])
-            ->groupBy('barang.kategori')
-            ->orderByDesc('total_terjual')
-            ->get();
-
-        // Pisahkan 3 teratas dan gabungkan sisanya sebagai "Other"
-        $topKategori = $allKategori->take(5);
-        $otherKategori = $allKategori->slice(5);
-
-        // Hitung total untuk "Other"
-        $totalOther = $otherKategori->sum('total_terjual');
-
-        // Format data untuk chart
-        $labelsKategori = $topKategori->pluck('kategori')->toArray();
-        $dataKategori = $topKategori->pluck('total_terjual')->toArray();
-
-        // Tambahkan "Other" jika ada
-        if ($totalOther > 0) {
-            $labelsKategori[] = 'Other';
-            $dataKategori[] = $totalOther;
-        }
+        $startSatuTahun = $now->copy()->subMonthNoOverflow(12)->startOfMonth();
+        $endSatuTahun = $now->copy()->endOfMonth();
+        $grafikPieBulanSekarang = PieGraphDashboard::getKategoriData($startBulanSekarang, $endBulanSekarang);
+        $grafikPieBulanSebelumnya = PieGraphDashboard::getKategoriData($startBulanSebelumnya, $endBulanSebelumnya);
+        $grafikPieSatutahun = PieGraphDashboard::getKategoriData($startSatuTahun, $endSatuTahun);
 
         // Data untuk grafik
         $grafikLine = [
@@ -232,18 +209,21 @@ class DashboardController extends Controller
             'pesanan' => $pesananData,
             'pembelian' => $pembelianData,
         ];
+        
         $grafikPie = [
-            'labels' => $labelsKategori,
-            'data' => $dataKategori,
+            'bulan_sekarang' => $grafikPieBulanSekarang,
+            'bulan_sebelumnya' => $grafikPieBulanSebelumnya,
+            'Satu_tahun' => $grafikPieSatutahun,
         ];
-
+        
+        // dd($grafikPie);
         // Data untuk list pesanan
         $daftarPesanan = Pesanan::with('Pelanggan')
             ->has('detailPesanan')
             ->orderBy('tanggal', 'desc')
             ->take(5)
             ->get();
-        
+
         // Data untuk list aktivitas
         $tabelPembelian = Pembelian::select('kode_pembelian as kode', 'total_harga', 'tanggal', DB::raw("'pembelian' as jenis"))->get();
         $tabelPesanan = Pesanan::select('kode_pesanan as kode', 'total_harga', 'tanggal', DB::raw("'pesanan' as jenis"))->has('detailPesanan')->get();

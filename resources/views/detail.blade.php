@@ -22,7 +22,7 @@
         <div class="bg-white shadow-lg rounded-xl overflow-hidden">
             <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
                 <h5 class="text-xl font-semibold">Detail Pesanan #{{ $pesanan->kode_pesanan }}</h5>
-                <a href="{{ route('pesanan.list') }}"
+                <a href="{{ route('pesanan.index') }}"
                     class="bg-[#2ab6a9] hover:bg-[#1e8379] text-white p-2 rounded-full text-sm font-medium flex items-center gap-2"><svg
                         class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                         fill="currentColor">

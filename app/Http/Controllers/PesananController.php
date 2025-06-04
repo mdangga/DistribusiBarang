@@ -17,23 +17,9 @@ class PesananController extends Controller
      */
     public function index()
     {
-        // Cari pesanan kosong yang tersedia (pesanan tanpa detail)
-        $emptyPesanan = Pesanan::whereDoesntHave('detailPesanan')
-            ->where('total_harga', 0)
-            ->first();
-
-        // Jika tidak ada pesanan kosong, buat satu
-        if (!$emptyPesanan) {
-            $emptyPesanan = Pesanan::create([
-                'total_harga' => 0,
-                'id_pelanggan' => null
-            ]);
-        }
-
         // Ambil daftar barang untuk dropdown
         $barang = Barang::all();
-        // dd($emptyPesanan);
-        return view('form', compact('emptyPesanan', 'barang'));
+        return view('form', compact('barang'));
     }
 
     /**
@@ -41,21 +27,16 @@ class PesananController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
-            'kode_pesanan' => 'required|exists:pesanan,kode_pesanan',
             'id_pelanggan' => 'nullable|exists:pelanggan,id_pelanggan',
             'items' => 'required|array|min:1',
             'items.*.id_barang' => 'required|exists:barang,id_barang',
             'items.*.jumlah' => 'required|integer|min:1',
-            'tanggal' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
         DB::beginTransaction();
 
         try {
-            $pesanan = Pesanan::findOrFail($request->kode_pesanan);
-
             // Validasi stok terlebih dahulu
             foreach ($request->items as $item) {
                 $barang = Barang::findOrFail($item['id_barang']);
@@ -64,10 +45,9 @@ class PesananController extends Controller
                 }
             }
 
-            $pesanan->update([
+            $pesanan = Pesanan::create([
                 'total_harga' => $request->total_harga,
-                'id_pelanggan' => $request->id_pelanggan,
-                'tanggal' => $request->tanggal
+                'id_pelanggan' => $request->id_pelanggan
             ]);
 
             foreach ($request->items as $item) {
@@ -80,7 +60,7 @@ class PesananController extends Controller
                     'jumlah' => $item['jumlah'],
                     'harga' => $barang->harga,
                     'id_barang' => $item['id_barang'],
-                    'kode_pesanan' => $request->kode_pesanan
+                    'kode_pesanan' => $pesanan->kode_pesanan
                 ]);
 
                 // Kurangi stok barang
@@ -90,7 +70,7 @@ class PesananController extends Controller
 
             DB::commit();
 
-            return redirect()->route('pesanan.list')
+            return redirect()->route('pesanan.show', $pesanan->kode_pesanan)
                 ->with('success', 'Pesanan berhasil disimpan dan stok barang diperbarui!');
         } catch (\Exception $e) {
             DB::rollBack();

@@ -672,274 +672,178 @@
             // Kategori Chart
             const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
 
-            // Enhanced color palette dengan gradient effects
-            const createGradient = (ctx, color1, color2) => {
-                const gradient = ctx.createRadialGradient(150, 150, 0, 150, 150, 150);
-                gradient.addColorStop(0, color1);
-                gradient.addColorStop(0.7, color2);
-                gradient.addColorStop(1, color1);
-                return gradient;
-            };
+            // Ambil data dari PHP
+            const grafikPieData = @json($grafik_pie);
 
-            // Dynamic colors dengan gradient
-            const gradientColors = [
-                createGradient(kategoriCtx, 'rgba(59, 130, 246, 0.9)', 'rgba(59, 130, 246, 0.6)'), // Blue
-                createGradient(kategoriCtx, 'rgba(16, 185, 129, 0.9)', 'rgba(16, 185, 129, 0.6)'), // Green
-                createGradient(kategoriCtx, 'rgba(245, 158, 11, 0.9)', 'rgba(245, 158, 11, 0.6)'), // Amber
-                createGradient(kategoriCtx, 'rgba(139, 92, 246, 0.9)', 'rgba(139, 92, 246, 0.6)'), // Purple
-                createGradient(kategoriCtx, 'rgba(236, 72, 153, 0.9)', 'rgba(236, 72, 153, 0.6)'), // Pink
-                createGradient(kategoriCtx, 'rgba(239, 68, 68, 0.9)', 'rgba(239, 68, 68, 0.6)'), // Red
-                createGradient(kategoriCtx, 'rgba(14, 165, 233, 0.9)', 'rgba(14, 165, 233, 0.6)'), // Sky
-                createGradient(kategoriCtx, 'rgba(168, 85, 247, 0.9)', 'rgba(168, 85, 247, 0.6)'), // Violet
+            // Warna dasar
+            const colors = [
+                'rgba(59, 130, 246, 0.8)', // Blue
+                'rgba(16, 185, 129, 0.8)', // Green
+                'rgba(245, 158, 11, 0.8)', // Amber
+                'rgba(139, 92, 246, 0.8)', // Purple
+                'rgba(236, 72, 153, 0.8)', // Pink
+                'rgba(239, 68, 68, 0.8)', // Red
+                'rgba(14, 165, 233, 0.8)', // Sky
+                'rgba(168, 85, 247, 0.8)', // Violet
             ];
 
-            // Enhanced hover colors
-            const hoverColors = [
-                'rgba(59, 130, 246, 1)', // Blue
-                'rgba(16, 185, 129, 1)', // Green  
-                'rgba(245, 158, 11, 1)', // Amber
-                'rgba(139, 92, 246, 1)', // Purple
-                'rgba(236, 72, 153, 1)', // Pink
-                'rgba(239, 68, 68, 1)', // Red
-                'rgba(14, 165, 233, 1)', // Sky
-                'rgba(168, 85, 247, 1)', // Violet
+            const borderColors = [
+                'rgba(59, 130, 246, 1)',
+                'rgba(16, 185, 129, 1)',
+                'rgba(245, 158, 11, 1)',
+                'rgba(139, 92, 246, 1)',
+                'rgba(236, 72, 153, 1)',
+                'rgba(239, 68, 68, 1)',
+                'rgba(14, 165, 233, 1)',
+                'rgba(168, 85, 247, 1)',
             ];
 
-            new Chart(kategoriCtx, {
-                type: 'doughnut', // Changed to doughnut for modern look
+            // Siapkan datasets
+            let datasets = [];
+            let allLabels = [];
+
+            // Mapping periode
+            const periods = [{
+                    key: 'bulan_sekarang',
+                    label: 'Bulan Sekarang',
+                    opacity: 0.9
+                },
+                {
+                    key: 'bulan_sebelumnya',
+                    label: 'Bulan Sebelumnya',
+                    opacity: 0.7
+                },
+                {
+                    key: 'Satu_tahun',
+                    label: 'Satu Tahun',
+                    opacity: 0.5
+                }
+            ];
+
+            // Proses setiap periode
+            periods.forEach((period, periodIndex) => {
+                const data = grafikPieData[period.key];
+
+                if (data && data.labels && data.data && data.labels.length > 0) {
+                    // Filter data yang valid (> 0)
+                    const validEntries = data.labels.map((label, index) => ({
+                        label: label,
+                        value: parseInt(data.data[index]) || 0
+                    })).filter(entry => entry.value > 0);
+
+                    if (validEntries.length > 0) {
+                        const labels = validEntries.map(entry => entry.label);
+                        const values = validEntries.map(entry => entry.value);
+
+                        // Simpan labels untuk referensi (gunakan yang pertama sebagai master)
+                        if (allLabels.length === 0) {
+                            allLabels = labels;
+                        }
+
+                        // Buat warna dengan opacity sesuai periode
+                        const datasetColors = colors.slice(0, values.length).map(color =>
+                            color.replace(/0\.\d+/, period.opacity.toString())
+                        );
+
+                        datasets.push({
+                            label: period.label,
+                            data: values,
+                            backgroundColor: datasetColors,
+                            borderColor: borderColors.slice(0, values.length),
+                            borderWidth: 2,
+                            hoverBorderWidth: 3,
+                            hoverOffset: 8,
+                            _originalLabels: labels // Simpan labels asli
+                        });
+                    }
+                }
+            });
+
+            // Fallback jika tidak ada data
+            if (datasets.length === 0) {
+                allLabels = ['Tidak Ada Data'];
+                datasets = [{
+                    label: 'Tidak Ada Data',
+                    data: [1],
+                    backgroundColor: ['rgba(156, 163, 175, 0.5)'],
+                    borderColor: ['rgba(156, 163, 175, 1)'],
+                    borderWidth: 2
+                }];
+            }
+
+            // Buat chart
+            const chart = new Chart(kategoriCtx, {
+                type: 'pie',
                 data: {
-                    labels: @json($grafik_pie['labels']),
-                    datasets: [{
-                        data: @json($grafik_pie['data']),
-                        backgroundColor: gradientColors,
-                        borderColor: [
-                            'rgba(59, 130, 246, 1)',
-                            'rgba(16, 185, 129, 1)',
-                            'rgba(245, 158, 11, 1)',
-                            'rgba(139, 92, 246, 1)',
-                            'rgba(236, 72, 153, 1)',
-                            'rgba(239, 68, 68, 1)',
-                            'rgba(14, 165, 233, 1)',
-                            'rgba(168, 85, 247, 1)',
-                        ],
-                        hoverBackgroundColor: hoverColors,
-                        borderWidth: 3,
-                        hoverBorderWidth: 5,
-                        hoverOffset: 15,
-                        borderRadius: 8,
-                        hoverBorderRadius: 12,
-                        // Enhanced spacing
-                        spacing: 3,
-                        // Segment styling
-                        borderAlign: 'inner',
-                        borderJoinStyle: 'round'
-                    }]
+                    labels: allLabels,
+                    datasets: datasets
                 },
                 options: {
-                    layout: {
-                        padding: {
-                            top: 20,
-                            bottom: 30,
-                            left: 20,
-                            right: 20
-                        }
-                    },
                     responsive: true,
                     maintainAspectRatio: false,
-                    // Enhanced interactions
-                    interaction: {
-                        intersect: true,
-                        mode: 'point'
+                    layout: {
+                        padding: 20
                     },
                     plugins: {
                         legend: {
                             position: 'bottom',
-                            align: 'center',
                             labels: {
+                                padding: 20,
                                 usePointStyle: true,
-                                pointStyle: 'rectRounded',
-                                padding: 25,
                                 font: {
-                                    size: 14,
-                                    weight: '600',
-                                    family: 'system-ui, -apple-system, sans-serif'
+                                    size: 12,
+                                    weight: '600'
                                 },
-                                color: '#374151',
-                                boxWidth: 18,
-                                boxHeight: 18,
                                 generateLabels: function(chart) {
-                                    const data = chart.data;
-                                    if (data.labels.length && data.datasets.length) {
-                                        const dataset = data.datasets[0];
-                                        const total = dataset.data.reduce((a, b) => a + b, 0);
+                                    const labels = [];
 
-                                        return data.labels.map((label, i) => {
-                                            const value = dataset.data[i];
-
-                                            return {
-                                                text: `${label}`,
-                                                fillStyle: dataset.backgroundColor[i],
-                                                strokeStyle: dataset.borderColor[i],
-                                                lineWidth: dataset.borderWidth,
-                                                pointStyle: 'rectRounded',
-                                                hidden: isNaN(value) || chart.getDatasetMeta(0)
-                                                    .data[i].hidden,
-                                                index: i
-                                            };
+                                    // Tambahkan legend untuk setiap dataset (periode)
+                                    chart.data.datasets.forEach((dataset, index) => {
+                                        labels.push({
+                                            text: dataset.label,
+                                            fillStyle: dataset.backgroundColor[0],
+                                            strokeStyle: dataset.borderColor[0],
+                                            lineWidth: dataset.borderWidth,
+                                            hidden: chart.getDatasetMeta(index).hidden,
+                                            datasetIndex: index
                                         });
-                                    }
-                                    return [];
+                                    });
+
+                                    return labels;
                                 }
                             },
-                            onHover: (event, legendItem, legend) => {
-                                legend.chart.canvas.style.cursor = 'pointer';
-                            },
-                            onLeave: (event, legendItem, legend) => {
-                                legend.chart.canvas.style.cursor = 'default';
-                            },
-                            onClick: (event, legendItem, legend) => {
-                                // Enhanced click animation
-                                const index = legendItem.index;
-                                const ci = legend.chart;
-                                const meta = ci.getDatasetMeta(0);
-                                const segment = meta.data[index];
-
-                                // Toggle with animation
-                                segment.hidden = !segment.hidden;
-                                ci.update('active');
+                            onClick: function(e, legendItem) {
+                                const index = legendItem.datasetIndex;
+                                const meta = chart.getDatasetMeta(index);
+                                meta.hidden = meta.hidden === null ? !chart.data.datasets[index]
+                                    .hidden : null;
+                                chart.update();
                             }
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(17, 24, 39, 0.98)',
-                            titleColor: '#ffffff',
-                            bodyColor: '#e5e7eb',
-                            cornerRadius: 16,
-                            padding: 20,
-                            borderColor: 'rgba(75, 85, 99, 0.3)',
-                            borderWidth: 2,
-                            displayColors: true,
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            boxWidth: 15,
-                            boxHeight: 15,
-                            boxPadding: 10,
-                            titleFont: {
-                                size: 16,
-                                weight: '700',
-                                family: 'system-ui, -apple-system, sans-serif'
-                            },
-                            bodyFont: {
-                                size: 14,
-                                weight: '600',
-                                family: 'system-ui, -apple-system, sans-serif'
-                            },
-                            // Enhanced callbacks
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            cornerRadius: 8,
+                            padding: 12,
                             callbacks: {
                                 title: function(context) {
-                                    const label = context[0].label;
-                                    return `${label}`;
+                                    return context[0].label + ' - ' + context[0].dataset.label;
                                 },
                                 label: function(context) {
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                     const value = context.raw;
-
-                                    // Format value based on size
-                                    let formattedValue;
-                                    if (value >= 1000000) {
-                                        formattedValue = (value / 1000000).toFixed(1) + 'M';
-                                    } else if (value >= 1000) {
-                                        formattedValue = (value / 1000).toFixed(1) + 'K';
-                                    } else {
-                                        formattedValue = value.toLocaleString('id-ID');
-                                    }
-
-                                    return `Jumlah: ${formattedValue}`;
-                                },
-                                afterLabel: function(context) {
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const value = context.raw;
-                                    const rank = context.dataset.data
-                                        .map((val, idx) => ({
-                                            val,
-                                            idx
-                                        }))
-                                        .sort((a, b) => b.val - a.val)
-                                        .findIndex(item => item.idx === context.dataIndex) + 1;
+                                    const percentage = ((value / total) * 100).toFixed(1);
 
-                                    return `Peringkat: #${rank} dari ${context.dataset.data.length}`;
+                                    return `Jumlah: ${value.toLocaleString('id-ID')} (${percentage}%)`;
                                 }
-                            },
-                            // Smooth tooltip animation
-                            animation: {
-                                duration: 400,
-                                easing: 'easeOutQuart'
                             }
                         }
                     },
-                    // Modern doughnut styling
-                    cutout: '65%',
-                    radius: '90%',
-
-                    // Enhanced animations
+                    cutout: '20%',
                     animation: {
                         animateRotate: true,
-                        animateScale: true,
-                        duration: 2000,
-                        easing: 'easeInOutQuart',
-                        delay: (context) => {
-                            return context.type === 'data' && context.mode === 'default' ?
-                                context.dataIndex * 300 :
-                                0;
-                        }
-                    },
-                    animations: {
-                        tension: {
-                            duration: 1000,
-                            easing: 'linear',
-                            from: 1,
-                            to: 0,
-                            loop: false
-                        }
-                    },
-
-                    // Enhanced hover effects
-                    onHover: (event, elements, chart) => {
-                        chart.canvas.style.cursor = elements.length > 0 ? 'pointer' : 'default';
-
-                        // Scale effect on hover
-                        if (elements.length > 0) {
-                            chart.canvas.style.transform = 'scale(1.02)';
-                            chart.canvas.style.transition = 'transform 0.3s ease';
-                        } else {
-                            chart.canvas.style.transform = 'scale(1)';
-                        }
-                    },
-
-                    // Click interactions
-                    onClick: (event, elements, chart) => {
-                        if (elements.length > 0) {
-                            const element = elements[0];
-                            const dataIndex = element.index;
-                            const value = chart.data.datasets[0].data[dataIndex];
-                            const label = chart.data.labels[dataIndex];
-                            const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                            const percentage = ((value / total) * 100).toFixed(1);
-
-                            // Pulse animation on click
-                            const segment = chart.getDatasetMeta(0).data[dataIndex];
-                            const originalOffset = segment.options.hoverOffset || 0;
-
-                            // Animate segment
-                            segment.options.hoverOffset = 25;
-                            chart.update('none');
-
-                            setTimeout(() => {
-                                segment.options.hoverOffset = originalOffset;
-                                chart.update();
-                            }, 300);
-
-                            console.log(`Clicked: ${label} - ${value} (${percentage}%)`);
-                        }
+                        duration: 1500
                     }
                 }
             });
