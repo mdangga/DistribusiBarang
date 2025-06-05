@@ -10,14 +10,16 @@ use Illuminate\Http\Request;
 class authController extends Controller
 {
     // controller untuk dashboard
-    function showAdmin() {
+    function showAdmin()
+    {
         $user = Auth::user();
         return view('admin.dashboard', [
             'username' => $user->username,
             'email' => $user->email,
         ]);
     }
-    function showUser() {
+    function showUser()
+    {
         $user = Auth::user();
         return view('user.dashboard', [
             'username' => $user->username,
@@ -26,11 +28,13 @@ class authController extends Controller
     }
     // function signup (start)
     // menampilkan tampilan signup
-    function showSignup() {
+    function showSignup()
+    {
         return view('signup');
     }
     // submit signup
-    function submitSignup(Request $request) {
+    function submitSignup(Request $request)
+    {
         $user = new User();
 
         $user->username = $request->username;
@@ -40,8 +44,8 @@ class authController extends Controller
         $user->no_telpon = $request->no_telpon;
         $user->nama_perusahaan = $request->nama_perusahaan;
         $user->alamat = $request->alamat;
-        $user->save();    
-        
+        $user->save();
+
         return redirect()->route('signin.show')->with('success', 'Akun berhasil dibuat, silakan login!');
     }
     // function signup (end)
@@ -58,7 +62,8 @@ class authController extends Controller
         return view('signin');
     }
     // submit signin
-    function submitSignin(Request $request) {
+    function submitSignin(Request $request)
+    {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -66,9 +71,9 @@ class authController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            
+
             $user = Auth::user();
-            return match($user->role){
+            return match ($user->role) {
                 'admin' => redirect()->route('admin.show'),
                 default => redirect()->route('user.show'),
             };
@@ -78,15 +83,16 @@ class authController extends Controller
             'gagal' => 'Email atau password salah',
         ])->onlyInput('email');
     }
-    
+
     // function signin (end)
 
     // function signout (start)
-    function signOut(Request $request) {
+    function signOut(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
-        return redirect()->route('signin.show')
-        ->with('logout', 'Anda telah berhasil logout.');
+        return redirect()->route('signin.show', ['token' => env('ADMIN_ACCESS_TOKEN')])
+            ->with('logout', 'Anda telah berhasil logout.');
     }
     // function signout (end)
 }

@@ -1,3 +1,6 @@
+@php
+    use App\Helpers\SortHelper;
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -191,22 +194,22 @@
                     <thead class="text-gray-700 uppercase bg-gray-50">
                         <tr class="text-sm">
                             <th class="px-6 py-3">
-                                <a href="{{ sortUrl('id_barang') }}">ID {{ sortArrow('id_barang') }}</a>
+                                <a href="{{ SortHelper::sortUrl('id_barang') }}">ID {{ SortHelper::sortArrow('id_barang') }}</a>
                             </th>
                             <th class="px-6 py-3">
-                                <a href="{{ sortUrl('nama_barang') }}">Nama Barang {{ sortArrow('nama_barang') }}</a>
+                                <a href="{{ SortHelper::sortUrl('nama_barang') }}">Nama Barang {{ SortHelper::sortArrow('nama_barang') }}</a>
                             </th>
                             <th class="px-6 py-3">
-                                <a href="{{ sortUrl('kategori') }}">Kategori {{ sortArrow('kategori') }}</a>
+                                <a href="{{ SortHelper::sortUrl('kategori') }}">Kategori {{ SortHelper::sortArrow('kategori') }}</a>
                             </th>
                             <th class="px-6 py-3">
-                                <a href="{{ sortUrl('stok') }}">Stok {{ sortArrow('stok') }}</a>
+                                <a href="{{ SortHelper::sortUrl('stok') }}">Stok {{ SortHelper::sortArrow('stok') }}</a>
                             </th>
                             <th class="px-6 py-3">
-                                <a href="{{ sortUrl('satuan') }}">Satuan {{ sortArrow('satuan') }}</a>
+                                <a href="{{ SortHelper::sortUrl('satuan') }}">Satuan {{ SortHelper::sortArrow('satuan') }}</a>
                             </th>
                             <th class="px-6 py-3">
-                                <a href="{{ sortUrl('harga') }}">Harga {{ sortArrow('harga') }}</a>
+                                <a href="{{ SortHelper::sortUrl('harga') }}">Harga {{ SortHelper::sortArrow('harga') }}</a>
                             </th>
 
                         </tr>
