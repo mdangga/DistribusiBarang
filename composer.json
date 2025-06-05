@@ -30,7 +30,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/sorting_header.php"
+            
         ]
     },
     "autoload-dev": {

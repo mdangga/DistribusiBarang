@@ -13,24 +13,39 @@ class barangController extends Controller
     public function tampilkanDataBarang(Request $request)
     {
         $user = Auth::user();
-        $sortBy = $request->get('sort_by', 'id_barang'); // default: urut berdasarkan ID
-        $sortOrder = $request->get('sort_order', 'asc'); // default: naik
 
-        $barang = Barang::when($request->barang_id != null, function ($q) use ($request) {
-            return $q->where('id_barang', $request->barang_id);
-        })
-            ->when($request->nama != null, function ($q) use ($request) {
+        $query = Barang::query()
+            ->when($request->barang_id, function ($q) use ($request) {
+                return $q->where('id_barang', $request->barang_id);
+            })
+            ->when($request->nama, function ($q) use ($request) {
                 return $q->where('nama_barang', 'LIKE', "%{$request->nama}%");
             })
-            ->when($request->kategori != null, function ($q) use ($request) {
+            ->when($request->kategori, function ($q) use ($request) {
                 return $q->where('kategori', $request->kategori);
-            })
-            
-            ->orderBy($sortBy == 'total_pengiriman' ? 'total_pengiriman' : $sortBy, $sortOrder)
-            ->paginate(10)
-            ->appends($request->all());
-            
-        $kategori = ['Cat', 'Semen', 'Perkakas', 'Kayu', 'Gypsum', 'Besi', 'Keramik', 'Material', 'Alat Bantu', 'Pelapis', 'Perekat'];
+            });
+
+        // Terapkan sort hanya jika ada parameter sort_by dan sort_order
+        if ($request->has('sort_by') && $request->has('sort_order')) {
+            $query->orderBy($request->sort_by, $request->sort_order);
+        }
+
+        $barang = $query->paginate(10)->appends($request->all());
+
+        $kategori = [
+            'Cat',
+            'Semen',
+            'Perkakas',
+            'Kayu',
+            'Gypsum',
+            'Besi',
+            'Keramik',
+            'Material',
+            'Alat Bantu',
+            'Pelapis',
+            'Perekat'
+        ];
+
         return view('admin.barang', [
             'barang' => $barang,
             'kategori' => $kategori,
@@ -38,6 +53,7 @@ class barangController extends Controller
             'email' => $user->email
         ]);
     }
+
 
     public function addDataBarang(Request $request)
     {
@@ -116,7 +132,7 @@ class barangController extends Controller
         $barang = Barang::findOrFail($id_barang);
         $barang->stok += $request->stok;
         $barang->save();
-        
+
         return redirect()->route('admin.barang')->with('success', 'Data berhasil diupdate!');
     }
 
@@ -152,7 +168,7 @@ class barangController extends Controller
             ->when($request->filter_stok === 'minimum', function ($q) {
                 return $q->where('stok', '<', 50);
             })
-            
+
             ->paginate(10)
             ->appends($request->all());
 
@@ -183,5 +199,4 @@ class barangController extends Controller
 
         return $pdf->stream('laporan-barang.pdf');
     }
-
 }
