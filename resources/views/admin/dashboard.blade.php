@@ -293,7 +293,7 @@
 
                 <!-- Kategori Terlaris -->
                 <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-lg font-semibold mb-4">Kategori Terlaris Bulan Ini</h2>
+                    <h2 class="text-lg font-semibold mb-4">Kategori Terlaris</h2>
                     <div class="h-[450px] ">
                         <canvas id="kategoriChart" class=""></canvas>
                     </div>
@@ -318,9 +318,6 @@
                                         Kode Pesanan</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Tanggal</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Pelanggan</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -330,10 +327,10 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($daftar_pesanan as $p)
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-2">{{ $p->kode_pesanan }}</td>
+                                        <td class="px-6 py-3">{{ $p->kode_pesanan }}</td>
                                         {{-- <td class="px-6 py-2">{{ $p->tanggal }}</td> --}}
-                                        <td class="px-6 py-2">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
-                                        <td class="px-6 py-2 font-medium text-black">Rp.
+                                        <td class="px-6 py-3">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
+                                        <td class="px-6 py-3 font-medium text-black">Rp.
                                             {{ number_format($p->total_harga, 2, ',', '.') }}</td>
                                     </tr>
                                 @empty
@@ -698,10 +695,6 @@
                 'rgba(168, 85, 247, 1)',
             ];
 
-            // Siapkan datasets
-            let datasets = [];
-            let allLabels = [];
-
             // Mapping periode
             const periods = [{
                     key: 'bulan_sekarang',
@@ -720,26 +713,49 @@
                 }
             ];
 
-            // Proses setiap periode
+            // Fungsi untuk mengupdate tampilan chart
+            function updateChartDisplay() {
+                const activeDatasets = chart.data.datasets.filter((dataset, index) => {
+                    const meta = chart.getDatasetMeta(index);
+                    return !meta.hidden;
+                });
+
+                if (activeDatasets.length > 0) {
+                    // Gabungkan semua label dari dataset yang aktif
+                    const allLabels = new Set();
+                    activeDatasets.forEach(dataset => {
+                        dataset._originalLabels.forEach(label => {
+                            allLabels.add(label);
+                        });
+                    });
+
+                    // Update chart labels dengan urutan dari JSON
+                    chart.data.labels = Array.from(allLabels);
+                } else {
+                    chart.data.labels = ['Tidak Ada Data'];
+                }
+            }
+
+            // LANGKAH 1: Siapkan datasets dengan data sesuai urutan dari JSON
+            let datasets = [];
+
             periods.forEach((period, periodIndex) => {
                 const data = grafikPieData[period.key];
 
                 if (data && data.labels && data.data && data.labels.length > 0) {
-                    // Filter data yang valid (> 0)
-                    const validEntries = data.labels.map((label, index) => ({
-                        label: label,
-                        value: parseInt(data.data[index]) || 0
-                    })).filter(entry => entry.value > 0);
+                    // Buat array data sesuai urutan dari JSON
+                    const labels = [];
+                    const values = [];
 
-                    if (validEntries.length > 0) {
-                        const labels = validEntries.map(entry => entry.label);
-                        const values = validEntries.map(entry => entry.value);
-
-                        // Simpan labels untuk referensi (gunakan yang pertama sebagai master)
-                        if (allLabels.length === 0) {
-                            allLabels = labels;
+                    data.labels.forEach((label, index) => {
+                        const value = parseInt(data.data[index]) || 0;
+                        if (value > 0 && label && label.trim() !== '') {
+                            labels.push(label);
+                            values.push(value);
                         }
+                    });
 
+                    if (values.length > 0) {
                         // Buat warna dengan opacity sesuai periode
                         const datasetColors = colors.slice(0, values.length).map(color =>
                             color.replace(/0\.\d+/, period.opacity.toString())
@@ -753,7 +769,8 @@
                             borderWidth: 2,
                             hoverBorderWidth: 3,
                             hoverOffset: 8,
-                            _originalLabels: labels // Simpan labels asli
+                            _originalLabels: labels, // Simpan labels sesuai urutan dari JSON
+                            _periodKey: period.key
                         });
                     }
                 }
@@ -761,21 +778,21 @@
 
             // Fallback jika tidak ada data
             if (datasets.length === 0) {
-                allLabels = ['Tidak Ada Data'];
                 datasets = [{
                     label: 'Tidak Ada Data',
                     data: [1],
                     backgroundColor: ['rgba(156, 163, 175, 0.5)'],
                     borderColor: ['rgba(156, 163, 175, 1)'],
-                    borderWidth: 2
+                    borderWidth: 2,
+                    _originalLabels: ['Tidak Ada Data']
                 }];
             }
 
-            // Buat chart
+            // LANGKAH 3: Buat chart dengan konfigurasi yang diperbaiki
             const chart = new Chart(kategoriCtx, {
                 type: 'pie',
                 data: {
-                    labels: allLabels,
+                    labels: datasets.length > 0 ? datasets[0]._originalLabels : ['Tidak Ada Data'],
                     datasets: datasets
                 },
                 options: {
@@ -799,8 +816,14 @@
 
                                     // Tambahkan legend untuk setiap dataset (periode)
                                     chart.data.datasets.forEach((dataset, index) => {
+                                        // Tampilkan jumlah kategori untuk periode ini
+                                        const categoryCount = dataset._originalLabels ? dataset
+                                            ._originalLabels.length : 0;
+                                        const labelText =
+                                            `${dataset.label} (${categoryCount} kategori)`;
+
                                         labels.push({
-                                            text: dataset.label,
+                                            text: labelText,
                                             fillStyle: dataset.backgroundColor[0],
                                             strokeStyle: dataset.borderColor[0],
                                             lineWidth: dataset.borderWidth,
@@ -813,10 +836,15 @@
                                 }
                             },
                             onClick: function(e, legendItem) {
-                                const index = legendItem.datasetIndex;
-                                const meta = chart.getDatasetMeta(index);
-                                meta.hidden = meta.hidden === null ? !chart.data.datasets[index]
-                                    .hidden : null;
+                                const datasetIndex = legendItem.datasetIndex;
+                                const dataset = chart.data.datasets[datasetIndex];
+
+                                // Toggle visibility
+                                const meta = chart.getDatasetMeta(datasetIndex);
+                                meta.hidden = meta.hidden === null ? !dataset.hidden : null;
+
+                                // Update labels dan data chart berdasarkan dataset yang visible
+                                updateChartDisplay();
                                 chart.update();
                             }
                         },
@@ -828,7 +856,10 @@
                             padding: 12,
                             callbacks: {
                                 title: function(context) {
-                                    return context[0].label + ' - ' + context[0].dataset.label;
+                                    const dataset = context[0].dataset;
+                                    const labelIndex = context[0].dataIndex;
+                                    const categoryName = dataset._originalLabels[labelIndex];
+                                    return `${categoryName} - ${dataset.label}`;
                                 },
                                 label: function(context) {
                                     const value = context.raw;

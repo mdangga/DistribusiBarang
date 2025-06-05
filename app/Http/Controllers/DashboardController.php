@@ -221,7 +221,7 @@ class DashboardController extends Controller
         $daftarPesanan = Pesanan::with('Pelanggan')
             ->has('detailPesanan')
             ->orderBy('tanggal', 'desc')
-            ->take(5)
+            ->take(7)
             ->get();
 
         // Data untuk list aktivitas

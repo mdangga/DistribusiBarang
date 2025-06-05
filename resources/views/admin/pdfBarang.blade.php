@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <title>Laporan Barang</title>
+    
+    <head>
+        <title>Laporan Barang</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.svg') }}">
     <style>
         body {
             font-family: sans-serif;
