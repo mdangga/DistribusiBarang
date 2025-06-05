@@ -1,3 +1,8 @@
+@php
+    use App\Helpers\SortHelper;
+@endphp
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -199,17 +204,22 @@
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr class="text-sm">
-                            <th scope="col" class="px-6 py-3"><a href="{{ sortUrl('id_pelanggan') }}">ID
-                                    {{ sortArrow('id_pelanggan') }}</a></th>
-                            <th scope="col" class="px-6 py-3"><a href="{{ sortUrl('nama_pelanggan') }}">Nama
-                                    {{ sortArrow('nama_pelanggan') }}</a></th>
-                            <th scope="col" class="px-6 py-3"><a href="{{ sortUrl('no_telpon') }}">No
-                                    Telpon{{ sortArrow('no_telpon') }}</a></th>
                             <th scope="col" class="px-6 py-3"><a
-                                    href="{{ sortUrl('alamat') }}">Alamat{{ sortArrow('alamat') }}</a></th>
+                                    href="{{ SortHelper::sortUrl('id_pelanggan') }}">ID
+                                    {{ SortHelper::sortArrow('id_pelanggan') }}</a></th>
+                            <th scope="col" class="px-6 py-3"><a
+                                    href="{{ SortHelper::sortUrl('nama_pelanggan') }}">Nama
+                                    {{ SortHelper::sortArrow('nama_pelanggan') }}</a></th>
+                            <th scope="col" class="px-6 py-3"><a href="{{ SortHelper::sortUrl('no_telpon') }}">No
+                                    Telepon
+                                    {{ SortHelper::sortArrow('no_telpon') }}</a></th>
+                            <th scope="col" class="px-6 py-3"><a
+                                    href="{{ SortHelper::sortUrl('alamat') }}">Alamat
+                                    {{ SortHelper::sortArrow('alamat') }}</a></th>
                             <th scope="col" class="px-6 py-3">
-                                <a href="{{ sortUrl('total_pesanan') }}">Total Pesanan
-                                    {{ sortArrow('total_pesanan') }}</a>
+                                <a href="{{ SortHelper::sortUrl('total_pesanan') }}">Total Pesanan
+                                    {{ SortHelper::sortArrow('total_pesanan') }}</a>
+                            </th>
                             <th scope="col" class="px-6 py-3">Aksi</th>
                         </tr>
                     </thead>
