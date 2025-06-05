@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Laporan Barang</title>
+    <title>Laporan Pesanan</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.svg') }}">
     <style>
         body {
@@ -52,32 +52,39 @@
 </head>
 
 <body>
-    <h1>LAPORAN DATA BARANG</h1>
+    <h1>LAPORAN PESANAN</h1>
 
     <div class="info">
-        <h4>Total Data Barang: {{ $barang->count() }}</h4>
+        <h4>Total Data pesanan: {{ $pesanan->count() }}</h4>
+        <h4>
+            Filter Tanggal:
+            @if ($dateFrom && $dateTo)
+                {{ \Carbon\Carbon::parse($dateFrom)->format('d F Y') }} -
+                {{ \Carbon\Carbon::parse($dateTo)->format('d F Y') }}
+            @else
+                Semua
+            @endif
+        </h4>
         <h4>Tanggal Cetak: {{ \Carbon\Carbon::now()->format('d F Y') }}</h4>
     </div>
+
+
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Nama Barang</th>
-                <th>Kategori</th>
-                <th>Stok</th>
-                <th>Satuan</th>
-                <th>Harga</th>
+                <th>Kode Pesanan</th>
+                <th>Tanggal</th>
+                <th>Nama Pelanggan</th>
+                <th>Total Harga</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($barang as $item)
+            @foreach ($pesanan as $item)
                 <tr>
-                    <td>{{ 'BRG' . str_pad($item->id_barang, 3, '0', STR_PAD_LEFT) }}</td>
-                    <td>{{ $item->nama_barang }}</td>
-                    <td>{{ $item->kategori }}</td>
-                    <td>{{ $item->stok }}</td>
-                    <td>{{ $item->satuan }}</td>
-                    <td>Rp {{ number_format($item->harga, 2, ',', '.') }}</td>
+                    <td>{{ $item->kode_pesanan }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                    <td>{{ $item->pelanggan->nama_pelanggan ?? '-' }}</td>
+                    <td>Rp {{ number_format($item->total_harga, 2, ',', '.') }}</td>
                 </tr>
             @endforeach
         </tbody>

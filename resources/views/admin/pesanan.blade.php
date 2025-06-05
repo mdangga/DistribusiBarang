@@ -126,19 +126,17 @@
     <div class="p-4 sm:ml-64 mt-14">
         <div class="flex items-center justify-between ml-2 mb-2">
             <h1 class="text-2xl font-semibold flex items-center gap-2">
+                <!-- Ikon & Judul -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 640 512"
                     class="text-gray-700">
                     <path fill="currentColor"
                         d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.3l105.4 105.3c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z" />
                 </svg>
-                Manajemen Pesanan
+                Daftar Pembelian
             </h1>
-            <!-- Dummy button replacement -->
-            <div class="m-3 px-3 md:px-3.5 py-3">
-                <svg class="w-5 h-5 opacity-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                    fill="currentColor">
-                    <path d="M0 0h512v512H0z" />
-                </svg>
+
+            <div class="flex items-center mr-3">
+                <x-buttons.cetak-export :cetak="route('pesanan.cetak', request()->query())" :export="route('pesanan.export', request()->query())" />
             </div>
         </div>
 

@@ -127,8 +127,8 @@
         </div>
     </aside>
 
-    <div class="p-4 sm:ml-64 bg-gray-100">
-        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-14">
+    <div class="p-2 sm:ml-64 bg-gray-100">
+        <div class="p-2  rounded-lg mt-14">
             <!-- Top Stats Row -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <!-- Stat Card 1 -->

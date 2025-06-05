@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\BarangExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class barangController extends Controller
 {
@@ -23,6 +25,9 @@ class barangController extends Controller
             })
             ->when($request->kategori, function ($q) use ($request) {
                 return $q->where('kategori', $request->kategori);
+            })
+            ->when($request->filter_stok === 'minimum', function ($q) {
+                return $q->where('stok', '<', 50);
             });
 
         // Terapkan sort hanya jika ada parameter sort_by dan sort_order
@@ -158,45 +163,45 @@ class barangController extends Controller
         return response()->json($results);
     }
 
-    public function tampilkanDataCetakBarang(Request $request)
+    public function cetak(Request $request)
     {
-        $user = Auth::user();
-
-        $barang = Barang::when($request->barang_id != null, function ($q) use ($request) {
-            return $q->where('id_barang', $request->barang_id);
-        })
-            ->when($request->filter_stok === 'minimum', function ($q) {
-                return $q->where('stok', '<', 50);
-            })
-
-            ->paginate(10)
-            ->appends($request->all());
-
-        $kategori = Barang::select('kategori')->distinct()->get();
-        // dd($kategori);
-        return view('admin.cetakBarang', [
-            'barang' => $barang,
-            'username' => $user->username,
-            'email' => $user->email
-        ]);
-    }
-
-    public function cetakPDF(Request $request)
-    {
+        $nama = $request->input('nama');
+        $kategori = $request->input('kategori');
         $filterStok = $request->input('filter_stok');
 
         $barang = Barang::query()
-            ->when($filterStok == 'minimum', function ($q) {
-                return $q->where('stok', '<', 50);
+            ->when($nama, function ($query) use ($nama) {
+                return $query->where('nama_barang', 'like', '%' . $nama . '%');
+            })
+            ->when($kategori, function ($query) use ($kategori) {
+                return $query->where('kategori', $kategori);
+            })
+            ->when($filterStok == 'minimum', function ($query) {
+                return $query->where('stok', '<', 50);
             })
             ->orderBy('id_barang', 'asc')
             ->get();
 
         $pdf = Pdf::loadView('admin.pdfBarang', [
             'barang' => $barang,
+            'nama' => $nama,
+            'kategori' => $kategori,
             'filter_stok' => $filterStok,
         ]);
 
         return $pdf->stream('laporan-barang.pdf');
+    }
+
+        
+    public function export(Request $request)
+    {
+        return Excel::download(
+            new BarangExport(
+                $request->nama,
+                $request->kategori,
+                $request->filter_stok // pastikan key-nya sesuai dengan form
+            ),
+            'data-barang.xlsx'
+        );
     }
 }
