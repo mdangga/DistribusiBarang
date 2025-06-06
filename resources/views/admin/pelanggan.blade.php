@@ -170,11 +170,11 @@
             </h1>
             <button data-modal-target="addModalPelanggan" data-modal-toggle="addModalPelanggan" type="button"
                 class="inline-flex items-center justify-center sm:justify-start m-3 text-white bg-[#2ab6a9] hover:bg-[#1e8379] focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-full text-sm px-3 md:px-3.5 py-3 text-center transition">
-                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
                     <path
                         d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
                 </svg>
-                <span class="hidden sm:inline ml-2">Tambah Pelanggan</span>
+                <span class="hidden sm:inline ml-2">Tambah</span>
             </button>
         </div>
 

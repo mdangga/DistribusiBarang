@@ -160,6 +160,7 @@
 
         <div class="flex items-center justify-between ml-2 mb-2">
             <h1 class="text-2xl font-semibold flex items-center gap-2">
+                <!-- Ikon & Judul -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 640 512"
                     class="text-gray-700">
                     <path fill="currentColor"
@@ -167,19 +168,27 @@
                 </svg>
                 Manajemen Barang
             </h1>
-            <button data-modal-target="addModalBarang" data-modal-toggle="addModalBarang" type="button"
-                class="inline-flex items-center justify-center sm:justify-start m-3 text-white bg-[#2ab6a9] hover:bg-[#1e8379] focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-full text-sm px-3 md:px-3.5 py-3 text-center transition">
-                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-                    <path
-                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
-                </svg>
-                <span class="hidden sm:inline ml-2">Tambah Barang</span>
-            </button>
+
+            <!-- Tombol kanan -->
+            <div class="flex items-center mr-3">
+                <x-buttons.cetak-export :cetak="route('barang.cetak', request()->query())" :export="route('barang.export', request()->query())" />
+
+                <!-- Tambah Barang -->
+                <button data-modal-target="addModalBarang" data-modal-toggle="addModalBarang" type="button"
+                    class="inline-flex items-center justify-center text-white bg-[#2ab6a9] hover:bg-[#1e8379] focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-full text-sm px-3 md:px-3.5 py-3 text-center transition">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                        fill="currentColor">
+                        <path
+                            d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
+                    </svg>
+                    <span class="hidden sm:inline ml-2">Tambah</span>
+                </button>
+            </div>
         </div>
 
         <form action="" method="GET"
             class="block p-6 mb-5 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                     <label for="nama" class="block mb-1 text-sm font-medium text-gray-700">Filter by
                         Nama</label>
@@ -195,10 +204,20 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
                         <option value="">ALL</option>
                         @foreach ($kategori as $ktg)
-                            <option value="{{ $ktg }}"
-                                {{ request('kategori') == $ktg ? 'selected' : '' }}>{{ $ktg }}
+                            <option value="{{ $ktg }}" {{ request('kategori') == $ktg ? 'selected' : '' }}>
+                                {{ $ktg }}
                             </option>
                         @endforeach
+                    </select>
+                </div>
+
+                <div>
+                    <label for="filter_stok" class="block mb-1 text-sm font-medium text-gray-700">Stok</label>
+                    <select name="filter_stok"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Seluruh</option>
+                        <option value="minimum" {{ request('filter_stok') == 'minimum' ? 'selected' : '' }}>Minimum
+                            (&lt; 20)</option>
                     </select>
                 </div>
 
@@ -213,26 +232,32 @@
 
         <div class="border border-gray-200 rounded-lg overflow-hidden">
             <div class="relative overflow-x-auto">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                <table id="tabelBarang" class="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead class="text-gray-700 uppercase bg-gray-50">
                         <tr class="text-sm">
                             <th class="px-6 py-3">
-                                <a href="{{ SortHelper::sortUrl('id_barang') }}">ID {{ SortHelper::sortArrow('id_barang') }}</a>
+                                <a href="{{ SortHelper::sortUrl('id_barang') }}">ID
+                                    {{ SortHelper::sortArrow('id_barang') }}</a>
                             </th>
                             <th class="px-6 py-3">
-                                <a href="{{ SortHelper::sortUrl('nama_barang') }}">Nama Barang {{ SortHelper::sortArrow('nama_barang') }}</a>
+                                <a href="{{ SortHelper::sortUrl('nama_barang') }}">Nama Barang
+                                    {{ SortHelper::sortArrow('nama_barang') }}</a>
                             </th>
                             <th class="px-6 py-3">
-                                <a href="{{ SortHelper::sortUrl('kategori') }}">Kategori {{ SortHelper::sortArrow('kategori') }}</a>
+                                <a href="{{ SortHelper::sortUrl('kategori') }}">Kategori
+                                    {{ SortHelper::sortArrow('kategori') }}</a>
                             </th>
                             <th class="px-6 py-3">
-                                <a href="{{ SortHelper::sortUrl('stok') }}">Stok {{ SortHelper::sortArrow('stok') }}</a>
+                                <a href="{{ SortHelper::sortUrl('stok') }}">Stok
+                                    {{ SortHelper::sortArrow('stok') }}</a>
                             </th>
                             <th class="px-6 py-3">
-                                <a href="{{ SortHelper::sortUrl('satuan') }}">Satuan {{ SortHelper::sortArrow('satuan') }}</a>
+                                <a href="{{ SortHelper::sortUrl('satuan') }}">Satuan
+                                    {{ SortHelper::sortArrow('satuan') }}</a>
                             </th>
                             <th class="px-6 py-3">
-                                <a href="{{ SortHelper::sortUrl('harga') }}">Harga {{ SortHelper::sortArrow('harga') }}</a>
+                                <a href="{{ SortHelper::sortUrl('harga') }}">Harga
+                                    {{ SortHelper::sortArrow('harga') }}</a>
                             </th>
                             <th class="px-6 py-3">
                                 aksi
@@ -349,7 +374,7 @@
                 <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900">Kategori</label>
                 <select name="kategori" id="kategori"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
-                    @foreach($kategori as $ktg)
+                    @foreach ($kategori as $ktg)
                         <option value="{{ $ktg }}">{{ $ktg }}</option>
                     @endforeach
                 </select>
@@ -410,8 +435,9 @@
                     <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900">Kategori</label>
                     <select name="kategori" id="kategori"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5">
-                        @foreach($kategori as $ktg)
-                            <option value="{{ $ktg }}" @selected($item->kategori === $ktg)>{{ $ktg }}</option>
+                        @foreach ($kategori as $ktg)
+                            <option value="{{ $ktg }}" @selected($item->kategori === $ktg)>{{ $ktg }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -455,6 +481,8 @@
             </div>
         </x-modal>
     @endforeach
+
+
 </body>
 
 </html>

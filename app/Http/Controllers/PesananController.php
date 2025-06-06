@@ -9,6 +9,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\PesananExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PesananController extends Controller
 {
@@ -145,5 +148,46 @@ class PesananController extends Controller
             'username' => $user->username,
             'email' => $user->email
         ]);
+    }
+
+
+    
+    public function cetak(Request $request)
+    {
+        $dateFrom = $request->input('dateFrom');
+        $dateTo = $request->input('dateTo');
+
+        $query = Pesanan::with('pelanggan')
+            ->when($dateFrom && $dateTo, function ($q) use ($dateFrom, $dateTo) {
+                $q->whereBetween('tanggal', [
+                    \Carbon\Carbon::parse($dateFrom)->startOfDay(),
+                    \Carbon\Carbon::parse($dateTo)->endOfDay()
+                ]);
+            })
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('admin.pdfPesanan', [
+            'pesanan' => $query,
+            'dateFrom' => $dateFrom,
+            'dateTo' => $dateTo
+        ]);
+
+        return $pdf->stream('laporan-pesanan.pdf');
+    }
+
+
+    public function export(Request $request)
+    {
+        $dateFrom = $request->input('dateFrom');
+        $dateTo = $request->input('dateTo');
+
+        $filename = 'data-pesanan';
+        if ($dateFrom && $dateTo) {
+            $filename .= '-' . Carbon::parse($dateFrom)->format('d-m-Y') . '-sampai-' . Carbon::parse($dateTo)->format('d-m-Y');
+        }
+        $filename .= '.xlsx';
+
+        return Excel::download(new PesananExport($dateFrom, $dateTo), $filename);
     }
 }

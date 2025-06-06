@@ -41,14 +41,22 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin', [DashboardController::class, 'showDashboard'])->name('admin.show');
         
+
         Route::get('/admin/barang', [barangController::class, 'tampilkanDataBarang'])->name('admin.barang');
         Route::post('/admin/barang/', [barangController::class, 'addDataBarang'])->name('barang.add');
         Route::put('/admin/barang/{id_barang}', [barangController::class, 'updateDataBarang'])->name('barang.update');
         Route::put('/admin/barang/stok/{id_barang}', [barangController::class, 'addStok'])->name('stok.add');
 
+        Route::get('admin/pesanan/cetak', [PesananController::class, 'cetak'])->name('pesanan.cetak');
+        Route::get('admin/pesanan/export', [PesananController::class, 'export'])->name('pesanan.export');
+
         Route::get('/admin/pesanan', [PesananController::class, 'listAdmin'])->name('admin.pesanan');
         Route::get('/admin/pesanan/{id}', [PesananController::class, 'showAdmin'])->name('adminPesanan.show');
         
+
+        Route::get('admin/pembelian/cetak', [PembelianController::class, 'cetak'])->name('pembelian.cetak');
+        Route::get('admin/pembelian/export', [PembelianController::class, 'export'])->name('pembelian.export');
+
         Route::get('/admin/pembelian', [PembelianController::class, 'listAdmin'])->name('admin.pembelian');
         Route::post('/admin/pembelian/store', [PembelianController::class, 'addDataPembelian'])->name('pembelian.add');
 
@@ -60,9 +68,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/pemasok/', [PemasokController::class, 'addDataPemasok'])->name('pemasok.add');
         Route::put('/admin/pemasok/{id_pemasok}', [PemasokController::class, 'updateDataPemasok'])->name('pemasok.update');
     
-        Route::get('/admin/cetakBarang', [barangController::class, 'tampilkanDataCetakBarang'])->name('admin.cetakBarang');
-        Route::get('/barang/cetak-pdf', [barangController::class, 'cetakPDF'])->name('barang.cetakPDF');
-    });
+        Route::get('admin/barang/cetak', [BarangController::class, 'cetak'])->name('barang.cetak');
+        Route::get('admin/barang/export', [BarangController::class, 'export'])->name('barang.export');
+    }); 
+
+
+
     // user
     Route::middleware('role:user')->group(function () {
         Route::get('/dashboard', [AuthController::class, 'showUser'])->name('user.show');

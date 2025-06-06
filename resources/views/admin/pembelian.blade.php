@@ -136,21 +136,18 @@
 
         <div class="flex items-center justify-between ml-2 mb-2">
             <h1 class="text-2xl font-semibold flex items-center gap-2">
+                <!-- Ikon & Judul -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 640 512"
                     class="text-gray-700">
                     <path fill="currentColor"
                         d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8V64c0-17.7-14.3-32-32-32s-32 14.3-32 32v306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
                 </svg>
-                Pembelian
+                Daftar Pembelian
             </h1>
-            <button data-modal-target="addModalPembelian" data-modal-toggle="addModalPembelian" type="button"
-                class="inline-flex items-center justify-center sm:justify-start m-3 text-white bg-[#2ab6a9] hover:bg-[#1e8379] focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 font-medium rounded-full text-sm px-3 md:px-3.5 py-3 text-center transition">
-                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-                    <path
-                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
-                </svg>
-                <span class="hidden sm:inline ml-2">Tambah Pembelian</span>
-            </button>
+
+            <div class="flex items-center mr-3">
+                <x-buttons.cetak-export :cetak="route('pembelian.cetak', request()->query())" :export="route('pembelian.export', request()->query())" />
+            </div>
         </div>
 
         <form action="" method="GET"
