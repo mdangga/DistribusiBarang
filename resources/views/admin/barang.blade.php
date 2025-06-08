@@ -16,7 +16,7 @@
 </head>
 
 <body class="bg-graymain">
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 sm:hidden">
+    <nav class="fixed top-0 z-20 w-full bg-white border-b border-gray-200 sm:hidden">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
@@ -45,7 +45,7 @@
     </nav>
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-[60] w-64 h-screen transition-transform -translate-x-full bg-sidebar border-r  sm:translate-x-0"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-sidebar border-r  sm:translate-x-0"
         aria-label="Sidebar">
         <div class="h-full px-3 pb-4 pt-2 overflow-y-auto bg-sidebar">
             <a href="{{ route('admin.show') }}" class="flex items-center mb-6 px-2 pt-4">

@@ -34,6 +34,7 @@ export default {
                 sidebar: "#cbf3f0",
                 hvrsb: "#b3dedb",
                 orange: "#ff9f1c",
+                greenmain: "#2ab6a9",
                 orangehover: "#c8821f",
             },
         },

@@ -17,7 +17,7 @@
 </head>
 
 <body class="bg-graymain">
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 sm:hidden">
+    <nav class="fixed top-0 z-20 w-full bg-white border-b border-gray-200 sm:hidden">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
@@ -46,7 +46,7 @@
     </nav>
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-[60] w-64 h-screen transition-transform -translate-x-full bg-sidebar border-r  sm:translate-x-0"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-sidebar border-r  sm:translate-x-0"
         aria-label="Sidebar">
         <div class="h-full px-3 pb-4 pt-2 overflow-y-auto bg-sidebar">
             <a href="{{ route('admin.show') }}" class="flex items-center mb-6 px-2 pt-4">
@@ -154,24 +154,24 @@
         </div>
         <form action="" method="GET"
             class="block p-6 mb-5 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {{-- <div>
                     <label for="dateFrom" class="block mb-1 text-sm font-medium text-gray-700">From Date</label>
                     <input type="date" name="dateFrom" id="dateFrom" value="{{ date('Y-m-d') }}"
                         class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200" />
                 </div> --}}
-                <div>
+                <div class="sm:col-span-3">
                     <label for="nama" class="block mb-1 text-sm font-medium text-gray-700">Filter by
                         Nama</label>
                     <input type="text" name="nama" value="{{ request('nama') }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5"
                         placeholder="Cari pemasok..." />
                 </div>
-                <div>
+                {{-- <div>
                     <label for="dateTo" class="block mb-1 text-sm font-medium text-gray-700">To Date</label>
                     <input type="date" name="dateTo" id="dateTo" value="{{ date('Y-m-d') }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5" />
-                </div>
+                </div> --}}
                 <div class="flex items-end">
                     <button type="submit"
                         class="bg-orange hover:bg-orangehover border border-orange focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 text-white text-sm rounded-lg font-medium focus:border-primary-600 block w-full p-2.5 transition">
@@ -267,7 +267,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"
                     class="text-gray-700 mr-3 overflow-visible">
                     <path fill="currentColor"
-                        d="M50.7 58.5L0 160h208V32H93.7c-18.2 0-34.8 10.3-43 26.5M240 160h208L397.3 58.5c-8.2-16.2-24.8-26.5-43-26.5H240zm208 32H0v224c0 35.3 28.7 64 64 64h320c35.3 0 64-28.7 64-64z" />
+                        d="M96 128a128 128 0 1 1 256 0a128 128 0 1 1-256 0M0 482.3C0 383.8 79.8 304 178.3 304h91.4c98.5 0 178.3 79.8 178.3 178.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3M609.3 512H471.5c5.4-9.4 8.6-20.3 8.6-32v-8c0-60.7-27.1-115.2-69.8-151.8c2.4-.1 4.7-.2 7.1-.2h61.4c89 0 161.2 72.2 161.2 161.3c0 17-13.8 30.7-30.7 30.7M432 256c-31 0-59-12.6-79.3-32.9c19.7-26.6 31.3-59.5 31.3-95.1c0-26.8-6.6-52.1-18.3-74.3C384.3 40.1 407.2 32 432 32c61.9 0 112 50.1 112 112s-50.1 112-112 112" />
                 </svg>
             </x-slot:iconheader>
             {{-- svg icon sebelah kiri btn --}}

@@ -34,12 +34,12 @@ class PemasokController extends Controller
             ->paginate(10)
             ->appends($request->all());
 
-        $page = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = 10;
-        $results = $pemasok->slice(($page - 1) * $perPage, $perPage)->values();
-        $pemasok = new LengthAwarePaginator($results, $pemasok->count(), $perPage, $page, [
-            'path' => LengthAwarePaginator::resolveCurrentPath()
-        ]);
+        // $page = LengthAwarePaginator::resolveCurrentPage();
+        // $perPage = 10;
+        // $results = $pemasok->slice(($page - 1) * $perPage, $perPage)->values();
+        // $pemasok = new LengthAwarePaginator($results, $pemasok->count(), $perPage, $page, [
+        //     'path' => LengthAwarePaginator::resolveCurrentPath()
+        // ]);
 
         return view('admin.pemasok', [
             'pemasok' => $pemasok,

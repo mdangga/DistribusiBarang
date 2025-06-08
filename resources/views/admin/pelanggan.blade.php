@@ -17,7 +17,7 @@
 </head>
 
 <body class="bg-graymain">
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 sm:hidden">
+    <nav class="fixed top-0 z-20 w-full bg-white border-b border-gray-200 sm:hidden">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
@@ -46,7 +46,7 @@
     </nav>
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-[60] w-64 h-screen transition-transform -translate-x-full bg-sidebar border-r  sm:translate-x-0"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-sidebar border-r  sm:translate-x-0"
         aria-label="Sidebar">
         <div class="h-full px-3 pb-4 pt-2 overflow-y-auto bg-sidebar">
             <a href="{{ route('admin.show') }}" class="flex items-center mb-6 px-2 pt-4">
@@ -155,8 +155,8 @@
 
         <form action="" method="GET"
             class="block p-6 mb-5 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="sm:col-span-3">
                     <label for="nama" class="block mb-1 text-sm font-medium text-gray-700">Filter by
                         Nama</label>
                     <input type="text" name="nama" value="{{ request('nama') }}"
@@ -252,7 +252,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"
                     class="text-gray-700 mr-3 overflow-visible">
                     <path fill="currentColor"
-                        d="M50.7 58.5L0 160h208V32H93.7c-18.2 0-34.8 10.3-43 26.5M240 160h208L397.3 58.5c-8.2-16.2-24.8-26.5-43-26.5H240zm208 32H0v224c0 35.3 28.7 64 64 64h320c35.3 0 64-28.7 64-64z" />
+                        d="M224 256a128 128 0 1 0 0-256a128 128 0 1 0 0 256m-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512h388.6c10 0 18.8-4.9 24.2-12.5l-99.2-99.2c-14.9-14.9-23.3-35.1-23.3-56.1v-33c-15.9-4.7-32.8-7.2-50.3-7.2zM384 224c-17.7 0-32 14.3-32 32v82.7c0 17 6.7 33.3 18.7 45.3l107.4 107.3c18.7 18.7 49.1 18.7 67.9 0l73.4-73.4c18.7-18.7 18.7-49.1 0-67.9L512 242.7c-12-12-28.3-18.7-45.3-18.7zm24 80a24 24 0 1 1 48 0a24 24 0 1 1-48 0" />
                 </svg>
             </x-slot:iconheader>
             {{-- svg icon sebelah kiri btn --}}
