@@ -27,7 +27,7 @@ class barangController extends Controller
                 return $q->where('kategori', $request->kategori);
             })
             ->when($request->filter_stok === 'minimum', function ($q) {
-                return $q->where('stok', '<', 50);
+                return $q->where('stok', '<', 20);
             });
 
         // Terapkan sort hanya jika ada parameter sort_by dan sort_order
