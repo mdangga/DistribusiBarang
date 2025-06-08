@@ -8,4 +8,14 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        hmr: false,
+    },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: undefined,
+            }
+        }
+    }
 });
