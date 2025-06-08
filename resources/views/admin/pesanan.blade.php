@@ -186,7 +186,7 @@
                                     {{ number_format($p->total_harga, 2, ',', '.') }}</td>
                                 <td class="px-6 py-2">
                                     <a href="{{ route('adminPesanan.show', $p->kode_pesanan) }}"
-                                        class="inline-flex items-center bg-[#2ab6a9] hover:bg-[#1e8379] text-white text-xs font-medium px-3 py-2 rounded-lg shadow">
+                                        class="cursor-pointer inline-flex items-center bg-[#2ab6a9] hover:bg-[#1e8379] text-white text-xs font-medium px-3 py-2 rounded-lg shadow">
                                         <svg class="text-white mr-2 overflow-visible"
                                             xmlns="http://www.w3.org/2000/svg" width="14" height="16"
                                             viewBox="0 0 576 512">

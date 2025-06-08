@@ -83,7 +83,7 @@
                 <tr>
                     <td>{{ $item->kode_pembelian }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
-                    <td>{{ $item->pembelian->nama_pembelian ?? '-' }}</td>
+                    <td>{{ $item->pemasok->nama_pemasok ?? '-' }}</td>
                     <td>Rp {{ number_format($item->total_harga, 2, ',', '.') }}</td>
                 </tr>
             @endforeach
