@@ -75,7 +75,15 @@ class barangController extends Controller
             'satuan' => 'required|string',
             'harga' => 'required|numeric',
         ], [
+            'nama_barang.required' => 'Nama barang tidak boleh kosong.',
             'nama_barang.unique' => 'Barang telah tersedia.',
+            'nama_barang.max' => 'Nama barang lebih dari 255 karakter',
+            'kategori.required' => 'Kategori wajib diisi.',
+            'stok.required' => 'Stok tidak boleh kosong.',
+            'stok.integer' => 'Stok harus berupa angka.',
+            'satuan.required' => 'Satuan wajib diisi.',
+            'harga.required' => 'Harga wajib diisi.',
+            'harga.numeric' => 'Harga harus berupa angka.',
         ]);
 
         $barang = new Barang();
@@ -104,7 +112,15 @@ class barangController extends Controller
             'satuan' => 'required|string',
             'harga' => 'required|numeric',
         ], [
+            'nama_barang.required' => 'Nama barang tidak boleh kosong.',
             'nama_barang.unique' => 'Barang telah tersedia.',
+            'nama_barang.max' => 'Nama barang lebih dari 255 karakter',
+            'kategori.required' => 'Kategori wajib diisi.',
+            'stok.required' => 'Stok tidak boleh kosong.',
+            'stok.integer' => 'Stok harus berupa angka.',
+            'satuan.required' => 'Satuan wajib diisi.',
+            'harga.required' => 'Harga wajib diisi.',
+            'harga.numeric' => 'Harga harus berupa angka.',
         ]);
 
         // Update data
@@ -131,6 +147,10 @@ class barangController extends Controller
                 Rule::unique('barang')->ignore($id_barang, 'id_barang'),
             ],
             'stok' => 'required|integer',
+        ], [
+            'nama_barang.required' => 'Nama barang tidak boleh kosong.',
+            'stok.required' => 'Stok tidak boleh kosong.',
+            'stok.integer' => 'Stok harus berupa angka.',
         ]);
 
         // Update data
@@ -192,7 +212,7 @@ class barangController extends Controller
         return $pdf->stream('laporan-barang.pdf');
     }
 
-        
+
     public function export(Request $request)
     {
         return Excel::download(
