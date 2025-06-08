@@ -18,14 +18,6 @@ class authController extends Controller
             'email' => $user->email,
         ]);
     }
-    function showUser()
-    {
-        $user = Auth::user();
-        return view('user.dashboard', [
-            'username' => $user->username,
-            'email' => $user->email,
-        ]);
-    }
     // function signup (start)
     // menampilkan tampilan signup
     function showSignup()
@@ -75,7 +67,6 @@ class authController extends Controller
             $user = Auth::user();
             return match ($user->role) {
                 'admin' => redirect()->route('admin.show'),
-                default => redirect()->route('user.show'),
             };
         }
 

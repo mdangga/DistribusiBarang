@@ -186,6 +186,23 @@ class PesananController extends Controller
         return $pdf->stream('laporan-pesanan.pdf');
     }
 
+    public function cetakDetail(Request $request, $id)
+    {
+        $dateFrom = $request->input('dateFrom');
+        $dateTo = $request->input('dateTo');
+
+        $pesanan = Pesanan::with('detailPesanan.barang', 'Pelanggan')
+            ->findOrFail($id);
+
+        $pdf = Pdf::loadView('admin.pdfDetailPesanan', [
+            'pesanan' => $pesanan,
+            'dateFrom' => $dateFrom,
+            'dateTo' => $dateTo
+        ]);
+
+        return $pdf->stream('laporan-detail-pesanan.pdf');
+    }
+
 
     public function export(Request $request)
     {
