@@ -238,7 +238,7 @@
                                         class="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-2 sm:space-y-0">
                                         <a data-modal-target="editModal{{ $item->id_pelanggan }}"
                                             data-modal-toggle="editModal{{ $item->id_pelanggan }}"
-                                            class="flex items-center justify-center w-full sm:w-auto bg-[#ff9f1c] hover:bg-[#cc7f16] text-white text-xs font-medium px-3 py-2 rounded-lg shadow transition">
+                                            class="cursor-pointer flex items-center justify-center w-full sm:w-auto bg-[#ff9f1c] hover:bg-[#cc7f16] text-white text-xs font-medium px-3 py-2 rounded-lg shadow transition">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16"
                                                 viewBox="0 0 512 512" class="mr-2">
                                                 <path fill="currentColor"
