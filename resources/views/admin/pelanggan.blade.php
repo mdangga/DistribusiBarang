@@ -290,7 +290,7 @@
     <!-- Modals untuk setiap barang -->
     @foreach ($pelanggan as $person)
         <x-modal id="editModal{{ $person->id_pelanggan }}" header="Edit {{ $person->nama_pelanggan }}"
-            button="Update" :actionRoute="route('pelanggan.update', $person->id_pelanggan)" methodOverride="put">
+            button="Update" :actionRoute="route('pelanggan.update', $person->id_pelanggan)" methodOverride="patch">
             <div class="grid gap-4 mb-4
             grid-cols-3">
                 {{-- svg icon di header --}}

@@ -94,6 +94,7 @@ class PemasokController extends Controller
                 'required',
                 'string',
                 'max:255',
+                Rule::unique('pemasok')->ignore($id_pemasok, 'id_pemasok'),
             ],
             'no_telpon' => [
                 'required',

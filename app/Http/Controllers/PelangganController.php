@@ -93,7 +93,7 @@ class PelangganController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('pelanggan'),
+                Rule::unique('pelanggan')->ignore($id_pelanggan, 'id_pelanggan'),
             ],
             'no_telpon' => [
                 'required',
