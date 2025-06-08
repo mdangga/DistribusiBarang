@@ -31,7 +31,8 @@ export default {
             },
             colors: {
                 graymain: "#f3f4f6",
-                sidebar: "#CBF3F0",
+                sidebar: "#cbf3f0",
+                hvrsb: "#b3dedb",
                 orange: "#ff9f1c",
                 orangehover: "#c8821f",
             },
