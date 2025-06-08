@@ -12,55 +12,27 @@
 </head>
 
 <body class="bg-graymain">
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200  ">
+    <nav class="fixed top-0 z-20 w-full bg-white border-b border-gray-200 sm:hidden">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
                     <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
                         aria-controls="logo-sidebar" type="button"
-                        class="inline-flex items-center p-2 text-sm text-gray-700 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200   ">
+                        class="inline-flex items-center p-2 text-sm text-gray-700 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
                         <span class="sr-only">Open sidebar</span>
-                        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
                             <path clip-rule="evenodd" fill-rule="evenodd"
                                 d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
                             </path>
                         </svg>
                     </button>
-                    <a href="{{ route('admin.show') }}" class="flex ms-2 md:me-24">
-                        <img src="{{ asset('img/favicon.svg') }}" class="h-8 me-3" alt="Materialin Logo" />
-                        <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap ">Materialin</span>
-                    </a>
                 </div>
                 <div class="flex items-center">
                     <div class="flex items-center ms-3">
-                        <div>
-                            <button type="button"
-                                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 "
-                                aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                                <span class="sr-only">Open user menu</span>
-                                <img class="w-8 h-8 rounded-full"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                                    alt="user photo">
-                            </button>
-                        </div>
-                        <div class="z-50 hidden my-4 text-base list-none bg-gray-50 divide-y divide-gray-100 rounded-sm shadow-sm  "
-                            id="dropdown-user">
-                            <div class="px-4 py-3" role="none">
-                                <p class="text-sm text-gray-900" role="none">
-                                    {{ $username }}
-                                </p>
-                                <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                                    {{ $email }}
-                                </p>
-                            </div>
-                            <ul class="py-1" role="none">
-                                <li>
-                                    <a href="/signout"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100   "
-                                        role="menuitem">Sign out</a>
-                                </li>
-                            </ul>
+                        <div class="flex items-center justify-start rtl:justify-end">
+                            <a href="{{ route('admin.show') }}" class="flex ms-2 md:me-24">
+                                <img src="{{ asset('img/favicon.svg') }}" class="h-8 me-3" alt="Materialin Logo" />
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -69,44 +41,37 @@
     </nav>
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-sidebar border-r border-white/25 sm:translate-x-0  "
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-sidebar border-r  sm:translate-x-0"
         aria-label="Sidebar">
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-sidebar ">
+        <div class="h-full px-3 pb-4 pt-2 overflow-y-auto bg-sidebar">
+            <a href="{{ route('admin.show') }}" class="flex items-center mb-6 px-2 pt-4">
+                <img src="{{ asset('img/favicon.svg') }}" class="h-8 me-3" alt="Materialin Logo" />
+                <span class="text-2xl font-semibold whitespace-nowrap text-gray-800">Materialin</span>
+            </a>
             <ul class="space-y-2 font-medium">
-
+                <li class="px-2 text-black/25 text-xs font-semibold uppercase tracking-wide">
+                    Analytics
+                </li>
                 <x-button-sidebar route="{{ route('admin.show') }}"
                     icon='<path fill="currentColor" d="M304 240V16.6c0-9 7-16.6 16-16.6c123.7 0 224 100.3 224 224c0 9-7.6 16-16.6 16zM32 272c0-121.3 90.1-221.7 207-237.7c9.2-1.3 17 6.1 17 15.4V288l156.5 156.5c6.7 6.7 6.2 17.7-1.5 23.1c-39.2 28-87.2 44.4-139 44.4c-132.5 0-240-107.4-240-240m526.4 16c9.3 0 16.6 7.8 15.4 17c-7.7 55.9-34.6 105.6-73.9 142.3c-6 5.6-15.4 5.2-21.2-.7L320 288z" />'>
                     Dashboard
                 </x-button-sidebar>
-
-                <li>
-                    <button type="button"
-                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
-                        aria-controls="dropdown-transaksi" data-collapse-toggle="dropdown-transaksi">
-                        <svg class="w-5 h-5 text-gray-700 overflow-visible transition duration-75 group-hover:text-gray-900"
-                            width="576" height="512" viewBox="0 0 576 512">
-                            <path fill="currentColor"
-                                d="M535 41c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l64 64c4.5 4.5 7 10.6 7 17s-2.5 12.5-7 17l-64 64c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l23-23l-174-.2c-13.3 0-24-10.7-24-24s10.7-24 24-24h174.1zM105 377l-23 23h174c13.3 0 24 10.7 24 24s-10.7 24-24 24H81.9l23 23c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L7 441c-4.5-4.5-7-10.6-7-17s2.5-12.5 7-17l64-64c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM96 64h241.9c-3.7 7.2-5.9 15.3-5.9 24c0 28.7 23.3 52 52 52h117.4c-4 17 .6 35.5 13.8 48.8c20.3 20.3 53.2 20.3 73.5 0l19.3-19.3V384c0 35.3-28.7 64-64 64H302.1c3.7-7.2 5.9-15.3 5.9-24c0-28.7-23.3-52-52-52H138.6c4-17-.6-35.5-13.8-48.8c-20.3-20.3-53.2-20.3-73.5 0L32 342.5V128c0-35.3 28.7-64 64-64m64 64H96v64c35.3 0 64-28.7 64-64m384 192c-35.3 0-64 28.7-64 64h64zm-224 32a96 96 0 1 0 0-192a96 96 0 1 0 0 192" />
-                        </svg>
-                        <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Transaksi</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <ul id="dropdown-transaksi" class="hidden py-2 space-y-2">
-                        <li>
-                            <a href="{{ route('admin.pesanan') }}"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Pesanan</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.pembelian') }}"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Pembelian</a>
-                        </li>
-                    </ul>
+                <li class="px-2 mt-4 text-black/25 text-xs font-semibold uppercase tracking-wide">
+                    Transactions
                 </li>
-
+                <li>
+                    <x-button-sidebar route="{{ route('admin.pesanan') }}"
+                        icon='<path fill="currentColor" d="M528.12 301.319l47.273-208A16 16 0 0 0 560 64H128l-9.4-44.319A16 16 0 0 0 103 16H16A16 16 0 0 0 0 32v16a16 16 0 0 0 16 16h66.1l61.7 290.319a64 64 0 1 0 76.2 83.681h155.8a64 64 0 1 0 76.2-83.681ZM195.1 416a32 32 0 1 1 32-32 32 32 0 0 1-32 32Zm224 0a32 32 0 1 1 32-32 32 32 0 0 1-32 32Z"/>'>
+                        Pesanan
+                    </x-button-sidebar>
+                    <x-button-sidebar route="{{ route('admin.pembelian') }}"
+                        icon='<path fill="currentColor" d="M497.9 225.9L286.1 14.1A48 48 0 0 0 252.1 0H48A48 48 0 0 0 0 48v204.1a48 48 0 0 0 14.1 33.9l211.8 211.8a48 48 0 0 0 67.9 0l204.1-204.1a48 48 0 0 0 0-67.8ZM128 160a32 32 0 1 1 32-32 32 32 0 0 1-32 32Z"/>'>
+                        Pembelian
+                    </x-button-sidebar>
+                </li>
+                <li class="px-2 mt-4 text-black/25 text-xs font-semibold uppercase tracking-wide">
+                    Master
+                </li>
                 <x-button-sidebar route="{{ route('admin.barang') }}"
                     icon='<path fill="currentColor"
                                 d="M58.9 42.1c3-6.1 9.6-9.6 16.3-8.7L320 64l244.8-30.6c6.7-.8 13.3 2.7 16.3 8.7l41.7 83.4c9 17.9-.6 39.6-19.8 45.1l-163.4 46.7c-13.9 4-28.8-1.9-36.2-14.3L320 64l-83.4 139c-7.4 12.4-22.3 18.3-36.2 14.3L37.1 170.6c-19.3-5.5-28.8-27.2-19.8-45.1zM321.1 128l54.9 91.4c14.9 24.8 44.6 36.6 72.5 28.6L576 211.6v167c0 22-15 41.2-36.4 46.6l-204.1 51c-10.2 2.6-20.9 2.6-31 0l-204.1-51C79 419.7 64 400.5 64 378.5v-167L191.6 248c27.8 8 57.6-3.8 72.5-28.6l54.8-91.4z" />'>Barang
@@ -117,13 +82,47 @@
                 </x-button-sidebar>
                 <x-button-sidebar route="{{ route('admin.pelanggan') }}"
                     icon='<path fill="currentColor"
-                                d="M224 256a128 128 0 1 0 0-256a128 128 0 1 0 0 256m-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512h388.6c10 0 18.8-4.9 24.2-12.5l-99.2-99.2c-14.9-14.9-23.3-35.1-23.3-56.1v-33c-15.9-4.7-32.8-7.2-50.3-7.2zM384 224c-17.7 0-32 14.3-32 32v82.7c0 17 6.7 33.3 18.7 45.3l107.4 107.3c18.7 18.7 49.1 18.7 67.9 0l73.4-73.4c18.7-18.7 18.7-49.1 0-67.9L512 242.7c-12-12-28.3-18.7-45.3-18.7zm24 80a24 24 0 1 1 48 0a24 24 0 1 1-48 0" />'>Pelanggan</x-button-sidebar>
-                <hr class="h-px my-8 bg-black/5 border-0 ">
+                                d="M224 256a128 128 0 1 0 0-256a128 128 0 1 0 0 256m-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512h388.6c10 0 18.8-4.9 24.2-12.5l-99.2-99.2c-14.9-14.9-23.3-35.1-23.3-56.1v-33c-15.9-4.7-32.8-7.2-50.3-7.2zM384 224c-17.7 0-32 14.3-32 32v82.7c0 17 6.7 33.3 18.7 45.3l107.4 107.3c18.7 18.7 49.1 18.7 67.9 0l73.4-73.4c18.7-18.7 18.7-49.1 0-67.9L512 242.7c-12-12-28.3-18.7-45.3-18.7zm24 80a24 24 0 1 1 48 0a24 24 0 1 1-48 0" />'>Pelanggan
+                </x-button-sidebar>
+                {{-- <hr class="h-px my-8 bg-black/5 border-0 "> --}}
+                <!-- User Card -->
+                <div class="absolute bottom-4 left-0 w-full px-3 flex justify-end">
+                    <div class="relative w-full">
+                        <!-- Trigger Button -->
+                        <button type="button"
+                            class="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-hvrsb focus:outline-none "
+                            aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                class="text-gray-700 h-7 w-7">
+                                <path fill="currentColor" fill-rule="evenodd"
+                                    d="M12 20a7.97 7.97 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.97 7.97 0 0 1 12 20M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12m10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <div class="text-left">
+                                <p class="text-sm font-semibold text-gray-700">{{ $username }}</p>
+                                <p class="text-sm text-gray-500 truncate">{{ $email }}</p>
+                            </div>
+                        </button>
+
+                        <!-- Dropdown Menu (only sign out) -->
+                        <div id="dropdown-user"
+                            class="z-50 hidden absolute right-0 mt-2 w-40 text-base list-none bg-white divide-y divide-gray-100 rounded-md shadow-lg">
+                            <ul class="py-1" role="none">
+                                <li>
+                                    <a href="/signout"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200"
+                                        role="menuitem">Sign out</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </ul>
         </div>
     </aside>
 
-    <div class="p-4 sm:ml-64 mt-14">
+
+    <div class="p-4 sm:ml-64 mt-14 sm:mt-0">
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -198,10 +197,10 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($pembelian as $p)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-2">{{ $p->kode_pembelian }}</td>
-                                <td class="px-6 py-2">{{ \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y') }}</td>
-                                <td class="px-6 py-2">{{ $p->Pemasok->nama_pemasok }}</td>
-                                <td class="px-6 py-2 font-medium text-black">Rp
+                                <td class="px-6 py-4">{{ $p->kode_pembelian }}</td>
+                                <td class="px-6 py-4">{{ \Carbon\Carbon::parse($p->tanggal)->format('d/m/Y') }}</td>
+                                <td class="px-6 py-4">{{ $p->Pemasok->nama_pemasok }}</td>
+                                <td class="px-6 py-4 font-medium text-black">Rp
                                     {{ number_format($p->total_harga, 2, ',', '.') }}</td>
                             </tr>
                         @empty
