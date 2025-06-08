@@ -8,6 +8,16 @@
     $hasAnyError = collect($fields)->some(fn($field) => $errors->has($field));
     $shouldShow = $type === 'error' ? $hasAnyError : session('success') || $message;
 
+    $firstErrorMessage = null;
+    if ($type === 'error' && $hasAnyError) {
+        foreach ($fields as $field) {
+            if ($errors->has($field)) {
+                $firstErrorMessage = $errors->first($field);
+                break;
+            }
+        }
+    }
+
     $toastConfig = [
         'success' => [
             'bg' => 'bg-green-100 text-green-700',
@@ -27,7 +37,7 @@
 
     $toastMessage =
         $message ??
-        ($type === 'error' ? ($hasAnyError ? $toastConfig[$type]['defaultMessage'] : null) : session('success'));
+        ($type === 'error' ? $firstErrorMessage ?? $toastConfig[$type]['defaultMessage'] : session('success'));
 @endphp
 
 @if ($shouldShow && $toastMessage)

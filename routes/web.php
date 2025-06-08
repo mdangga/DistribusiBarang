@@ -62,11 +62,11 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/admin/pelanggan', [PelangganController::class, 'tampilkanDataPelanggan'])->name('admin.pelanggan');
         Route::post('/admin/pelanggan/', [PelangganController::class, 'addDataPelanggan'])->name('pelanggan.add');
-        Route::put('/admin/pelanggan/{id_pelanggan}', [PelangganController::class, 'updateDataPelanggan'])->name('pelanggan.update');
+        Route::patch('/admin/pelanggan/{id_pelanggan}', [PelangganController::class, 'updateDataPelanggan'])->name('pelanggan.update');
         
         Route::get('/admin/pemasok', [PemasokController::class, 'tampilkanDataPemasok' ])->name('admin.pemasok');
         Route::post('/admin/pemasok/', [PemasokController::class, 'addDataPemasok'])->name('pemasok.add');
-        Route::put('/admin/pemasok/{id_pemasok}', [PemasokController::class, 'updateDataPemasok'])->name('pemasok.update');
+        Route::patch('/admin/pemasok/{id_pemasok}', [PemasokController::class, 'updateDataPemasok'])->name('pemasok.update');
     
         Route::get('admin/barang/cetak', [BarangController::class, 'cetak'])->name('barang.cetak');
         Route::get('admin/barang/export', [BarangController::class, 'export'])->name('barang.export');
