@@ -26,9 +26,9 @@ class PelangganController extends Controller
                     ]);
                 }
             }
-            ])->when(!empty($request->nama), function ($query) use ($request) {
-                $query->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
-            })
+        ])->when(!empty($request->nama), function ($query) use ($request) {
+            $query->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
+        })
             ->orderBy($sortBy, $sortOrder)
             ->paginate(10)
             ->appends($request->all());
@@ -57,14 +57,20 @@ class PelangganController extends Controller
                 'max:255',
                 Rule::unique('pelanggan'),
             ],
-            'no_telpon' => 'required|string',
+            'no_telpon' => [
+                'required',
+                'string',
+                'regex:/^[0-9]+$/',
+                'max:15',
+            ],
             'alamat' => 'required|string',
         ], [
             'nama_pelanggan.required' => 'Nama pelanggan tidak boleh kosong.',
             'nama_pelanggan.unique' => 'Pelanggan telah terdaftar.',
             'nama_pelanggan.max' => 'Nama pelanggan lebih dari 255 karakter',
-            'kategori.required' => 'Kategori wajib diisi.',
             'no_telpon.required' => 'No Telephone wajib diisi.',
+            'no_telpon.regex' => 'Nomor telepon hanya boleh berisi angka.',
+            'no_telpon.max' => 'Nomor telepon terlalu panjang.',
             'alamat.required' => 'Satuan wajib diisi.',
         ]);
         // dd($request->all());
@@ -89,14 +95,20 @@ class PelangganController extends Controller
                 'max:255',
                 Rule::unique('pelanggan'),
             ],
-            'no_telpon' => 'required|string',
+            'no_telpon' => [
+                'required',
+                'string',
+                'regex:/^[0-9]+$/',
+                'max:15',
+            ],
             'alamat' => 'required|string',
         ], [
             'nama_pelanggan.required' => 'Nama pelanggan tidak boleh kosong.',
             'nama_pelanggan.unique' => 'Pelanggan telah terdaftar.',
             'nama_pelanggan.max' => 'Nama pelanggan lebih dari 255 karakter',
-            'kategori.required' => 'Kategori wajib diisi.',
             'no_telpon.required' => 'No Telephone wajib diisi.',
+            'no_telpon.regex' => 'Nomor telepon hanya boleh berisi angka.',
+            'no_telpon.max' => 'Nomor telepon terlalu panjang.',
             'alamat.required' => 'Alamat wajib diisi.',
         ]);
 

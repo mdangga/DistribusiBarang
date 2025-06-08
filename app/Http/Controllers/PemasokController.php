@@ -58,14 +58,20 @@ class PemasokController extends Controller
                 'max:255',
                 Rule::unique('pemasok'),
             ],
-            'no_telpon' => 'required|string',
+            'no_telpon' => [
+                'required',
+                'string',
+                'regex:/^[0-9]+$/',
+                'max:15',
+            ],
             'alamat' => 'required|string',
         ], [
             'nama_pemasok.required' => 'Nama pemasok tidak boleh kosong.',
             'nama_pemasok.unique' => 'Pemasok telah terdaftar.',
             'nama_pemasok.max' => 'Nama pemasok lebih dari 255 karakter',
-            'kategori.required' => 'Kategori wajib diisi.',
             'no_telpon.required' => 'No Telephone wajib diisi.',
+            'no_telpon.regex' => 'Nomor telepon hanya boleh berisi angka.',
+            'no_telpon.max' => 'Nomor telepon terlalu panjang.',
             'alamat.required' => 'Alamat wajib diisi.',
         ]);
         // dd($request->all());
@@ -89,14 +95,20 @@ class PemasokController extends Controller
                 'string',
                 'max:255',
             ],
-            'no_telpon' => 'required|string',
+            'no_telpon' => [
+                'required',
+                'string',
+                'regex:/^[0-9]+$/',
+                'max:15',
+            ],
             'alamat' => 'required|string',
         ], [
             'nama_pemasok.required' => 'Nama pemasok tidak boleh kosong.',
             'nama_pemasok.unique' => 'Pemasok telah terdaftar.',
             'nama_pemasok.max' => 'Nama pemasok lebih dari 255 karakter',
-            'kategori.required' => 'Kategori wajib diisi.',
             'no_telpon.required' => 'No Telephone wajib diisi.',
+            'no_telpon.regex' => 'Nomor telepon hanya boleh berisi angka.',
+            'no_telpon.max' => 'Nomor telepon terlalu panjang.',
             'alamat.required' => 'Alamat wajib diisi.',
         ]);
 
