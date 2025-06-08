@@ -35,6 +35,16 @@ class PesananController extends Controller
             'items' => 'required|array|min:1',
             'items.*.id_barang' => 'required|exists:barang,id_barang',
             'items.*.jumlah' => 'required|integer|min:1',
+        ], [
+            'id_pelanggan.exists' => 'Pelanggan yang dipilih tidak ditemukan.',
+            'items.required' => 'Daftar item tidak boleh kosong.',
+            'items.array' => 'Format item tidak valid.',
+            'items.min' => 'Minimal harus ada satu item.',
+            'items.*.id_barang.required' => 'Barang harus dipilih.',
+            'items.*.id_barang.exists' => 'Barang tidak ditemukan.',
+            'items.*.jumlah.required' => 'Jumlah barang harus diisi.',
+            'items.*.jumlah.integer' => 'Jumlah barang harus berupa angka bulat.',
+            'items.*.jumlah.min' => 'Jumlah barang minimal 1.',
         ]);
 
         DB::beginTransaction();
@@ -151,7 +161,7 @@ class PesananController extends Controller
     }
 
 
-    
+
     public function cetak(Request $request)
     {
         $dateFrom = $request->input('dateFrom');

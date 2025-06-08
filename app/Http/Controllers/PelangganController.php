@@ -59,6 +59,13 @@ class PelangganController extends Controller
             ],
             'no_telpon' => 'required|string',
             'alamat' => 'required|string',
+        ], [
+            'nama_pelanggan.required' => 'Nama pelanggan tidak boleh kosong.',
+            'nama_pelanggan.unique' => 'Pelanggan telah terdaftar.',
+            'nama_pelanggan.max' => 'Nama pelanggan lebih dari 255 karakter',
+            'kategori.required' => 'Kategori wajib diisi.',
+            'no_telpon.required' => 'No Telephone wajib diisi.',
+            'alamat.required' => 'Satuan wajib diisi.',
         ]);
         // dd($request->all());
 
@@ -80,11 +87,17 @@ class PelangganController extends Controller
                 'required',
                 'string',
                 'max:255',
+                Rule::unique('pelanggan'),
             ],
             'no_telpon' => 'required|string',
             'alamat' => 'required|string',
         ], [
+            'nama_pelanggan.required' => 'Nama pelanggan tidak boleh kosong.',
             'nama_pelanggan.unique' => 'Pelanggan telah terdaftar.',
+            'nama_pelanggan.max' => 'Nama pelanggan lebih dari 255 karakter',
+            'kategori.required' => 'Kategori wajib diisi.',
+            'no_telpon.required' => 'No Telephone wajib diisi.',
+            'alamat.required' => 'Alamat wajib diisi.',
         ]);
 
         // Update data

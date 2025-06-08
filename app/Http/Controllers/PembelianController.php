@@ -22,6 +22,12 @@ class PembelianController extends Controller
                 'tanggal' => 'required|date_format:Y-m-d H:i:s',
                 'id_pemasok' => 'required|integer|exists:pemasok,id_pemasok',
                 'harga' => 'required|numeric|min:0',
+            ], [
+                'tanggal.required' => 'Tanggal berapa hari ini',
+                'id_pemasok.required' => 'Pemasok wajib diisi',
+                'harga.required' => 'Harga wajib diisi',
+                'harga.numeric' => 'Masukkan harga dengan angka',
+                'harga.min' => 'Harga tidak boleh minus',    
             ]);
             Pembelian::create([
                 'tanggal' => $request->tanggal,

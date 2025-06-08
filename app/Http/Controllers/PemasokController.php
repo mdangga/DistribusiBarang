@@ -61,7 +61,12 @@ class PemasokController extends Controller
             'no_telpon' => 'required|string',
             'alamat' => 'required|string',
         ], [
+            'nama_pemasok.required' => 'Nama pemasok tidak boleh kosong.',
             'nama_pemasok.unique' => 'Pemasok telah terdaftar.',
+            'nama_pemasok.max' => 'Nama pemasok lebih dari 255 karakter',
+            'kategori.required' => 'Kategori wajib diisi.',
+            'no_telpon.required' => 'No Telephone wajib diisi.',
+            'alamat.required' => 'Alamat wajib diisi.',
         ]);
         // dd($request->all());
 
@@ -86,6 +91,13 @@ class PemasokController extends Controller
             ],
             'no_telpon' => 'required|string',
             'alamat' => 'required|string',
+        ], [
+            'nama_pemasok.required' => 'Nama pemasok tidak boleh kosong.',
+            'nama_pemasok.unique' => 'Pemasok telah terdaftar.',
+            'nama_pemasok.max' => 'Nama pemasok lebih dari 255 karakter',
+            'kategori.required' => 'Kategori wajib diisi.',
+            'no_telpon.required' => 'No Telephone wajib diisi.',
+            'alamat.required' => 'Alamat wajib diisi.',
         ]);
 
         // Update data
