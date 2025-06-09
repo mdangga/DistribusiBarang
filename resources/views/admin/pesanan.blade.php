@@ -203,9 +203,11 @@
                     </tbody>
                 </table>
             </div>
+            @if($pesanan->total() > 10)
             <div class="bg-[#cbf3f07a] py-2 px-6">
                 {{ $pesanan->withQueryString()->links() }}
             </div>
+            @endif
         </div>
     </div>
 
