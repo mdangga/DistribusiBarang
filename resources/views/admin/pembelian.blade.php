@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.svg') }}">
-    <title>Admin - Transaksi</title>
+    <title>Admin - Pembelian</title>
 </head>
 
 <body class="bg-graymain">

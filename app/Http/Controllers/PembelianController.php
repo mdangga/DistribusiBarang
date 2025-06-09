@@ -18,7 +18,7 @@ class PembelianController extends Controller
     public function addDataPembelian(Request $request)
     {
         try {
-            dd($request->validate([
+            $validator = Validator::make($request->all(), [
                 'tanggal' => 'required|date_format:Y-m-d H:i:s',
                 'id_pemasok' => 'required|integer|exists:pemasok,id_pemasok',
                 'harga' => 'required|numeric|min:0',
@@ -31,15 +31,24 @@ class PembelianController extends Controller
                 'harga.required' => 'Harga wajib diisi',
                 'harga.numeric' => 'Harga harus berupa angka',
                 'harga.min' => 'Harga tidak boleh kurang dari 0',
-            ]));
+            ]);
+
+            if ($validator->fails()) {
+                // Ambil hanya error pertama dari setiap field
+                $errors = $validator->errors();
+                $firstError = $errors->first();
+                
+                return back()->with('error', $firstError)->withInput();
+            }
+
             Pembelian::create([
                 'tanggal' => $request->tanggal,
                 'id_pemasok' => $request->id_pemasok,
                 'total_harga' => $request->harga,
             ]);
+
             return redirect()->route('admin.pembelian')->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
-            // logger()->error('Store Error:', ['error' => $e->getMessage()]);
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
     }
