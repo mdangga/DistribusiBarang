@@ -123,14 +123,9 @@
 
 
     <div class="p-4 sm:ml-64 mt-14 sm:mt-0">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+        <x-toast-info type="error" :fields="['tanggal', 'id_pemasok', 'harga']" />
+        @if (session('success'))
+            <x-toast-info type="success" :message="session('success')" />
         @endif
 
         <div class="flex items-center justify-between ml-2 mb-2">
@@ -247,7 +242,7 @@
             </div>
 
             <div class="col-span-2">
-                <label for="harga" class="block mb-2 text-sm font-medium text-gray-900">Nama Pemasok</label>
+                <label for="pemasok" class="block mb-2 text-sm font-medium text-gray-900">Nama Pemasok</label>
                 <x-autocomplete-input name="pemasok" endpoint="{{ route('autocomplete.pemasok') }}"
                     placeholder="Cari pemasok..." form-field="nama_pemasok" id-field="id"
                     id="autocomplete-pemasok" />

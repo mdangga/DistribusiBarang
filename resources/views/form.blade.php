@@ -13,6 +13,11 @@
 </head>
 
 <body class="h-full bg-white flex flex-col items-center  p-10">
+    <x-toast-info :fields="['nama_pelanggan', 'no_telepon', 'alamat']" type="error" />
+    @if ($errors->any())
+        <x-toast-info :fields="['id_pelanggan', 'items']" type="error" />
+    @endif
+
     <a href="#" class="flex ms-2 md:me-24 my-5">
         <img src="{{ asset('img/favicon.svg') }}" class="h-16 me-3" alt="Materialin Logo" />
         <span class="self-center text-4xl font-semibold sm:text-4xl whitespace-nowrap ">Materialin</span>
@@ -185,11 +190,6 @@
                 const jumlahInput = document.getElementById('jumlahInput');
                 const jumlah = parseInt(jumlahInput.value || 0);
 
-                if (!barangTerpilih || jumlah < 1) {
-                    alert('Pilih barang dan masukkan jumlah yang valid.');
-                    return;
-                }
-
                 const {
                     id,
                     nama_barang: nama,
@@ -232,23 +232,6 @@
             const submitButton = form.querySelector('button[type="submit"]');
 
             form.addEventListener('submit', function(e) {
-                // Validasi: pastikan ada minimal 1 item
-                const items = document.querySelectorAll('input[name^="items["][name$="[id_barang]"]');
-
-                if (items.length === 0) {
-                    e.preventDefault();
-                    alert('Tambahkan minimal 1 barang untuk melanjutkan pesanan.');
-                    return false;
-                }
-
-                // Validasi: pastikan total harga > 0
-                const totalHarga = parseFloat(document.getElementById('totalHargaInput').value);
-                if (totalHarga <= 0) {
-                    e.preventDefault();
-                    alert('Total harga harus lebih dari 0.');
-                    return false;
-                }
-
                 // Tampilkan loading state
                 submitButton.disabled = true;
                 submitButton.innerHTML = `
@@ -277,30 +260,9 @@
     </div>
 `;
 
-                // Log data yang akan dikirim untuk debug
-                // console.log('Form data being submitted:', new FormData(form));
-
                 // Form akan submit secara normal
                 return true;
             });
-
-            // TAMBAHAN: Tampilkan error jika ada
-            @if (session('error'))
-                alert('Error: {{ session('error') }}');
-            @endif
-
-            @if (session('success'))
-                alert('Success: {{ session('success') }}');
-            @endif
-
-            // TAMBAHAN: Tampilkan validation errors
-            @if ($errors->any())
-                let errorMessages = [];
-                @foreach ($errors->all() as $error)
-                    errorMessages.push('{{ $error }}');
-                @endforeach
-                alert('Validation Errors:\n' + errorMessages.join('\n'));
-            @endif
 
             function updateGrandTotal() {
                 const totalEls = document.querySelectorAll('.item-total');

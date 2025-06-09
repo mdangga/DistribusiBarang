@@ -18,17 +18,20 @@ class PembelianController extends Controller
     public function addDataPembelian(Request $request)
     {
         try {
-            $request->validate([
+            dd($request->validate([
                 'tanggal' => 'required|date_format:Y-m-d H:i:s',
                 'id_pemasok' => 'required|integer|exists:pemasok,id_pemasok',
                 'harga' => 'required|numeric|min:0',
             ], [
-                'tanggal.required' => 'Tanggal berapa hari ini',
-                'id_pemasok.required' => 'Pemasok wajib diisi',
+                'tanggal.required' => 'Tanggal wajib diisi',
+                'tanggal.date_format' => 'Format tanggal tidak valid',
+                'id_pemasok.required' => 'Pemasok wajib dipilih',
+                'id_pemasok.integer' => 'ID Pemasok harus berupa angka',
+                'id_pemasok.exists' => 'Pemasok yang dipilih tidak valid',
                 'harga.required' => 'Harga wajib diisi',
-                'harga.numeric' => 'Masukkan harga dengan angka',
-                'harga.min' => 'Harga tidak boleh minus',    
-            ]);
+                'harga.numeric' => 'Harga harus berupa angka',
+                'harga.min' => 'Harga tidak boleh kurang dari 0',
+            ]));
             Pembelian::create([
                 'tanggal' => $request->tanggal,
                 'id_pemasok' => $request->id_pemasok,
@@ -62,8 +65,8 @@ class PembelianController extends Controller
         ]);
     }
 
-    
-    
+
+
     public function cetak(Request $request)
     {
         $dateFrom = $request->input('dateFrom');
