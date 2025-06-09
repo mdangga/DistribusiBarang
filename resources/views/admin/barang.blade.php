@@ -289,9 +289,11 @@
                     </tbody>
                 </table>
             </div>
+            @if ($barang->total() > 10)
             <div class="bg-[#cbf3f07a] py-2 px-6">
                 {{ $barang->withQueryString()->links() }}
             </div>
+            @endif
         </div>
     </div>
 

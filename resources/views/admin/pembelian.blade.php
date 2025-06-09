@@ -207,9 +207,11 @@
                     </tbody>
                 </table>
             </div>
+            @if ($pembelian->total() > 10)
             <div class="bg-[#cbf3f07a] py-2 px-6">
                 {{ $pembelian->withQueryString()->links() }}
             </div>
+            @endif
         </div>
     </div>
 
