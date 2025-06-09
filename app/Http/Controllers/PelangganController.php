@@ -33,12 +33,12 @@ class PelangganController extends Controller
             ->paginate(10)
             ->appends($request->all());
 
-        $page = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = 10;
-        $results = $pelanggan->slice(($page - 1) * $perPage, $perPage)->values();
-        $pelanggan = new LengthAwarePaginator($results, $pelanggan->count(), $perPage, $page, [
-            'path' => LengthAwarePaginator::resolveCurrentPath()
-        ]);
+        // $page = LengthAwarePaginator::resolveCurrentPage();
+        // $perPage = 10;
+        // $results = $pelanggan->slice(($page - 1) * $perPage, $perPage)->values();
+        // $pelanggan = new LengthAwarePaginator($results, $pelanggan->count(), $perPage, $page, [
+        //     'path' => LengthAwarePaginator::resolveCurrentPath()
+        // ]);
 
         return view('admin.pelanggan', [
             'pelanggan' => $pelanggan,

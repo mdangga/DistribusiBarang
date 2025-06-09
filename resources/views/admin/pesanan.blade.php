@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.svg') }}">
-    <title>Admin - Transaksi</title>
+    <title>Admin - Pesanan</title>
 </head>
 
 <body class="bg-graymain">
@@ -203,10 +203,10 @@
                     </tbody>
                 </table>
             </div>
-            @if($pesanan->total() > 10)
-            <div class="bg-[#cbf3f07a] py-2 px-6">
-                {{ $pesanan->withQueryString()->links() }}
-            </div>
+            @if ($pesanan->total() > 10)
+                <div class="bg-[#cbf3f07a] py-2 px-6">
+                    {{ $pesanan->withQueryString()->links() }}
+                </div>
             @endif
         </div>
     </div>
