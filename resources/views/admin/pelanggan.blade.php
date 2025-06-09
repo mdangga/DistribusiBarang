@@ -236,9 +236,11 @@
             </div>
 
             <!-- Pagination -->
+            @if ($pelanggan->total() > 10)
             <div class="bg-[#cbf3f07a] py-2 px-6">
                 {{ $pelanggan->withQueryString()->links() }}
             </div>
+            @endif
         </div>
     </div>
 
