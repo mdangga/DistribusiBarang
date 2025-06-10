@@ -81,6 +81,43 @@ class PelangganController extends Controller
         $pelanggan->alamat = $request->alamat;
         $pelanggan->save();
 
+        return redirect()->route('pesanan.index')->with('success', 'Pelanggan berhasil ditambahkan');
+    }
+    
+    public function addDataPelangganAdmin(Request $request)
+    {
+        // Validasi
+        $request->validate([
+            'nama_pelanggan' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('pelanggan'),
+            ],
+            'no_telpon' => [
+                'required',
+                'string',
+                'regex:/^[0-9]+$/',
+                'max:15',
+            ],
+            'alamat' => 'required|string',
+        ], [
+            'nama_pelanggan.required' => 'Nama pelanggan tidak boleh kosong.',
+            'nama_pelanggan.unique' => 'Pelanggan telah terdaftar.',
+            'nama_pelanggan.max' => 'Nama pelanggan lebih dari 255 karakter',
+            'no_telpon.required' => 'No Telephone wajib diisi.',
+            'no_telpon.regex' => 'Nomor telepon hanya boleh berisi angka.',
+            'no_telpon.max' => 'Nomor telepon terlalu panjang.',
+            'alamat.required' => 'Satuan wajib diisi.',
+        ]);
+        // dd($request->all());
+
+        $pelanggan = new Pelanggan();
+        $pelanggan->nama_pelanggan = $request->nama_pelanggan;
+        $pelanggan->no_telpon = $request->no_telpon;
+        $pelanggan->alamat = $request->alamat;
+        $pelanggan->save();
+
         return redirect()->route('admin.pelanggan')->with('success', 'Pelanggan berhasil ditambahkan');
     }
 

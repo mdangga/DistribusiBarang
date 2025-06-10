@@ -36,9 +36,12 @@ class Pesanan extends Model
     
     // Set fillable columns
     protected $fillable = [
+        'total_awal',
+        'total_diskon',
+        'total_pajak',  
         'total_harga',
         'id_pelanggan',
-        'tanggal'
+        'tanggal',
     ];
 
     // Relasi ke detail pesanan

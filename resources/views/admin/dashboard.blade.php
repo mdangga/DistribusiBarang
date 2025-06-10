@@ -220,75 +220,170 @@
                 </div>
             </div>
 
-            <!-- Charts Row -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-                <!-- Sales Chart -->
-                @php
-                    $labels = ['Bulan Ini', '3 Bulan Terakhir', 'Tahun Ini'];
-                    $colors = ['text-blue-500', 'text-yellow-500', 'text-purple-500'];
-                    $defaultIndex = 0; // default: Bulan Ini
-                @endphp
+                <!-- Business Performance Chart -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <div class="flex justify-between items-center mb-6">
+    <h3 class="text-base font-semibold text-gray-900">Business Performance</h3>
+    <div class="flex items-center space-x-2">
+        <span 
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+            :class="{
+                'bg-green-100 text-green-800': business_status.status === 'profitable',
+                'bg-blue-100 text-blue-800': business_status.status === 'stable' || business_status.status === 'improving',
+                'bg-yellow-100 text-yellow-800': business_status.status === 'recovery',
+                'bg-red-100 text-red-800': business_status.status === 'declining' || business_status.status === 'loss'
+            }"
+        >
+            {{ ucfirst($business_status['status']) }}
+        </span>
+    </div>
+</div>
 
-                <div x-data="{ selectedIndex: {{ $defaultIndex }} }" class="bg-white rounded-lg shadow p-6 space-y-6">
-                    {{-- Select dropdown --}}
-                    <div class="mb-4">
-                        <label for="periode" class="block mb-2 text-sm font-medium text-gray-900 ">Pilih
-                            Periode:</label>
-                        <select x-model="selectedIndex" id="periode"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                            @foreach ($labels as $i => $label)
-                                <option value="{{ $i }}">{{ $label }}</option>
-                            @endforeach
-                        </select>
+<!-- Performance Metrics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+    <!-- YTD Performance Card -->
+    <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-blue-600">YTD Performance</p>
+                <p class="text-xl font-bold leading-tight {{ $ytd_performance['is_profitable_ytd'] ? 'text-green-600' : 'text-red-600' }}">
+                    {{ number_format($ytd_performance['net_profit_ytd'], 0, ',', '.') }}
+                </p>
+                <p class="text-xs text-gray-500">{{ $ytd_performance['periode'] }}</p>
+            </div>
+            <div class="p-3 rounded-full {{ $ytd_performance['is_profitable_ytd'] ? 'bg-green-100' : 'bg-red-100' }}">
+                @if ($ytd_performance['is_profitable_ytd'])
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                @else
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                    </svg>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- 12-Month Performance Card -->
+    <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-purple-600">12-Month Performance</p>
+                <p class="text-xl font-bold leading-tight {{ $full_year_performance['is_profitable_full_year'] ? 'text-green-600' : 'text-red-600' }}">
+                    {{ number_format($full_year_performance['net_profit_full_year'], 0, ',', '.') }}
+                </p>
+                <p class="text-xs text-gray-500">{{ $full_year_performance['periode'] }}</p>
+            </div>
+            <div class="p-3 rounded-full {{ $full_year_performance['is_profitable_full_year'] ? 'bg-green-100' : 'bg-red-100' }}">
+                @if ($full_year_performance['is_profitable_full_year'])
+                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                @else
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- Business Health Card -->
+    <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-green-600">Consecutive Profitable Months</p>
+                <p class="text-xl font-bold leading-tight text-green-600">
+                    {{ $business_status['consecutive_profitable_months'] }}
+                </p>
+                <p class="text-xs text-gray-500">
+                    @if ($business_status['consistent_profit'])
+                        Consistently Profitable
+                    @else
+                        Building Consistency
+                    @endif
+                </p>
+            </div>
+            <div class="p-3 rounded-full bg-green-100">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+                    <!-- Performance Chart -->
+                    <div class="mb-6">
+                        <canvas id="profitChart" width="400" height="200"></canvas>
                     </div>
 
-                    {{-- Tampilan Keuntungan Berdasarkan Pilihan --}}
-                    <div x-data="{
-                        profits: {{ Js::from($profit['profit']) }},
-                        percentages: {{ Js::from($profit['persentase']) }},
-                        labels: {{ Js::from($labels) }},
-                    }">
-                        <template x-for="(label, index) in labels" :key="index">
-                            <div x-show="selectedIndex == index" class="flex justify-between items-center">
-                                <div>
-                                    <h5 class="leading-none text-3xl font-bold pb-2"
-                                        :class="(profits[index] >= 0) ? 'text-green-500' : 'text-red-500'">
-                                        <span
-                                            x-text="new Intl.NumberFormat('id-ID', { 
-                            style: 'currency', 
-                            currency: 'IDR',
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0
-                        }).format(profits[index])"></span>
-                                    </h5>
-                                    <p class="text-base font-normal text-gray-500" x-text="`Keuntungan ${label}`"></p>
-                                </div>
-
-                                <div class="flex items-center px-2.5 py-0.5 text-xl font-semibold text-center"
-                                    :class="(percentages[index] >= 0) ? 'text-green-500' : 'text-red-500'">
-                                    <span
-                                        x-text="`${percentages[index] >= 0 ? '+' : ''}${percentages[index]}%`"></span>
-                                    <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 10 14">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            :d="(percentages[index] >= 0) ? 'M5 13V1m0 0L1 5m4-4 4 4' :
-                                            'M5 1v12m0 0L1 9m4 4 4-4'" />
+                    <!-- Status Message -->
+                    <div class="flex items-center p-4 rounded-lg"
+                        :class="{
+                            'bg-green-50 border border-green-200': business_status.status === 'profitable',
+                            'bg-blue-50 border border-blue-200': business_status.status === 'stable' ||
+                                business_status
+                                .status === 'improving',
+                            'bg-yellow-50 border border-yellow-200': business_status.status === 'recovery',
+                            'bg-red-50 border border-red-200': business_status.status === 'declining' ||
+                                business_status
+                                .status === 'loss'
+                        }">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                @if ($business_status['status'] === 'profitable')
+                                    <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
                                     </svg>
-                                </div>
+                                @elseif($business_status['status'] === 'recovery')
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                @else
+                                    <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                @endif
                             </div>
-                        </template>
-                    </div>
-
-                    {{-- Chart Section --}}
-                    <div id="labels-chart" class="px-2.5">
-                        <canvas id="profitChart" class="h-[300px]"></canvas>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium"
+                                    :class="{
+                                        'text-green-800': business_status.status === 'profitable',
+                                        'text-blue-800': business_status.status === 'stable' || business_status
+                                            .status === 'improving',
+                                        'text-yellow-800': business_status.status === 'recovery',
+                                        'text-red-800': business_status.status === 'declining' || business_status
+                                            .status === 'loss'
+                                    }">
+                                    {{ $business_status['message'] }}
+                                </p>
+                                @if ($business_status['needs_attention'])
+                                    <p class="mt-1 text-sm text-red-600">
+                                        Immediate attention required - consider cost reduction or revenue improvement
+                                        strategies.
+                                    </p>
+                                @elseif($business_status['recovery_indicator'])
+                                    <p class="mt-1 text-sm text-yellow-600">
+                                        Great! Your business is showing signs of recovery. Keep monitoring trends.
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
 
 
                 <!-- Kategori Terlaris -->
-                <div class="bg-white rounded-lg shadow p-6">
+                <div class="bg-white rounded-lg shadow p-4">
                     <h2 class="text-lg font-semibold mb-4">Kategori Terlaris</h2>
                     <div class="h-[450px] ">
                         <canvas id="kategoriChart" class=""></canvas>
@@ -394,8 +489,8 @@
                 data: {
                     labels: @json($grafik_line['labels']),
                     datasets: [{
-                            label: 'Pesanan',
-                            data: @json($grafik_line['pesanan']),
+                            label: 'Pendapatan',
+                            data: @json($grafik_line['pendapatan']),
                             borderColor: 'rgba(34, 197, 94, 1)',
                             backgroundColor: revenueGradient,
                             borderWidth: 4,
@@ -417,8 +512,8 @@
                             pointShadowColor: 'rgba(34, 197, 94, 0.3)'
                         },
                         {
-                            label: 'Pembelian',
-                            data: @json($grafik_line['pembelian']),
+                            label: 'Pengeluaran',
+                            data: @json($grafik_line['pengeluaran']),
                             borderColor: 'rgba(239, 68, 68, 1)',
                             backgroundColor: expenseGradient,
                             borderWidth: 4,
@@ -552,9 +647,9 @@
                                     // Calculate difference between datasets if both exist
                                     if (context.length === 2) {
                                         const pesanan = context.find(c => c.dataset.label.includes(
-                                            'Pesanan'))?.parsed.y || 0;
+                                            'Pendapatan'))?.parsed.y || 0;
                                         const pembelian = context.find(c => c.dataset.label.includes(
-                                            'Pembelian'))?.parsed.y || 0;
+                                            'Pengeluaran'))?.parsed.y || 0;
                                     }
                                     return '';
                                 }

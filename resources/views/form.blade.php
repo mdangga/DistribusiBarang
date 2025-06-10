@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-white">
-
+    
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,114 +12,288 @@
     <title>Form Pesanan - Materialin</title>
 </head>
 
-<body class="h-full bg-white flex flex-col items-center  p-10">
-    <x-toast-info :fields="['nama_pelanggan', 'no_telepon', 'alamat']" type="error" />
-    @if ($errors->any())
-        <x-toast-info :fields="['id_pelanggan', 'items']" type="error" />
+<body class="h-full bg-white flex flex-col items-center p-10">
+
+    <!-- Toast untuk error validasi -->
+    @if ($errors->has('id_pelanggan'))
+        <x-toast-info :fields="['id_pelanggan']" type="error" />
+    @endif
+
+    @if ($errors->has('items') || $errors->has('items.*'))
+        <x-toast-info :fields="['items', 'items.*']" type="error" />
+    @endif
+
+    @if (session('error'))
+        <x-toast-info :fields="['general']" type="error" />
     @endif
 
     <a href="#" class="flex ms-2 md:me-24 my-5">
         <img src="{{ asset('img/favicon.svg') }}" class="h-16 me-3" alt="Materialin Logo" />
-        <span class="self-center text-4xl font-semibold sm:text-4xl whitespace-nowrap ">Materialin</span>
+        <span class="self-center text-4xl font-semibold sm:text-4xl whitespace-nowrap">Materialin</span>
     </a>
+
     <div class="w-full max-w-4xl p-6 space-y-6">
         <form id="pesananForm" action="{{ route('pesanan.store') }}" method="POST">
             @csrf
+
             <!-- Informasi Umum -->
             <div class="grid grid-cols-2 gap-4">
-                <!-- Input hidden untuk ID pesanan kosong yang akan diisi -->
-                {{-- <input type="hidden" name="kode_pesanan" value="{{ $emptyPesanan->kode_pesanan }}"> --}}
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Pelanggan</label>
-                    <input type="hidden" name="id_pelanggan" id="id_pelanggan" value="">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Nama <a data-modal-target="addModalPelanggan"
+                            data-modal-toggle="addModalPelanggan">Pelanggan</a><span
+                            class="text-gray-400">(Opsional)</span>
+                    </label>
+                    <input type="hidden" name="id_pelanggan" id="id_pelanggan" value="{{ old('id_pelanggan') }}">
                     <x-autocomplete-input name="pelanggan" endpoint="{{ route('autocomplete.pelanggan') }}"
                         placeholder="Cari pelanggan..." form-field="nama_pelanggan" id-field="id"
-                        id="autocomplete-pelanggan" />
+                        id="autocomplete-pelanggan" :class="$errors->has('id_pelanggan') ? 'border-red-500' : ''" />
+                    @error('id_pelanggan')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+
+                    <!-- Info Diskon Pelanggan -->
+                    <div id="discountInfo" class="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md hidden">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800" id="discountTitle">Status Diskon</h3>
+                                <div class="mt-1 text-sm text-blue-700" id="discountMessage"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
                     <input aria-label="disabled input 2" type="text" name="tanggal"
                         value="{{ old('tanggal', date('Y-m-d H:i:s')) }}" readonly
-                        class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5 cursor-not-allowed ">
+                        class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5 cursor-not-allowed">
                 </div>
             </div>
 
             <!-- Input Barang -->
             <div class="grid grid-cols-3 gap-4 items-end mt-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Barang</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Barang *</label>
                     <x-autocomplete-input name="barang" :endpoint="route('autocomplete.barang')" placeholder="Cari barang..."
                         form-field="nama_barang" id-field="id" />
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah *</label>
                     <input type="number" id="jumlahInput" min="1" value="1"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5" />
                 </div>
                 <div>
-                    <button type="button" id="tambahBarang"
-                        class="inline-flex items-center justify-center w-full bg-[#ff9f1c] text-white p-2 rounded-md hover:bg-[#c8821f] focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 transition text-center">
+                    <button type="button" id="tambahBarang" disabled
+                        class="inline-flex items-center justify-center w-full bg-gray-400 text-white p-2 rounded-md transition text-center disabled:cursor-not-allowed">
                         <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path fill="currentColor"
                                 d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
                         </svg>
                         Tambah
                     </button>
-
-
                 </div>
             </div>
 
+            <!-- Pesan Error untuk Items -->
+            @if ($errors->has('items') || $errors->has('items.*'))
+                <div class="bg-red-50 border border-red-200 rounded-md p-4 mt-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">
+                                Terjadi kesalahan pada item pesanan:
+                            </h3>
+                            <div class="mt-2 text-sm text-red-700">
+                                <ul class="list-disc list-inside space-y-1">
+                                    @foreach ($errors->all() as $error)
+                                        @if (str_contains($error, 'item') || str_contains($error, 'barang') || str_contains($error, 'jumlah'))
+                                            <li>{{ $error }}</li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <!-- Tabel Daftar Barang -->
-            <div class="overflow-x-auto mt-6  border rounded" id="tabelWrapper">
+            <div class="overflow-x-auto mt-6 border rounded" id="tabelWrapper">
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0">
                         <tr>
                             <th class="px-4 py-2">Nama Barang</th>
                             <th class="px-4 py-2">Jumlah</th>
-                            <th class="px-4 py-2">Harga</th>
-                            <th class="px-4 py-2">Total</th>
+                            <th class="px-4 py-2">Harga Satuan</th>
+                            <th class="px-4 py-2">Subtotal</th>
                             <th class="px-4 py-2">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="daftarBarang">
-
+                        <!-- Items akan ditambahkan di sini -->
                     </tbody>
                 </table>
+
+                <!-- Pesan jika belum ada item -->
+                <div id="emptyMessage" class="text-center py-8 text-gray-500">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
+                        viewBox="0 0 48 48">
+                        <path
+                            d="M34 40h10v-4a6 6 0 00-10.712-3.714M34 40H14m20 0v-4a9.971 9.971 0 00-.712-3.714M14 40H4v-4a6 6 0 0110.713-3.714M14 40v-4c0-1.313.253-2.566.713-3.714m0 0A10.003 10.003 0 0124 26c4.21 0 7.813 2.602 9.288 6.286"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada item</h3>
+                    <p class="mt-1 text-sm text-gray-500">Mulai dengan menambahkan barang ke pesanan.</p>
+                </div>
             </div>
 
-            <!-- Total Harga -->
-            <div class="grid grid-rows-3 mt-4">
-                <div class="text-right">
-                    <div class="text-sm text-gray-700">Tunai:</div>
-                    <input type="number" id="tunaiInput" min="1" value="0"
-                        class="ml-auto text-right bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 block w-48 p-2.5" />
+            <!-- Ringkasan Harga -->
+            <div class="bg-gray-50 rounded-lg p-6 mt-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Ringkasan Pesanan</h3>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">Total Awal:</span>
+                        <span class="font-medium">Rp <span id="totalAwal">0</span></span>
+                    </div>
+
+                    <div class="flex justify-between text-sm" id="diskonRow" style="display: none;">
+                        <span class="text-gray-600">Diskon (2%):</span>
+                        <span class="font-medium text-green-600">-Rp <span id="totalDiskon">0</span></span>
+                    </div>
+
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">Setelah Diskon:</span>
+                        <span class="font-medium">Rp <span id="setelahDiskon">0</span></span>
+                    </div>
+
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">Pajak (11%):</span>
+                        <span class="font-medium">Rp <span id="totalPajak">0</span></span>
+                    </div>
+
+                    <hr class="border-gray-300">
+
+                    <div class="flex justify-between text-lg font-bold">
+                        <span class="text-gray-900">Total Akhir:</span>
+                        <span class="text-gray-900">Rp <span id="grandTotal">0</span></span>
+                    </div>
                 </div>
-                <div class="text-right">
-                    <div class="text-sm text-gray-700">Total Harga:</div>
-                    <div class="text-3xl font-bold text-gray-900">Rp <span id="grandTotal">0,00</span></div>
-                    <input type="hidden" name="total_harga" id="totalHargaInput" value="0">
+
+                <!-- Section Pembayaran Tunai -->
+                <div class="mt-6 pt-4 border-t border-gray-300">
+                    <h4 class="text-md font-medium text-gray-900 mb-3">Pembayaran Tunai</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Jumlah Tunai <span class="text-gray-400">(Opsional)</span>
+                            </label>
+                            <input type="number" name="jumlah_tunai" id="jumlahTunai" min="0"
+                                step="1000" placeholder="Masukkan jumlah tunai"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 block w-full p-2.5" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Kembalian</label>
+                            <div
+                                class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 font-medium">
+                                Rp <span id="kembalian">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status Pembayaran -->
+                    <div id="statusPembayaran" class="mt-3 p-3 rounded-md hidden">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <svg id="statusIcon" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20" fill="currentColor">
+                                    <!-- Icon akan diubah via JavaScript -->
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium" id="statusMessage"></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-right">
-                    <div class="text-sm text-gray-700">Kembalian:</div>
-                    <div class="text-3xl font-bold text-gray-900">Rp <span id="kembalian">0,00</span></div>
-                </div>
+
+                <!-- Hidden inputs untuk form -->
+                <input type="hidden" name="total_awal" id="totalAwalInput" value="0">
+                <input type="hidden" name="total_diskon" id="totalDiskonInput" value="0">
+                <input type="hidden" name="total_pajak" id="totalPajakInput" value="0">
+                <input type="hidden" name="total_harga" id="totalHargaInput" value="0">
+                <input type="hidden" name="kembalian" id="kembalianInput" value="0">
             </div>
 
             <!-- Tombol Simpan -->
             <div class="flex justify-end mt-6 space-x-3">
-                <button type="submit"
-                    class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 transition">
+                <button type="submit" id="submitBtn" disabled
+                    class="bg-gray-400 text-white px-6 py-3 rounded-md transition disabled:cursor-not-allowed">
                     Simpan Pesanan
                 </button>
 
                 <a href="{{ route('pesanan.list') }}"
-                    class="bg-red-600 text-white px-5 py-2 rounded-md focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 hover:bg-red-700 transition">
+                    class="bg-red-600 text-white px-6 py-3 rounded-md hover:bg-red-700 transition">
                     Batal
                 </a>
             </div>
-
         </form>
+
+        <x-modal id="addModalPelanggan" header="Tambah Pelanggan" button="Tambah" :actionRoute="route('add.pelanggan')"
+            methodOverride="POST">
+            <div class="grid gap-4 mb-4
+            grid-cols-3">
+                {{-- svg icon di header --}}
+                <x-slot:iconheader>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"
+                        class="text-gray-700 mr-3 overflow-visible">
+                        <path fill="currentColor"
+                            d="M224 256a128 128 0 1 0 0-256a128 128 0 1 0 0 256m-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512h388.6c10 0 18.8-4.9 24.2-12.5l-99.2-99.2c-14.9-14.9-23.3-35.1-23.3-56.1v-33c-15.9-4.7-32.8-7.2-50.3-7.2zM384 224c-17.7 0-32 14.3-32 32v82.7c0 17 6.7 33.3 18.7 45.3l107.4 107.3c18.7 18.7 49.1 18.7 67.9 0l73.4-73.4c18.7-18.7 18.7-49.1 0-67.9L512 242.7c-12-12-28.3-18.7-45.3-18.7zm24 80a24 24 0 1 1 48 0a24 24 0 1 1-48 0" />
+                    </svg>
+                </x-slot:iconheader>
+                {{-- svg icon sebelah kiri btn --}}
+                <x-slot:iconbtn>
+                    <svg class="me-1 -ms-1 w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 512 512" class="text-gray-700 mr-3">
+                        <path fill="currentColor"
+                            d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
+                    </svg>
+                </x-slot:iconbtn>
+                <div class="col-span-3">
+                    <label for="nama_pelanggan" class="block mb-2 text-sm font-medium text-gray-900">Nama
+                        Pelanggan</label>
+                    <input type="text" name="nama_pelanggan" id="nama_pelanggan"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
+                </div>
+
+                <div class="col-span-3 sm:col-span-3">
+                    <label for="no_telpon" class="block mb-2 text-sm font-medium text-gray-900">No Telpon</label>
+                    <input type="text" name="no_telpon" id="no_telpon"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
+                </div>
+
+                <div class="col-span-3 sm:col-span-3">
+                    <label for="alamat" class="block mb-2 text-sm font-medium text-gray-900">Alamat</label>
+                    <textarea name="alamat" id="alamat" rows="3"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transition block w-full p-2.5 resize-none"></textarea>
+                </div>
+            </div>
+        </x-modal>
     </div>
 
     <script>
@@ -127,154 +301,550 @@
             // Variabel untuk menyimpan data terpilih
             let barangTerpilih = null;
             let pelangganTerpilih = null;
+            let discountStatus = null;
             let index = 0;
+            let items = [];
 
             // Referensi elemen
-            const tunaiInput = document.getElementById('tunaiInput');
-            const totalHargaHidden = document.getElementById('totalHargaInput');
-            const kembalianSpan = document.getElementById('kembalian');
-            const grandTotalSpan = document.getElementById('grandTotal');
-
-            // Event listener untuk input tunai - hitung kembalian real-time
-            tunaiInput.addEventListener('input', function() {
-                hitungKembalian();
-            });
-
-            // Fungsi untuk menghitung kembalian
-            function hitungKembalian() {
-                const tunai = parseFloat(tunaiInput.value) || 0;
-                const totalHarga = parseFloat(totalHargaHidden.value) || 0;
-                const kembalian = tunai - totalHarga;
-
-                // Update tampilan kembalian
-                if (kembalian >= 0) {
-                    kembalianSpan.textContent = formatRupiah(kembalian);
-                    kembalianSpan.parentElement.style.color = ''; // Reset warna
-                } else {
-                    kembalianSpan.textContent = '-' + formatRupiah(Math.abs(kembalian));
-                    kembalianSpan.parentElement.style.color = 'red'; // Warna merah jika kurang
-                }
-            }
-
-            // Event delegation untuk tombol hapus (SATU KALI SAJA)
             const tbody = document.getElementById('daftarBarang');
-            tbody.addEventListener('click', function(e) {
-                if (e.target.matches('button') && e.target.textContent.trim() === 'Hapus') {
-                    e.target.closest('tr').remove();
-                    updateGrandTotal();
-                }
-            });
+            const emptyMessage = document.getElementById('emptyMessage');
+            const tambahBarangButton = document.getElementById('tambahBarang');
+            const submitBtn = document.getElementById('submitBtn');
+            const jumlahInput = document.getElementById('jumlahInput');
+            const jumlahTunaiInput = document.getElementById('jumlahTunai');
 
-            // Tangkap event sekali untuk kedua autocomplete
+            // Event listener untuk autocomplete
             document.addEventListener('autocomplete-selected', function(e) {
                 const {
                     field,
                     selected
                 } = e.detail;
-                // console.log('Field:', e.detail.field);
-                // console.log('Selected:', e.detail.selected);
 
                 if (field === 'barang') {
                     barangTerpilih = selected;
-                    // console.log('Barang dipilih:', barangTerpilih);
+                    updateTambahButton();
                 } else if (field === 'pelanggan') {
                     pelangganTerpilih = selected;
-                    // console.log('Pelanggan dipilih:', pelangganTerpilih);
                     document.querySelector('input[name="id_pelanggan"]').value = pelangganTerpilih.id;
+                    checkDiscountStatus(pelangganTerpilih.id);
                 }
             });
 
-            // Tombol Tambah Barang
-            const tambahBarangButton = document.getElementById('tambahBarang');
+            // Event listener untuk input jumlah
+            jumlahInput.addEventListener('input', updateTambahButton);
+
+            // Event listener untuk input tunai
+            jumlahTunaiInput.addEventListener('input', function() {
+                updateKembalian();
+                updateStatusPembayaran();
+            });
+
+            // Fungsi untuk cek status diskon
+            async function checkDiscountStatus(pelangganId) {
+                try {
+                    const response = await fetch(`/pesanan/discount-status/${pelangganId}`);
+                    const data = await response.json();
+
+                    discountStatus = data;
+                    updateDiscountInfo(data);
+                    updateRingkasan();
+                } catch (error) {
+                    console.error('Error checking discount status:', error);
+                    discountStatus = null;
+                    hideDiscountInfo();
+                    updateRingkasan();
+                }
+            }
+
+            // Fungsi untuk update info diskon
+            function updateDiscountInfo(data) {
+                const discountInfo = document.getElementById('discountInfo');
+                const discountTitle = document.getElementById('discountTitle');
+                const discountMessage = document.getElementById('discountMessage');
+
+                if (data.eligible) {
+                    discountInfo.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-md';
+                    discountTitle.textContent = 'Berhasil Mendapat Diskon 2%';
+                    discountMessage.innerHTML = `
+                        <div>Total transaksi bulan ini: <strong>Rp ${formatRupiah(data.current_month_total)}</strong></div>
+                        <div class="text-green-600 font-medium">Diskon 2% akan diterapkan pada pesanan ini</div>
+                    `;
+                } else {
+                    discountInfo.className = 'mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md';
+                    discountTitle.textContent = 'Status Diskon';
+                    discountMessage.innerHTML = `
+                        <div>Total transaksi bulan ini: <strong>Rp ${formatRupiah(data.current_month_total)}</strong></div>
+                        <div class="text-yellow-600">Butuh <strong>Rp ${formatRupiah(data.remaining_amount)}</strong> lagi untuk diskon 2%</div>
+                    `;
+                }
+
+                discountInfo.classList.remove('hidden');
+            }
+
+            // Fungsi untuk hide info diskon
+            function hideDiscountInfo() {
+                document.getElementById('discountInfo').classList.add('hidden');
+            }
+
+            // Fungsi untuk mengupdate status tombol tambah
+            function updateTambahButton() {
+                const jumlah = parseInt(jumlahInput.value) || 0;
+                const canAdd = barangTerpilih && jumlah > 0;
+
+                tambahBarangButton.disabled = !canAdd;
+                tambahBarangButton.className = canAdd ?
+                    "inline-flex items-center justify-center w-full bg-[#ff9f1c] text-white p-2 rounded-md hover:bg-[#c8821f] focus:ring-1 focus:outline-none focus:ring-[#2ec4b6] focus:border-blue-500 transition text-center" :
+                    "inline-flex items-center justify-center w-full bg-gray-400 text-white p-2 rounded-md transition text-center disabled:cursor-not-allowed";
+            }
+
+            // Event listener untuk tombol tambah barang
             tambahBarangButton.addEventListener('click', function() {
-                const jumlahInput = document.getElementById('jumlahInput');
-                const jumlah = parseInt(jumlahInput.value || 0);
+                if (!barangTerpilih) return;
+
+                const jumlah = parseInt(jumlahInput.value) || 0;
+                if (jumlah <= 0) return;
 
                 const {
                     id,
                     nama_barang: nama,
                     harga
                 } = barangTerpilih;
-                const total = harga * jumlah;
+                const subtotal = harga * jumlah;
 
-                const row = document.createElement('tr');
-                row.innerHTML = `
-            <td class="px-4 py-2">${nama}
-                <input type="hidden" name="items[${index}][id_barang]" value="${id}">
-            </td>
-            <td class="px-4 py-2">${jumlah}
-                <input type="hidden" name="items[${index}][jumlah]" value="${jumlah}">
-            </td>
-            <td class="px-4 py-2">Rp ${formatRupiah(harga)}</td>
-            <td class="px-4 py-2">Rp ${formatRupiah(total)}
-                <input type="hidden" class="item-total" value="${total}">
-            </td>
-            <td class="px-4 py-2">
-                <button type="button" class="text-red-600 hover:text-red-800">
-                    Hapus
-                </button>
-            </td>
-        `;
-                tbody.appendChild(row);
+                // Tambahkan ke array items
+                items.push({
+                    id_barang: id,
+                    nama_barang: nama,
+                    jumlah: jumlah,
+                    harga: harga,
+                    subtotal: subtotal
+                });
 
-                index++;
-                updateGrandTotal();
+                // Render ulang tabel
+                renderTable();
+                updateRingkasan();
+                updateSubmitButton();
+                updateKembalian();
+                updateStatusPembayaran();
 
-                // Reset barangTerpilih dan input pencarian
+                // Reset form
                 barangTerpilih = null;
                 jumlahInput.value = 1;
                 const searchInput = document.querySelector('#autocomplete-barang input[type="text"]');
                 if (searchInput) searchInput.value = '';
+                updateTambahButton();
             });
 
-            // TAMBAHAN: Form submit validation dan loading state
+            // Event delegation untuk tombol hapus
+            tbody.addEventListener('click', function(e) {
+                if (e.target.matches('button') && e.target.textContent.trim() === 'Hapus') {
+                    const row = e.target.closest('tr');
+                    const itemIndex = parseInt(row.dataset.index);
+
+                    // Hapus dari array
+                    items.splice(itemIndex, 1);
+
+                    // Render ulang
+                    renderTable();
+                    updateRingkasan();
+                    updateSubmitButton();
+                    updateKembalian();
+                    updateStatusPembayaran();
+                }
+            });
+
+            // Fungsi untuk render tabel
+            function renderTable() {
+                if (items.length === 0) {
+                    tbody.innerHTML = '';
+                    emptyMessage.style.display = 'block';
+                    return;
+                }
+
+                emptyMessage.style.display = 'none';
+                tbody.innerHTML = items.map((item, idx) => `
+                    <tr data-index="${idx}">
+                        <td class="px-4 py-2">
+                            ${item.nama_barang}
+                            <input type="hidden" name="items[${idx}][id_barang]" value="${item.id_barang}">
+                        </td>
+                        <td class="px-4 py-2">
+                            ${item.jumlah}
+                            <input type="hidden" name="items[${idx}][jumlah]" value="${item.jumlah}">
+                        </td>
+                        <td class="px-4 py-2">Rp ${formatRupiah(item.harga)}</td>
+                        <td class="px-4 py-2 font-medium">Rp ${formatRupiah(item.subtotal)}</td>
+                        <td class="px-4 py-2">
+                            <button type="button" class="text-red-600 hover:text-red-800 font-medium">
+                                Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Fungsi untuk mengupdate ringkasan
+            function updateRingkasan() {
+                const totalAwal = items.reduce((sum, item) => sum + item.subtotal, 0);
+
+                // Hitung diskon berdasarkan status pelanggan
+                let diskon = 0;
+                if (discountStatus && discountStatus.eligible) {
+                    diskon = totalAwal * 0.02; // 2%
+                }
+
+                const setelahDiskon = totalAwal - diskon;
+                const pajak = setelahDiskon * 0.11; // 11%
+                const totalAkhir = setelahDiskon + pajak;
+
+                // Update tampilan
+                document.getElementById('totalAwal').textContent = formatRupiah(totalAwal);
+                document.getElementById('totalDiskon').textContent = formatRupiah(diskon);
+                document.getElementById('setelahDiskon').textContent = formatRupiah(setelahDiskon);
+                document.getElementById('totalPajak').textContent = formatRupiah(pajak);
+                document.getElementById('grandTotal').textContent = formatRupiah(totalAkhir);
+
+                // Update hidden inputs
+                document.getElementById('totalAwalInput').value = totalAwal;
+                document.getElementById('totalDiskonInput').value = diskon;
+                document.getElementById('totalPajakInput').value = Math.round(pajak);
+                document.getElementById('totalHargaInput').value = Math.round(totalAkhir);
+
+                // Show/hide diskon row
+                const diskonRow = document.getElementById('diskonRow');
+                diskonRow.style.display = diskon > 0 ? 'flex' : 'none';
+            }
+
+            // Fungsi untuk update kembalian
+            function updateKembalian() {
+                const totalAkhir = parseFloat(document.getElementById('totalHargaInput').value) || 0;
+                const jumlahTunai = parseFloat(jumlahTunaiInput.value) || 0;
+                const kembalian = Math.max(0, jumlahTunai - totalAkhir);
+
+                document.getElementById('kembalian').textContent = formatRupiah(kembalian);
+                document.getElementById('kembalianInput').value = kembalian;
+            }
+
+            // Fungsi untuk update status pembayaran
+            function updateStatusPembayaran() {
+                const totalAkhir = parseFloat(document.getElementById('totalHargaInput').value) || 0;
+                const jumlahTunai = parseFloat(jumlahTunaiInput.value) || 0;
+                const statusDiv = document.getElementById('statusPembayaran');
+                const statusIcon = document.getElementById('statusIcon');
+                const statusMessage = document.getElementById('statusMessage');
+
+                if (jumlahTunai === 0) {
+                    statusDiv.classList.add('hidden');
+                    return;
+                }
+
+                statusDiv.classList.remove('hidden');
+
+                if (jumlahTunai >= totalAkhir) {
+                    statusDiv.className = 'mt-3 p-3 bg-green-50 border border-green-200 rounded-md';
+                    statusIcon.className = 'h-5 w-5 text-green-400';
+                    statusIcon.innerHTML = `
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    `;
+                    statusMessage.className = 'text-sm font-medium text-green-800';
+                    statusMessage.textContent = 'Pembayaran mencukupi';
+                } else {
+                    const kekurangan = totalAkhir - jumlahTunai;
+                    statusDiv.className = 'mt-3 p-3 bg-red-50 border border-red-200 rounded-md';
+                    statusIcon.className = 'h-5 w-5 text-red-400';
+                    statusIcon.innerHTML = `
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    `;
+                    statusMessage.className = 'text-sm font-medium text-red-800';
+                    statusMessage.textContent = `Kurang Rp ${formatRupiah(kekurangan)}`;
+                }
+            }
+
+            // Fungsi untuk mengupdate tombol submit
+            function updateSubmitButton() {
+                const canSubmit = items.length > 0;
+                submitBtn.disabled = !canSubmit;
+                submitBtn.className = canSubmit ?
+                    "bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md transition" :
+                    "bg-gray-400 text-white px-6 py-3 rounded-md transition disabled:cursor-not-allowed";
+            }
+
+            // Form submit handler
             const form = document.getElementById('pesananForm');
-            const submitButton = form.querySelector('button[type="submit"]');
-
             form.addEventListener('submit', function(e) {
-                // Tampilkan loading state
-                submitButton.disabled = true;
-                submitButton.innerHTML = `
-    <div class="flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-	<rect width="10" height="10" x="1" y="1" fill="currentColor" rx="1">
-		<animate id="svgSpinnersBlocksShuffle30" fill="freeze" attributeName="x" begin="0;svgSpinnersBlocksShuffle3b.end" dur="0.2s" values="1;13" />
-		<animate id="svgSpinnersBlocksShuffle31" fill="freeze" attributeName="y" begin="svgSpinnersBlocksShuffle38.end" dur="0.2s" values="1;13" />
-		<animate id="svgSpinnersBlocksShuffle32" fill="freeze" attributeName="x" begin="svgSpinnersBlocksShuffle39.end" dur="0.2s" values="13;1" />
-		<animate id="svgSpinnersBlocksShuffle33" fill="freeze" attributeName="y" begin="svgSpinnersBlocksShuffle3a.end" dur="0.2s" values="13;1" />
-	</rect>
-	<rect width="10" height="10" x="1" y="13" fill="currentColor" rx="1">
-		<animate id="svgSpinnersBlocksShuffle34" fill="freeze" attributeName="y" begin="svgSpinnersBlocksShuffle30.end" dur="0.2s" values="13;1" />
-		<animate id="svgSpinnersBlocksShuffle35" fill="freeze" attributeName="x" begin="svgSpinnersBlocksShuffle31.end" dur="0.2s" values="1;13" />
-		<animate id="svgSpinnersBlocksShuffle36" fill="freeze" attributeName="y" begin="svgSpinnersBlocksShuffle32.end" dur="0.2s" values="1;13" />
-		<animate id="svgSpinnersBlocksShuffle37" fill="freeze" attributeName="x" begin="svgSpinnersBlocksShuffle33.end" dur="0.2s" values="13;1" />
-	</rect>
-	<rect width="10" height="10" x="13" y="13" fill="currentColor" rx="1">
-		<animate id="svgSpinnersBlocksShuffle38" fill="freeze" attributeName="x" begin="svgSpinnersBlocksShuffle34.end" dur="0.2s" values="13;1" />
-		<animate id="svgSpinnersBlocksShuffle39" fill="freeze" attributeName="y" begin="svgSpinnersBlocksShuffle35.end" dur="0.2s" values="13;1" />
-		<animate id="svgSpinnersBlocksShuffle3a" fill="freeze" attributeName="x" begin="svgSpinnersBlocksShuffle36.end" dur="0.2s" values="1;13" />
-		<animate id="svgSpinnersBlocksShuffle3b" fill="freeze" attributeName="y" begin="svgSpinnersBlocksShuffle37.end" dur="0.2s" values="1;13" />
-	</rect>
-</svg>
-        <span>Menyimpan...</span>
-    </div>
-`;
+                if (items.length === 0) {
+                    e.preventDefault();
+                    alert('Minimal harus ada satu item dalam pesanan!');
+                    return false;
+                }
 
-                // Form akan submit secara normal
-                return true;
+                // Validasi tambahan jika diperlukan
+                const totalAkhir = parseFloat(document.getElementById('totalHargaInput').value) || 0;
+                const jumlahTunai = parseFloat(jumlahTunaiInput.value) || 0;
+
+                // Jika ada input tunai tapi kurang dari total
+                if (jumlahTunai > 0 && jumlahTunai < totalAkhir) {
+                    const konfirmasi = confirm(
+                        'Jumlah tunai kurang dari total pembayaran. Apakah Anda yakin ingin melanjutkan?'
+                    );
+                    if (!konfirmasi) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+
+                // Tampilkan loading state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Menyimpan...
+    `;
             });
 
-            function updateGrandTotal() {
-                const totalEls = document.querySelectorAll('.item-total');
-                let grandTotal = 0;
-                totalEls.forEach(el => grandTotal += parseFloat(el.value));
-                document.getElementById('grandTotal').textContent = formatRupiah(grandTotal);
-                document.getElementById('totalHargaInput').value = grandTotal;
+            // Fungsi helper untuk format rupiah
+            function formatRupiah(angka) {
+                return new Intl.NumberFormat('id-ID').format(Math.round(angka));
             }
 
-            function formatRupiah(angka) {
-                return angka.toLocaleString('id-ID');
+            // Fungsi untuk reset form
+            function resetForm() {
+                items = [];
+                barangTerpilih = null;
+                pelangganTerpilih = null;
+                discountStatus = null;
+
+                // Reset inputs
+                document.querySelector('input[name="id_pelanggan"]').value = '';
+                jumlahInput.value = 1;
+                jumlahTunaiInput.value = '';
+
+                // Reset autocomplete inputs
+                const searchInputs = document.querySelectorAll('input[type="text"]');
+                searchInputs.forEach(input => {
+                    if (input.name === 'barang' || input.name === 'pelanggan') {
+                        input.value = '';
+                    }
+                });
+
+                // Reset tampilan
+                renderTable();
+                updateRingkasan();
+                updateTambahButton();
+                updateSubmitButton();
+                updateKembalian();
+                updateStatusPembayaran();
+                hideDiscountInfo();
             }
+
+            // Event listener untuk reset jika diperlukan
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+R atau F5 untuk refresh - konfirmasi jika ada data
+                if ((e.ctrlKey && e.key === 'r') || e.key === 'F5') {
+                    if (items.length > 0) {
+                        const konfirmasi = confirm(
+                            'Ada data yang belum disimpan. Apakah Anda yakin ingin me-refresh halaman?');
+                        if (!konfirmasi) {
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                }
+            });
+
+            // Event listener untuk menangani perubahan pada input barang (jika ada perubahan manual)
+            document.addEventListener('input', function(e) {
+                if (e.target.name === 'barang') {
+                    // Reset barang terpilih jika user mengetik manual
+                    if (!e.target.dataset.selected) {
+                        barangTerpilih = null;
+                        updateTambahButton();
+                    }
+                }
+            });
+
+            // Fungsi untuk handle keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Enter pada input jumlah = tambah barang
+                if (e.target === jumlahInput && e.key === 'Enter') {
+                    e.preventDefault();
+                    if (!tambahBarangButton.disabled) {
+                        tambahBarangButton.click();
+                    }
+                }
+
+                // Ctrl+S = submit form
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    if (!submitBtn.disabled) {
+                        form.submit();
+                    }
+                }
+
+                // Escape = focus ke search barang
+                if (e.key === 'Escape') {
+                    const searchInput = document.querySelector('input[name="barang"]');
+                    if (searchInput) {
+                        searchInput.focus();
+                    }
+                }
+            });
+
+            // Auto-focus ke input barang saat halaman dimuat
+            window.addEventListener('load', function() {
+                const barangInput = document.querySelector('input[name="barang"]');
+                if (barangInput) {
+                    barangInput.focus();
+                }
+            });
+
+            // Fungsi untuk validasi real-time pada input jumlah
+            jumlahInput.addEventListener('input', function() {
+                let value = parseInt(this.value);
+
+                // Pastikan nilai minimal 1
+                if (value < 1 || isNaN(value)) {
+                    this.value = 1;
+                }
+
+                // Batas maksimal jika diperlukan (misalnya 9999)
+                if (value > 9999) {
+                    this.value = 9999;
+                }
+
+                updateTambahButton();
+            });
+
+            // Fungsi untuk validasi input tunai
+            jumlahTunaiInput.addEventListener('input', function() {
+                let value = parseFloat(this.value);
+
+                // Pastikan nilai tidak negatif
+                if (value < 0) {
+                    this.value = 0;
+                }
+
+                updateKembalian();
+                updateStatusPembayaran();
+            });
+
+            // Fungsi untuk handle paste pada input tunai (format angka)
+            jumlahTunaiInput.addEventListener('paste', function(e) {
+                setTimeout(() => {
+                    let value = this.value.replace(/[^0-9.]/g, '');
+                    this.value = value;
+                    updateKembalian();
+                    updateStatusPembayaran();
+                }, 10);
+            });
+
+            // Event listener untuk perubahan pada autocomplete pelanggan
+            document.addEventListener('autocomplete-cleared', function(e) {
+                const {
+                    field
+                } = e.detail;
+
+                if (field === 'pelanggan') {
+                    pelangganTerpilih = null;
+                    discountStatus = null;
+                    document.querySelector('input[name="id_pelanggan"]').value = '';
+                    hideDiscountInfo();
+                    updateRingkasan();
+                } else if (field === 'barang') {
+                    barangTerpilih = null;
+                    updateTambahButton();
+                }
+            });
+
+            // Fungsi untuk highlight baris yang baru ditambahkan
+            function highlightNewRow() {
+                const rows = tbody.querySelectorAll('tr');
+                const lastRow = rows[rows.length - 1];
+
+                if (lastRow) {
+                    lastRow.style.backgroundColor = '#fef3cd';
+                    setTimeout(() => {
+                        lastRow.style.backgroundColor = '';
+                    }, 1500);
+                }
+            }
+
+            // Update fungsi renderTable untuk include highlight
+            function renderTableWithHighlight() {
+                const previousCount = tbody.querySelectorAll('tr').length;
+                renderTable();
+
+                // Jika ada item baru, highlight
+                if (items.length > previousCount) {
+                    highlightNewRow();
+                }
+            }
+
+            // Ganti pemanggilan renderTable() dengan renderTableWithHighlight() pada event tambah barang
+            tambahBarangButton.addEventListener('click', function() {
+                if (!barangTerpilih) return;
+
+                const jumlah = parseInt(jumlahInput.value) || 0;
+                if (jumlah <= 0) return;
+
+                const {
+                    id,
+                    nama_barang: nama,
+                    harga
+                } = barangTerpilih;
+                const subtotal = harga * jumlah;
+
+                // Cek apakah barang sudah ada dalam daftar
+                const existingIndex = items.findIndex(item => item.id_barang === id);
+
+                if (existingIndex !== -1) {
+                    // Jika barang sudah ada, tambahkan jumlahnya
+                    const konfirmasi = confirm(
+                        `Barang "${nama}" sudah ada dalam daftar. Apakah ingin menambah jumlahnya?`);
+                    if (konfirmasi) {
+                        items[existingIndex].jumlah += jumlah;
+                        items[existingIndex].subtotal = items[existingIndex].harga * items[existingIndex]
+                            .jumlah;
+                    } else {
+                        return;
+                    }
+                } else {
+                    // Tambahkan item baru
+                    items.push({
+                        id_barang: id,
+                        nama_barang: nama,
+                        jumlah: jumlah,
+                        harga: harga,
+                        subtotal: subtotal
+                    });
+                }
+
+                // Render ulang dengan highlight
+                renderTableWithHighlight();
+                updateRingkasan();
+                updateSubmitButton();
+                updateKembalian();
+                updateStatusPembayaran();
+
+                // Reset form
+                barangTerpilih = null;
+                jumlahInput.value = 1;
+                const searchInput = document.querySelector('input[name="barang"]');
+                if (searchInput) {
+                    searchInput.value = '';
+                    searchInput.focus(); // Auto focus kembali ke search
+                }
+                updateTambahButton();
+            });
+
+            // Inisialisasi saat halaman dimuat
+            updateTambahButton();
+            updateSubmitButton();
+            updateRingkasan();
+
+            console.log('Form pesanan script loaded successfully');
         });
     </script>
 </body>
