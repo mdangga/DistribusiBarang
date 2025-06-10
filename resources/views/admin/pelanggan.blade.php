@@ -244,7 +244,7 @@
         </div>
     </div>
 
-    <!-- Modals untuk menambahkan barang -->
+    <!-- Modals untuk menambahkan pelanggan -->
     <x-modal id="addModalPelanggan" header="Tambah Pelanggan" button="Tambah" :actionRoute="route('pelanggan.add')"
         methodOverride="POST">
         <div class="grid gap-4 mb-4
@@ -286,7 +286,7 @@
         </div>
     </x-modal>
 
-    <!-- Modals untuk setiap barang -->
+    <!-- Modals untuk setiap pelanggan -->
     @foreach ($pelanggan as $person)
         <x-modal id="editModal{{ $person->id_pelanggan }}" header="Edit {{ $person->nama_pelanggan }}"
             button="Update" :actionRoute="route('pelanggan.update', $person->id_pelanggan)" methodOverride="patch">

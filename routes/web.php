@@ -25,6 +25,8 @@ Route::get('/', [PesananController::class, 'index'])->name('pesanan.index');
 Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');
 Route::get('/pesanan', [PesananController::class, 'list'])->name('pesanan.list');
 Route::get('/pesanan/{id}', [PesananController::class, 'show'])->name('pesanan.show');
+Route::get('/pesanan/discount-status/{id}', [PesananController::class, 'getDiscountStatus'])->name('pesanan.show');
+Route::post('/pelanggan', [PelangganController::class, 'addDataPelanggan'])->name('add.pelanggan');
 
 Route::middleware('guest')->group(function () {
     Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin.show');
@@ -54,15 +56,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/pesanan', [PesananController::class, 'listAdmin'])->name('admin.pesanan');
         Route::get('/admin/pesanan/{id}', [PesananController::class, 'showAdmin'])->name('adminPesanan.show');
         
-
+        
         Route::get('admin/pembelian/cetak', [PembelianController::class, 'cetak'])->name('pembelian.cetak');
         Route::get('admin/pembelian/export', [PembelianController::class, 'export'])->name('pembelian.export');
         Route::get('/admin/pembelian', [PembelianController::class, 'listAdmin'])->name('admin.pembelian');
         Route::post('/admin/pembelian/store', [PembelianController::class, 'addDataPembelian'])->name('pembelian.add');
-
+        
         Route::get('/admin/pelanggan', [PelangganController::class, 'tampilkanDataPelanggan'])->name('admin.pelanggan');
-        Route::post('/admin/pelanggan/', [PelangganController::class, 'addDataPelanggan'])->name('pelanggan.add');
         Route::patch('/admin/pelanggan/{id_pelanggan}', [PelangganController::class, 'updateDataPelanggan'])->name('pelanggan.update');
+        Route::post('/admin/pelanggan', [PelangganController::class, 'addDataPelangganAdmin'])->name('pelanggan.add');
         
         Route::get('/admin/pemasok', [PemasokController::class, 'tampilkanDataPemasok' ])->name('admin.pemasok');
         Route::post('/admin/pemasok/', [PemasokController::class, 'addDataPemasok'])->name('pemasok.add');

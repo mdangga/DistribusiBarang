@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\PesananExport;
+use App\Models\Pelanggan;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PesananController extends Controller
@@ -25,6 +26,32 @@ class PesananController extends Controller
         return view('form', compact('barang'));
     }
 
+    public function getDiscountStatus($id)
+    {
+        try {
+            $pelanggan = Pelanggan::findOrFail($id);
+
+            // Hitung total transaksi bulan ini
+            $totalBulanIni = $pelanggan->pesanan()
+                ->whereBetween('tanggal', [now()->startOfMonth(), now()->endOfMonth()])
+                ->sum('total_harga');
+
+            $discountThreshold = 15000000; // 15 juta
+            $isEligible = $totalBulanIni >= $discountThreshold;
+            $remaining = max(0, $discountThreshold - $totalBulanIni);
+
+            return response()->json([
+                'eligible' => $isEligible,
+                'current_month_total' => $totalBulanIni,
+                'remaining_amount' => $remaining,
+                'threshold' => $discountThreshold
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Pelanggan tidak ditemukan'
+            ], 404);
+        }
+    }
     /**
      * Simpan pesanan dan detail pesanan
      */
@@ -50,7 +77,7 @@ class PesananController extends Controller
         DB::beginTransaction();
 
         try {
-            // Validasi stok terlebih dahulu
+
             foreach ($request->items as $item) {
                 $barang = Barang::findOrFail($item['id_barang']);
                 if ($barang->stok < $item['jumlah']) {
@@ -58,8 +85,37 @@ class PesananController extends Controller
                 }
             }
 
+            $totalHarga = 0;
+
+            foreach ($request->items as $item) {
+                $barang = Barang::findOrFail($item['id_barang']);
+                $subtotal = $barang->harga * $item['jumlah'];
+                $totalHarga += $subtotal;
+            }
+
+            $diskon = 0;
+            if ($request->id_pelanggan) {
+                $pelanggan = Pelanggan::find($request->id_pelanggan);
+                $totalBulanIni = $pelanggan->pesanan()
+                    ->whereBetween('tanggal', [now()->startOfMonth(), now()->endOfMonth()])
+                    ->sum('total_harga');
+
+                if ($totalBulanIni >= 15000000) {
+                    $diskon = 0.02;
+                }
+            }
+
+            $nilaiDiskon = $totalHarga * $diskon;
+            $hargaSetelahDiskon = $totalHarga - $nilaiDiskon;
+
+            $nilaiPajak = $request->total_pajak;
+            $totalAkhir = $hargaSetelahDiskon + $nilaiPajak;
+
             $pesanan = Pesanan::create([
-                'total_harga' => $request->total_harga,
+                'total_awal' => $totalHarga,
+                'total_diskon' => $nilaiDiskon,
+                'total_pajak' => $nilaiPajak,
+                'total_harga' => $totalAkhir,
                 'id_pelanggan' => $request->id_pelanggan
             ]);
 
