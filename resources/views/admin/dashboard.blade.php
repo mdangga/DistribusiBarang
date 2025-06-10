@@ -220,142 +220,259 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 lg:grid-cols-8 gap-4 mb-4">
                 <!-- Business Performance Chart -->
-                <div class="bg-white rounded-lg shadow p-4">
+                <div class="lg:col-span-6 bg-white rounded-lg shadow p-6">
+                    <!-- Header Section -->
                     <div class="flex justify-between items-center mb-6">
-    <h3 class="text-base font-semibold text-gray-900">Business Performance</h3>
-    <div class="flex items-center space-x-2">
-        <span 
-            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-            :class="{
-                'bg-green-100 text-green-800': business_status.status === 'profitable',
-                'bg-blue-100 text-blue-800': business_status.status === 'stable' || business_status.status === 'improving',
-                'bg-yellow-100 text-yellow-800': business_status.status === 'recovery',
-                'bg-red-100 text-red-800': business_status.status === 'declining' || business_status.status === 'loss'
-            }"
-        >
-            {{ ucfirst($business_status['status']) }}
-        </span>
-    </div>
-</div>
+                        <h3 class="text-lg font-semibold text-gray-900">Business Performance</h3>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                            :class="{
+                                'bg-green-100 text-green-800': business_status.status === 'profitable',
+                                'bg-blue-100 text-blue-800': business_status.status === 'stable' || business_status
+                                    .status === 'improving',
+                                'bg-yellow-100 text-yellow-800': business_status.status === 'recovery',
+                                'bg-red-100 text-red-800': business_status.status === 'declining' || business_status
+                                    .status === 'loss'
+                            }">
+                            {{ ucfirst($business_status['status']) }}
+                        </span>
+                    </div>
 
-<!-- Performance Metrics Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-    <!-- YTD Performance Card -->
-    <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-sm font-medium text-blue-600">YTD Performance</p>
-                <p class="text-xl font-bold leading-tight {{ $ytd_performance['is_profitable_ytd'] ? 'text-green-600' : 'text-red-600' }}">
-                    {{ number_format($ytd_performance['net_profit_ytd'], 0, ',', '.') }}
-                </p>
-                <p class="text-xs text-gray-500">{{ $ytd_performance['periode'] }}</p>
-            </div>
-            <div class="p-3 rounded-full {{ $ytd_performance['is_profitable_ytd'] ? 'bg-green-100' : 'bg-red-100' }}">
-                @if ($ytd_performance['is_profitable_ytd'])
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                @else
-                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
-                    </svg>
-                @endif
-            </div>
-        </div>
-    </div>
+                    <!-- Performance Metrics Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-8">
+                        <!-- YTD Performance Card -->
+                        <div
+                            class="group relative overflow-hidden bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                            <!-- Background Gradient -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-blue-50 via-blue-50 to-blue-100 opacity-60">
+                            </div>
 
-    <!-- 12-Month Performance Card -->
-    <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-sm font-medium text-purple-600">12-Month Performance</p>
-                <p class="text-xl font-bold leading-tight {{ $full_year_performance['is_profitable_full_year'] ? 'text-green-600' : 'text-red-600' }}">
-                    {{ number_format($full_year_performance['net_profit_full_year'], 0, ',', '.') }}
-                </p>
-                <p class="text-xs text-gray-500">{{ $full_year_performance['periode'] }}</p>
-            </div>
-            <div class="p-3 rounded-full {{ $full_year_performance['is_profitable_full_year'] ? 'bg-green-100' : 'bg-red-100' }}">
-                @if ($full_year_performance['is_profitable_full_year'])
-                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                @else
-                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                @endif
-            </div>
-        </div>
-    </div>
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <!-- Header -->
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-2">
+                                        <div
+                                            class="p-3 rounded-xl {{ $ytd_performance['is_profitable_ytd'] ? 'bg-green-500 shadow-green-200' : 'bg-red-500 shadow-red-200' }} shadow-lg">
+                                            @if ($ytd_performance['is_profitable_ytd'])
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                                </svg>
+                                            @else
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2.5" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                                                </svg>
+                                            @endif
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                                YTD Performance</h3>
+                                        </div>
+                                    </div>
+                                    <!-- Status Badge -->
+                                    <div
+                                        class="px-3 py-1 rounded-full text-xs font-medium {{ $ytd_performance['is_profitable_ytd'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+                                        {{ $ytd_performance['is_profitable_ytd'] ? 'Profitable' : 'Loss' }}
+                                    </div>
+                                </div>
 
-    <!-- Business Health Card -->
-    <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-sm font-medium text-green-600">Consecutive Profitable Months</p>
-                <p class="text-xl font-bold leading-tight text-green-600">
-                    {{ $business_status['consecutive_profitable_months'] }}
-                </p>
-                <p class="text-xs text-gray-500">
-                    @if ($business_status['consistent_profit'])
-                        Consistently Profitable
-                    @else
-                        Building Consistency
-                    @endif
-                </p>
-            </div>
-            <div class="p-3 rounded-full bg-green-100">
-                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-            </div>
-        </div>
-    </div>
-</div>
+                                <!-- Value -->
+                                <div class="mb-2 pt-2">
+                                    <p
+                                        class="text-2xl font-bold pb-7 {{ $ytd_performance['is_profitable_ytd'] ? 'text-green-600' : 'text-red-600' }} mb-1">
+                                        Rp {{ number_format($ytd_performance['net_profit_ytd'], 0, ',', '.') }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 font-medium">{{ $ytd_performance['periode'] }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Decorative Element -->
+                            <div class="absolute -bottom-2 -right-2 w-20 h-20 bg-blue-200 rounded-full opacity-20">
+                            </div>
+                        </div>
+
+                        <!-- 12-Month Performance Card -->
+                        <div
+                            class="group relative overflow-hidden bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                            <!-- Background Gradient -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-purple-50 via-purple-50 to-purple-100 opacity-60">
+                            </div>
+
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <!-- Header -->
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="p-3 rounded-xl {{ $full_year_performance['is_profitable_full_year'] ? 'bg-green-500 shadow-green-200' : 'bg-red-500 shadow-red-200' }} shadow-lg">
+                                            @if ($full_year_performance['is_profitable_full_year'])
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2.5"
+                                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                                </svg>
+                                            @else
+                                                <svg class="w-4 h-4 text-red-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24" <path
+                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                                </svg>
+                                            @endif
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                                                12-Month Performance</h3>
+                                        </div>
+                                    </div>
+                                    <!-- Status Badge -->
+                                    <div
+                                        class="px-2 py-1 rounded-full text-xs font-medium {{ $full_year_performance['is_profitable_full_year'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+                                        {{ $full_year_performance['is_profitable_full_year'] ? 'Profitable' : 'Loss' }}
+                                    </div>
+                                </div>
+
+                                <!-- Value -->
+                                <div class="mx-2 pt-2">
+                                    <p
+                                        class="text-2xl font-bold pb-7 {{ $full_year_performance['is_profitable_full_year'] ? 'text-green-600' : 'text-red-600' }} mb-1">
+                                        Rp
+                                        {{ number_format($full_year_performance['net_profit_full_year'], 0, ',', '.') }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 font-medium">
+                                        {{ $full_year_performance['periode'] }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Decorative Element -->
+                            <div class="absolute -bottom-2 -right-2 w-20 h-20 bg-purple-200 rounded-full opacity-20">
+                            </div>
+                        </div>
+
+                        <!-- Consecutive Profitable Months Card -->
+                        <div
+                            class="group relative overflow-hidden bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                            <!-- Background Gradient -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-emerald-50 via-emerald-50 to-emerald-100 opacity-60">
+                            </div>
+
+                            <!-- Content -->
+                            <div class="relative z-10">
+                                <!-- Header -->
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-3 rounded-xl bg-emerald-500 shadow-emerald-200 shadow-lg">
+                                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="2.5"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                                                Profitable Months</h3>
+                                        </div>
+                                    </div>
+                                    <!-- Status Badge -->
+                                    <div
+                                        class="px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
+                                        @if ($business_status['consistent_profit'])
+                                            Consistent
+                                        @else
+                                            Building
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- Value -->
+                                <div class="mb-3">
+                                    <div class="flex items-baseline gap-2 mb-1">
+                                        <p class="text-3xl font-bold text-emerald-600">
+                                            {{ $business_status['consecutive_profitable_months'] }}
+                                        </p>
+                                        <span class="text-lg font-medium text-emerald-500">months</span>
+                                    </div>
+                                    <p class="text-sm text-gray-500 font-medium">
+                                        @if ($business_status['consistent_profit'])
+                                            Consistently Profitable
+                                        @else
+                                            Building Consistency
+                                        @endif
+                                    </p>
+                                </div>
+
+                                <!-- Progress Indicator -->
+                                <div class="mt-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                            <div class="bg-emerald-500 h-2 rounded-full transition-all duration-300"
+                                                style="width: {{ min(($business_status['consecutive_profitable_months'] / 12) * 100, 100) }}%">
+                                            </div>
+                                        </div>
+                                        <span
+                                            class="text-xs text-gray-500 font-medium">{{ min($business_status['consecutive_profitable_months'], 12) }}/12</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Decorative Element -->
+                            <div class="absolute -bottom-2 -right-2 w-20 h-20 bg-emerald-200 rounded-full opacity-20">
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Performance Chart -->
                     <div class="mb-6">
-                        <canvas id="profitChart" width="400" height="200"></canvas>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <canvas id="profitChart" width="400" height="200"></canvas>
+                        </div>
                     </div>
 
                     <!-- Status Message -->
-                    <div class="flex items-center p-4 rounded-lg"
+                    <div class="rounded-lg border-l-4 p-4"
                         :class="{
-                            'bg-green-50 border border-green-200': business_status.status === 'profitable',
-                            'bg-blue-50 border border-blue-200': business_status.status === 'stable' ||
-                                business_status
+                            'bg-green-50 border-green-400': business_status.status === 'profitable',
+                            'bg-blue-50 border-blue-400': business_status.status === 'stable' || business_status
                                 .status === 'improving',
-                            'bg-yellow-50 border border-yellow-200': business_status.status === 'recovery',
-                            'bg-red-50 border border-red-200': business_status.status === 'declining' ||
-                                business_status
+                            'bg-yellow-50 border-yellow-400': business_status.status === 'recovery',
+                            'bg-red-50 border-red-400': business_status.status === 'declining' || business_status
                                 .status === 'loss'
                         }">
-                        <div class="flex">
+                        <div class="flex items-start">
                             <div class="flex-shrink-0">
                                 @if ($business_status['status'] === 'profitable')
-                                    <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor"
+                                        viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                             clip-rule="evenodd"></path>
                                     </svg>
                                 @elseif($business_status['status'] === 'recovery')
-                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg class="w-5 h-5 text-yellow-500 mt-0.5" fill="currentColor"
+                                        viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
                                             clip-rule="evenodd"></path>
                                     </svg>
                                 @else
-                                    <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg class="w-5 h-5 text-red-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                                             clip-rule="evenodd"></path>
                                     </svg>
                                 @endif
                             </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium"
+                            <div class="ml-3 flex-1">
+                                <h4 class="text-sm font-medium mb-1"
                                     :class="{
                                         'text-green-800': business_status.status === 'profitable',
                                         'text-blue-800': business_status.status === 'stable' || business_status
@@ -365,14 +482,14 @@
                                             .status === 'loss'
                                     }">
                                     {{ $business_status['message'] }}
-                                </p>
+                                </h4>
                                 @if ($business_status['needs_attention'])
-                                    <p class="mt-1 text-sm text-red-600">
+                                    <p class="text-sm text-red-700 leading-relaxed">
                                         Immediate attention required - consider cost reduction or revenue improvement
                                         strategies.
                                     </p>
                                 @elseif($business_status['recovery_indicator'])
-                                    <p class="mt-1 text-sm text-yellow-600">
+                                    <p class="text-sm text-yellow-700 leading-relaxed">
                                         Great! Your business is showing signs of recovery. Keep monitoring trends.
                                     </p>
                                 @endif
@@ -381,12 +498,50 @@
                     </div>
                 </div>
 
-
                 <!-- Kategori Terlaris -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h2 class="text-lg font-semibold mb-4">Kategori Terlaris</h2>
-                    <div class="h-[450px] ">
-                        <canvas id="kategoriChart" class=""></canvas>
+                <div class="lg:col-span-2 bg-white rounded-lg shadow p-4">
+                    <h2 class="text-lg font-semibold">Kategori Terlaris</h2>
+                    <div class="mb-4">
+                        <div class="grid grid-cols-3 gap-4">
+                            <button
+                                class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                                onclick="changePeriod('month')" id="btn-month">
+                                1 Bulan
+                            </button>
+                            <button
+                                class="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+                                onclick="changePeriod('threeMonths')" id="btn-before">
+                                3 Bulan
+                            </button>
+                            <button
+                                class="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+                                onclick="changePeriod('year')" id="btn-year">
+                                1 Tahun
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="h-[300px]">
+                        <canvas id="kategoriChart"></canvas>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="mt-4 flex flex-wrap gap-4 justify-center" id="customLegend"></div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                        <div class="col-span-1 bg-gray-50 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-blue-600" id="totalCategories">6</div>
+                            <div class="text-sm text-gray-600 mt-1">Kategori</div>
+                        </div>
+                        <div class="col-span-2 bg-gray-50 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-green-600" id="totalSales">125,480</div>
+                            <div class="text-sm text-gray-600 mt-1">Total Penjualan</div>
+                        </div>
+                        <div class="col-span-3 bg-gray-50 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-purple-600" id="topCategory">Elektronik</div>
+                            <div class="text-sm text-gray-600 mt-1">Kategori Teratas</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -419,7 +574,6 @@
                                 @forelse ($daftar_pesanan as $p)
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-3">{{ $p->kode_pesanan }}</td>
-                                        {{-- <td class="px-6 py-2">{{ $p->tanggal }}</td> --}}
                                         <td class="px-6 py-3">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
                                         <td class="px-6 py-3 font-medium text-black">Rp.
                                             {{ number_format($p->total_harga, 2, ',', '.') }}</td>
@@ -756,222 +910,187 @@
                     }
                 }
             });
+        });
 
-            // Kategori Chart
-            const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
 
-            // Ambil data dari PHP
             const grafikPieData = @json($grafik_pie);
+            const colors = ['#4285f4', '#34a853', '#fbbc04', '#ea4335', '#9c27b0', '#ff9800', '#795548', '#607d8b'];
+            const borderColors = colors.map(color => color.replace(/[^,]+(?=\))/, '1'));
 
-            // Warna dasar
-            const colors = [
-                'rgba(59, 130, 246, 0.8)', // Blue
-                'rgba(16, 185, 129, 0.8)', // Green
-                'rgba(245, 158, 11, 0.8)', // Amber
-                'rgba(139, 92, 246, 0.8)', // Purple
-                'rgba(236, 72, 153, 0.8)', // Pink
-                'rgba(239, 68, 68, 0.8)', // Red
-                'rgba(14, 165, 233, 0.8)', // Sky
-                'rgba(168, 85, 247, 0.8)', // Violet
-            ];
+            function getChartData(sourceData) {
+                if (!sourceData || !sourceData.labels || !sourceData.data) {
+                    return {
+                        labels: [],
+                        data: [],
+                        colors: []
+                    };
+                }
 
-            const borderColors = [
-                'rgba(59, 130, 246, 1)',
-                'rgba(16, 185, 129, 1)',
-                'rgba(245, 158, 11, 1)',
-                'rgba(139, 92, 246, 1)',
-                'rgba(236, 72, 153, 1)',
-                'rgba(239, 68, 68, 1)',
-                'rgba(14, 165, 233, 1)',
-                'rgba(168, 85, 247, 1)',
-            ];
+                // Filter data yang valid
+                const validData = sourceData.labels
+                    .map((label, index) => ({
+                        label: label || 'Unknown',
+                        value: parseFloat(sourceData.data[index]) || 0
+                    }))
+                    .filter(item => item.value > 0);
 
-            // Mapping periode
+                return {
+                    labels: validData.map(item => item.label),
+                    data: validData.map(item => item.value),
+                    colors: colors.slice(0, validData.length)
+                };
+            }
+
+            const dataMonth = getChartData(grafikPieData.bulan_sekarang);
+            const dataPreviousMonths = getChartData(grafikPieData.bulan_lalu);
+            const dataYear = getChartData(grafikPieData.Satu_tahun);
+
             const periods = [{
-                    key: 'bulan_sekarang',
+                    key: 'month',
                     label: 'Bulan Sekarang',
-                    opacity: 0.9
+                    data: dataMonth
                 },
                 {
-                    key: 'bulan_sebelumnya',
+                    key: 'previous',
                     label: 'Bulan Sebelumnya',
-                    opacity: 0.7
+                    data: dataPreviousMonths
                 },
                 {
-                    key: 'Satu_tahun',
+                    key: 'year',
                     label: 'Satu Tahun',
-                    opacity: 0.5
+                    data: dataYear
                 }
             ];
 
-            // Fungsi untuk mengupdate tampilan chart
-            function updateChartDisplay() {
-                const activeDatasets = chart.data.datasets.filter((dataset, index) => {
-                    const meta = chart.getDatasetMeta(index);
-                    return !meta.hidden;
-                });
+            let currentChart = null;
+            let currentPeriod = 'month';
 
-                if (activeDatasets.length > 0) {
-                    // Gabungkan semua label dari dataset yang aktif
-                    const allLabels = new Set();
-                    activeDatasets.forEach(dataset => {
-                        dataset._originalLabels.forEach(label => {
-                            allLabels.add(label);
-                        });
-                    });
-
-                    // Update chart labels dengan urutan dari JSON
-                    chart.data.labels = Array.from(allLabels);
-                } else {
-                    chart.data.labels = ['Tidak Ada Data'];
+            function initChart() {
+                const ctx = document.getElementById('kategoriChart');
+                if (!ctx) {
+                    console.error('Canvas element not found');
+                    return;
                 }
-            }
 
-            // LANGKAH 1: Siapkan datasets dengan data sesuai urutan dari JSON
-            let datasets = [];
+                // Hancurkan chart sebelumnya jika ada
+                if (currentChart) {
+                    currentChart.destroy();
+                }
 
-            periods.forEach((period, periodIndex) => {
-                const data = grafikPieData[period.key];
+                const currentData = periods.find(p => p.key === currentPeriod)?.data || {
+                    labels: [],
+                    data: [],
+                    colors: []
+                };
+                console.log('Current data:', currentData)
 
-                if (data && data.labels && data.data && data.labels.length > 0) {
-                    // Buat array data sesuai urutan dari JSON
-                    const labels = [];
-                    const values = [];
+                // Jika tidak ada data, tampilkan pesan
+                if (currentData.labels.length === 0) {
+                    ctx.style.display = 'none';
+                    document.getElementById('customLegend').innerHTML =
+                        '<div class="text-center text-gray-500 py-4">Tidak ada data untuk ditampilkan</div>';
+                    updateStats(currentData);
+                    return;
+                }
 
-                    data.labels.forEach((label, index) => {
-                        const value = parseInt(data.data[index]) || 0;
-                        if (value > 0 && label && label.trim() !== '') {
-                            labels.push(label);
-                            values.push(value);
-                        }
-                    });
+                ctx.style.display = 'block';
 
-                    if (values.length > 0) {
-                        // Buat warna dengan opacity sesuai periode
-                        const datasetColors = colors.slice(0, values.length).map(color =>
-                            color.replace(/0\.\d+/, period.opacity.toString())
-                        );
-
-                        datasets.push({
-                            label: period.label,
-                            data: values,
-                            backgroundColor: datasetColors,
-                            borderColor: borderColors.slice(0, values.length),
+                currentChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: currentData.labels,
+                        datasets: [{
+                            data: currentData.data,
+                            backgroundColor: currentData.colors,
+                            borderColor: '#ffffff',
                             borderWidth: 2,
-                            hoverBorderWidth: 3,
-                            hoverOffset: 8,
-                            _originalLabels: labels, // Simpan labels sesuai urutan dari JSON
-                            _periodKey: period.key
-                        });
-                    }
-                }
-            });
-
-            // Fallback jika tidak ada data
-            if (datasets.length === 0) {
-                datasets = [{
-                    label: 'Tidak Ada Data',
-                    data: [1],
-                    backgroundColor: ['rgba(156, 163, 175, 0.5)'],
-                    borderColor: ['rgba(156, 163, 175, 1)'],
-                    borderWidth: 2,
-                    _originalLabels: ['Tidak Ada Data']
-                }];
-            }
-
-            // LANGKAH 3: Buat chart dengan konfigurasi yang diperbaiki
-            const chart = new Chart(kategoriCtx, {
-                type: 'pie',
-                data: {
-                    labels: datasets.length > 0 ? datasets[0]._originalLabels : ['Tidak Ada Data'],
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: 20
+                            hoverBorderWidth: 3
+                        }]
                     },
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true,
-                                font: {
-                                    size: 12,
-                                    weight: '600'
-                                },
-                                generateLabels: function(chart) {
-                                    const labels = [];
-
-                                    // Tambahkan legend untuk setiap dataset (periode)
-                                    chart.data.datasets.forEach((dataset, index) => {
-                                        // Tampilkan jumlah kategori untuk periode ini
-                                        const categoryCount = dataset._originalLabels ? dataset
-                                            ._originalLabels.length : 0;
-                                        const labelText =
-                                            `${dataset.label} (${categoryCount} kategori)`;
-
-                                        labels.push({
-                                            text: labelText,
-                                            fillStyle: dataset.backgroundColor[0],
-                                            strokeStyle: dataset.borderColor[0],
-                                            lineWidth: dataset.borderWidth,
-                                            hidden: chart.getDatasetMeta(index).hidden,
-                                            datasetIndex: index
-                                        });
-                                    });
-
-                                    return labels;
-                                }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
                             },
-                            onClick: function(e, legendItem) {
-                                const datasetIndex = legendItem.datasetIndex;
-                                const dataset = chart.data.datasets[datasetIndex];
-
-                                // Toggle visibility
-                                const meta = chart.getDatasetMeta(datasetIndex);
-                                meta.hidden = meta.hidden === null ? !dataset.hidden : null;
-
-                                // Update labels dan data chart berdasarkan dataset yang visible
-                                updateChartDisplay();
-                                chart.update();
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.parsed;
+                                        const total = context.dataset.data.reduce((a, b) => a + b,
+                                            0);
+                                        const percentage = total > 0 ? ((value / total) * 100)
+                                            .toFixed(1) : 0;
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
                             }
                         },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            cornerRadius: 8,
-                            padding: 12,
-                            callbacks: {
-                                title: function(context) {
-                                    const dataset = context[0].dataset;
-                                    const labelIndex = context[0].dataIndex;
-                                    const categoryName = dataset._originalLabels[labelIndex];
-                                    return `${categoryName} - ${dataset.label}`;
-                                },
-                                label: function(context) {
-                                    const value = context.raw;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((value / total) * 100).toFixed(1);
-
-                                    return `Jumlah: ${value.toLocaleString('id-ID')} (${percentage}%)`;
-                                }
-                            }
+                        cutout: '60%',
+                        animation: {
+                            animateRotate: true,
+                            duration: 1000
                         }
-                    },
-                    cutout: '20%',
-                    animation: {
-                        animateRotate: true,
-                        duration: 1500
                     }
+                });
+
+                updateLegend(currentData);
+                updateStats(currentData);
+            }
+
+            function updateLegend(data) {
+                const legendContainer = document.getElementById('customLegend');
+                if (!legendContainer) return;
+
+                if (data.labels.length === 0) {
+                    legendContainer.innerHTML = '<div class="text-center text-gray-500 py-4">Tidak ada data</div>';
+                    return;
                 }
+            }
+
+            function updateStats(data) {
+                const totalCategories = data.labels.length;
+                const totalValue = data.data.reduce((sum, value) => sum + value, 0);
+                const topCategory = totalCategories > 0 ?
+                    data.labels[data.data.indexOf(Math.max(...data.data))] : 'Tidak ada data';
+
+                document.getElementById('totalCategories').textContent = totalCategories;
+                document.getElementById('totalSales').textContent = totalValue.toLocaleString('id-ID');
+                document.getElementById('topCategory').textContent = topCategory;
+            }
+
+            function changePeriod(period) {
+                currentPeriod = period;
+
+                // Update tombol aktif
+                document.querySelectorAll('[data-period]').forEach(btn => {
+                    btn.classList.toggle('bg-blue-500', btn.dataset.period === period);
+                    btn.classList.toggle('text-white', btn.dataset.period === period);
+                    btn.classList.toggle('bg-gray-200', btn.dataset.period !== period);
+                    btn.classList.toggle('text-gray-700', btn.dataset.period !== period);
+                });
+
+                initChart();
+            }
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("hi")
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js is not loaded!');
+                document.getElementById('kategoriChart').innerHTML =
+                    '<div class="text-red-500">Error: Chart.js library tidak dimuat</div>';
+                return;
+            }
+
+            initChart();
+
+            // Event listeners untuk tombol periode
+            document.querySelectorAll('[data-period]').forEach(btn => {
+                btn.addEventListener('click', () => changePeriod(btn.dataset.period));
             });
         });
     </script>
-
 </body>
 
 </html>

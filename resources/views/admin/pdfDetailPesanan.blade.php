@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Struk Belanja</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.svg') }}">
@@ -106,7 +107,7 @@
                 max-width: none;
                 width: 80mm;
             }
-            
+
             @page {
                 size: 80mm auto;
                 margin: 0;
@@ -145,16 +146,10 @@
     </div>
 
     <div class="items-section">
-        @php
-            $subtotal = 0;
-        @endphp
-        
         @foreach ($pesanan->detailPesanan as $detail)
             @php
                 $itemTotal = $detail->jumlah * $detail->harga;
-                $subtotal += $itemTotal;
             @endphp
-            
             <div class="item">
                 <div class="item-name">
                     {{ $detail->barang->nama_barang ?? 'Barang tidak ditemukan' }}
@@ -170,15 +165,19 @@
     <div class="totals">
         <div class="total-line">
             <span>Subtotal:</span>
-            <span>Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
+            <span>Rp {{ number_format($pesanan->total_awal) }}</span>
         </div>
         <div class="total-line">
-            <span>Pajak (0%):</span>
-            <span>Rp 0</span>
+            <span>Diskon (2%):</span>
+            <span>{{ number_format($pesanan->total_diskon) }}</span>
+        </div>
+        <div class="total-line">
+            <span>Pajak (11%):</span>
+            <span>{{ number_format($pesanan->total_pajak) }}</span>
         </div>
         <div class="total-line final-total">
             <span>TOTAL:</span>
-            <span>Rp {{ number_format($pesanan->total_harga ?? $subtotal, 0, ',', '.') }}</span>
+            <span>Rp {{ number_format($pesanan->total_harga ?? $subtotal) }}</span>
         </div>
     </div>
 
@@ -188,4 +187,5 @@
         <div>Simpan struk ini sebagai bukti pembelian</div>
     </div>
 </body>
+
 </html>
