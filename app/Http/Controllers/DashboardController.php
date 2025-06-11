@@ -22,28 +22,38 @@ class DashboardController extends Controller
         $endBulanSebelumnya = $now->copy()->subMonthNoOverflow()->endOfMonth();
 
         // pesanan - KONSISTEN: gunakan has('detailPesanan') untuk semua
-        $psnBulanSebelumnya = Pesanan::whereBetween('tanggal', [$startBulanSebelumnya, $endBulanSebelumnya]);
-        $pesananBulanSebelumnya = $psnBulanSebelumnya->has('detailPesanan')->count();
-        $pendapatanBulanSebelumnya = $psnBulanSebelumnya->has('detailPesanan')->sum('total_harga');
+        $pesananBulanSebelumnya = Pesanan::whereBetween('tanggal', [$startBulanSebelumnya, $endBulanSebelumnya])
+            ->has('detailPesanan')
+            ->count();
+        $pendapatanBulanSebelumnya = Pesanan::whereBetween('tanggal', [$startBulanSebelumnya, $endBulanSebelumnya])
+            ->has('detailPesanan')
+            ->sum('total_harga');
 
         // pembelian
-        $pblBulanSebelumnya = Pembelian::whereBetween('tanggal', [$startBulanSebelumnya, $endBulanSebelumnya]);
-        $pembelianBulanSebelumnya = $pblBulanSebelumnya->count();
-        $pengeluaranBulanSebelumnya = $pblBulanSebelumnya->sum('total_harga');
+        $pembelianBulanSebelumnya = Pembelian::whereBetween('tanggal', [$startBulanSebelumnya, $endBulanSebelumnya])
+            ->count();;
+        $pengeluaranBulanSebelumnya = Pembelian::whereBetween('tanggal', [$startBulanSebelumnya, $endBulanSebelumnya])
+            ->sum('total_harga');
 
         // Bulan ini
         $startBulanSekarang = $now->copy()->startOfMonth();
         $endBulanSekarang = $now->copy()->endOfMonth();
 
-        // pesanan
-        $psnBulanSekarang = Pesanan::whereBetween('tanggal', [$startBulanSekarang, $endBulanSekarang]);
-        $pesananBulanSekarang = $psnBulanSekarang->has('detailPesanan')->count();
-        $pendapatanBulanSekarang = $psnBulanSekarang->has('detailPesanan')->sum('total_harga');
+        // Hitung pesanan
+        $pesananBulanSekarang = Pesanan::whereBetween('tanggal', [$startBulanSekarang, $endBulanSekarang])
+            ->has('detailPesanan')
+            ->count();
 
-        // pembelian
-        $pblBulanSekarang = Pembelian::whereBetween('tanggal', [$startBulanSekarang, $endBulanSekarang]);
-        $pembelianBulanSekarang = $pblBulanSekarang->count();
-        $pengeluaranBulanSekarang = $pblBulanSekarang->sum('total_harga');
+        $pendapatanBulanSekarang = Pesanan::whereBetween('tanggal', [$startBulanSekarang, $endBulanSekarang])
+            ->has('detailPesanan')
+            ->sum('total_harga');
+
+        // Hitung pembelian
+        $pembelianBulanSekarang = Pembelian::whereBetween('tanggal', [$startBulanSekarang, $endBulanSekarang])
+            ->count();
+
+        $pengeluaranBulanSekarang = Pembelian::whereBetween('tanggal', [$startBulanSekarang, $endBulanSekarang])
+            ->sum('total_harga');
 
         // menghitung persentase peningkatan
         // pesanan
@@ -81,7 +91,7 @@ class DashboardController extends Controller
 
         // Selisih profit bulan ini vs bulan lalu
         $netProfitMoM = $netProfitBulanIni - $netProfitBulanLalu;
-        
+
         // PERBAIKAN: Persentase profit yang lebih akurat
         if ($netProfitBulanLalu == 0) {
             if ($netProfitBulanIni > 0) {
@@ -126,11 +136,11 @@ class DashboardController extends Controller
             if ($rataRataProfitTigaBulan < 0 && $netProfitBulanIni > 0) {
                 // Dari loss ke profit = improvement yang sangat besar
                 $persentaseProfitTigaBulan = ((abs($netProfitBulanIni) + abs($rataRataProfitTigaBulan)) / abs($rataRataProfitTigaBulan)) * 100;
-            } 
+            }
             // Jika rata-rata positif dan profit current negatif
             else if ($rataRataProfitTigaBulan > 0 && $netProfitBulanIni < 0) {
                 // Dari profit ke loss = penurunan yang sangat besar (negatif)
-                $persentaseProfitTigaBulan = -((abs($netProfitBulanIni) + abs($rataRataProfitTigaBulan)) / abs($rataRataProfitTigaBulan)) * 100;
+                $persentaseProfitTigaBulan = - ((abs($netProfitBulanIni) + abs($rataRataProfitTigaBulan)) / abs($rataRataProfitTigaBulan)) * 100;
             }
             // Kasus normal (sama-sama positif atau sama-sama negatif)
             else {
@@ -138,8 +148,10 @@ class DashboardController extends Controller
             }
         }
 
-        // PERBAIKAN UTAMA: net profit dengan 1 tahun sebelumnya - KONSISTEN dengan filter
+        // PERBAIKAN: Net Profit per bulan selama 12 bulan ke belakang (tidak termasuk bulan ini)
         $ProfitSatuTahun = [];
+        $jumlahBulanProfit = 0;
+
         for ($i = 12; $i >= 1; $i--) {
             $start = $now->copy()->subMonthNoOverflow($i)->startOfMonth();
             $end = $now->copy()->subMonthNoOverflow($i)->endOfMonth();
@@ -147,39 +159,53 @@ class DashboardController extends Controller
             $pendapatan = Pesanan::whereBetween('tanggal', [$start, $end])
                 ->has('detailPesanan')
                 ->sum('total_harga');
+
             $pengeluaran = Pembelian::whereBetween('tanggal', [$start, $end])->sum('total_harga');
 
-            $ProfitSatuTahun[] = $pendapatan - $pengeluaran;
+            $netProfit = $pendapatan - $pengeluaran;
+            $ProfitSatuTahun[] = $netProfit;
+
+            if ($netProfit > 0) {
+                $jumlahBulanProfit++;
+            }
         }
 
-        $rataRataProfitSatuTahun = array_sum($ProfitSatuTahun) / 12;
-        $netProfitOneYear = $netProfitBulanIni - $rataRataProfitSatuTahun;
+        // Hitung rata-rata dari net profit tahunan
+        $rataRataProfitSatuTahun = count($ProfitSatuTahun) > 0
+            ? array_sum($ProfitSatuTahun) / count($ProfitSatuTahun)
+            : 0;
 
-        // PERBAIKAN: Logika persentase yang benar untuk profit tahunan
+        // Gantilah nama variabel agar tidak membingungkan
+        $selisihProfit = $netProfitBulanIni - $rataRataProfitSatuTahun;
+
+        // Normalisasi divisor untuk menghindari lonjakan tak wajar
+        $divisor = max(abs($rataRataProfitSatuTahun), 1);
+
+        // Hitung persentase dengan kondisi khusus
         if ($rataRataProfitSatuTahun == 0) {
+            // Tidak ada profit tahun lalu, maka:
             if ($netProfitBulanIni > 0) {
-                $persentaseProfitSatuTahun = 100;
+                $persentaseProfitSatuTahun = 100; // Bisa dianggap lonjakan besar
             } elseif ($netProfitBulanIni < 0) {
-                $persentaseProfitSatuTahun = -100;
+                $persentaseProfitSatuTahun = -100; // Kerugian dari basis 0
             } else {
                 $persentaseProfitSatuTahun = 0;
             }
         } else {
-            // PERBAIKAN KUNCI: Jika rata-rata negatif dan profit current positif
             if ($rataRataProfitSatuTahun < 0 && $netProfitBulanIni > 0) {
-                // Dari loss ke profit = improvement yang sangat besar
-                $persentaseProfitSatuTahun = ((abs($netProfitBulanIni) + abs($rataRataProfitSatuTahun)) / abs($rataRataProfitSatuTahun)) * 100;
-            } 
-            // Jika rata-rata positif dan profit current negatif
-            else if ($rataRataProfitSatuTahun > 0 && $netProfitBulanIni < 0) {
-                // Dari profit ke loss = penurunan yang sangat besar (negatif)
-                $persentaseProfitSatuTahun = -((abs($netProfitBulanIni) + abs($rataRataProfitSatuTahun)) / abs($rataRataProfitSatuTahun)) * 100;
-            }
-            // Kasus normal (sama-sama positif atau sama-sama negatif)
-            else {
-                $persentaseProfitSatuTahun = (($netProfitBulanIni - $rataRataProfitSatuTahun) / abs($rataRataProfitSatuTahun)) * 100;
+                // Dari rugi ke untung (lonjakan positif)
+                $persentaseProfitSatuTahun = (($netProfitBulanIni + abs($rataRataProfitSatuTahun)) / $divisor) * 100;
+            } elseif ($rataRataProfitSatuTahun > 0 && $netProfitBulanIni < 0) {
+                // Dari untung ke rugi (penurunan tajam)
+                $persentaseProfitSatuTahun = - ((abs($netProfitBulanIni) + $rataRataProfitSatuTahun) / $divisor) * 100;
+            } else {
+                // Perubahan biasa
+                $persentaseProfitSatuTahun = ($selisihProfit / $divisor) * 100;
             }
         }
+
+        // Bulatkan hasil persentase ke 2 angka desimal
+        $persentaseProfitSatuTahun = round($persentaseProfitSatuTahun, 2);
 
         // data array
         $pesanan = [
@@ -205,7 +231,7 @@ class DashboardController extends Controller
         // === TAMBAHAN: YTD Performance Calculation ===
         $startYTD = $now->copy()->startOfYear();
         $endYTD = $now->copy()->endOfMonth();
-        
+
         $pendapatanYTD = Pesanan::whereBetween('tanggal', [$startYTD, $endYTD])
             ->has('detailPesanan')
             ->sum('total_harga');
@@ -216,7 +242,7 @@ class DashboardController extends Controller
         // === TAMBAHAN: 12 Month Performance (Full Year) ===
         $startFullYear = $now->copy()->subMonthNoOverflow(11)->startOfMonth();
         $endFullYear = $now->copy()->endOfMonth();
-        
+
         $pendapatanFullYear = Pesanan::whereBetween('tanggal', [$startFullYear, $endFullYear])
             ->has('detailPesanan')
             ->sum('total_harga');
@@ -264,13 +290,13 @@ class DashboardController extends Controller
         for ($i = 0; $i < 12; $i++) {
             $start = $now->copy()->subMonthNoOverflow($i)->startOfMonth();
             $end = $now->copy()->subMonthNoOverflow($i)->endOfMonth();
-            
+
             $monthPendapatan = Pesanan::whereBetween('tanggal', [$start, $end])
                 ->has('detailPesanan')
                 ->sum('total_harga');
             $monthPengeluaran = Pembelian::whereBetween('tanggal', [$start, $end])
                 ->sum('total_harga');
-            
+
             if (($monthPendapatan - $monthPengeluaran) > 0) {
                 $consecutiveProfitableMonths++;
             } else {
@@ -280,7 +306,7 @@ class DashboardController extends Controller
 
         // PERBAIKAN: Tambahkan informasi profit aktual untuk debugging
         $profit = [
-            'profit' => [$netProfitMoM, $netProfitThreeMonth, $netProfitOneYear],
+            'profit' => [$netProfitMoM, $netProfitThreeMonth, $selisihProfit],
             'persentase' => [round($persentaseProfitMoM, 2), round($persentaseProfitTigaBulan, 2), round($persentaseProfitSatuTahun, 2)],
             // Tambahan untuk debugging dan konsistensi
             'net_profit_bulan_ini' => $netProfitBulanIni,
@@ -360,12 +386,12 @@ class DashboardController extends Controller
         // Konversi ke array dengan key tahun-bulan
         $pendapatanData = [];
         $pengeluaranData = [];
-        
+
         foreach ($pendapatanPerBulan as $data) {
             $key = $data->tahun . '-' . str_pad($data->bulan, 2, '0', STR_PAD_LEFT);
             $pendapatanData[$key] = $data->total_pendapatan;
         }
-        
+
         foreach ($pengeluaranPerBulan as $data) {
             $key = $data->tahun . '-' . str_pad($data->bulan, 2, '0', STR_PAD_LEFT);
             $pengeluaranData[$key] = $data->total_pengeluaran;
@@ -408,7 +434,7 @@ class DashboardController extends Controller
         $daftarPesanan = Pesanan::with('Pelanggan')
             ->has('detailPesanan')
             ->orderBy('tanggal', 'desc')
-            ->take(7)
+            ->take(9)
             ->get();
 
         // Data untuk list aktivitas
