@@ -10,10 +10,10 @@ use App\Http\Controllers\PesananController;
 use Illuminate\Support\Facades\Route;
 
 
-// Route default
 Route::get('/testing12331912',  function(){
     return view('welcome');
 });
+// Route guest
 Route::get('/autocomplete-barang', [BarangController::class, 'autocomplete'])
     ->name('autocomplete.barang');
 Route::get('/autocomplete-pelanggan', [PelangganController::class, 'autocomplete'])
@@ -25,8 +25,11 @@ Route::get('/', [PesananController::class, 'index'])->name('pesanan.index');
 Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');
 Route::get('/pesanan', [PesananController::class, 'list'])->name('pesanan.list');
 Route::get('/pesanan/{id}', [PesananController::class, 'show'])->name('pesanan.show');
-Route::get('/pesanan/discount-status/{id}', [PesananController::class, 'getDiscountStatus'])->name('pesanan.show');
+Route::get('/pesanan/discount-status/{id}', [PesananController::class, 'getDiscountStatus'])->name('pesanan.diskon');
+
+// other for support in guest
 Route::post('/pelanggan', [PelangganController::class, 'addDataPelanggan'])->name('add.pelanggan');
+Route::get('detailpesanan/cetak/{id}', [PesananController::class, 'cetakDetail'])->name('detail.cetak');
 
 Route::middleware('guest')->group(function () {
     Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin.show');
@@ -51,7 +54,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/admin/barang/stok/{id_barang}', [barangController::class, 'addStok'])->name('stok.add');
         
         Route::get('admin/pesanan/cetak', [PesananController::class, 'cetak'])->name('pesanan.cetak');
-        Route::get('admin/detailpesanan/cetak/{id}', [PesananController::class, 'cetakDetail'])->name('detail.cetak');
         Route::get('admin/pesanan/export', [PesananController::class, 'export'])->name('pesanan.export');
         Route::get('/admin/pesanan', [PesananController::class, 'listAdmin'])->name('admin.pesanan');
         Route::get('/admin/pesanan/{id}', [PesananController::class, 'showAdmin'])->name('adminPesanan.show');
