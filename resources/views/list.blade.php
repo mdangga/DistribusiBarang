@@ -44,7 +44,7 @@
                                     <th class="px-6 py-3 text-left">Tanggal</th>
                                     <th class="px-6 py-3 text-left">Pelanggan</th>
                                     <th class="px-6 py-3 text-left">Total</th>
-                                    <th class="px-6 py-3 text-left">Aksi</th>
+                                    <th class="px-6 py-3 text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -55,7 +55,7 @@
                                         <td class="px-6 py-2">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
                                         <td class="px-6 py-2 font-medium text-black">Rp
                                             {{ number_format($p->total_harga, 2, ',', '.') }}</td>
-                                        <td class="px-6 py-2">
+                                        <td class="px-6 py-2 text-center">
                                             <a href="{{ route('pesanan.show', $p->kode_pesanan) }}"
                                                 class="inline-flex items-center bg-[#2ab6a9] hover:bg-[#1e8379] text-white text-xs font-medium px-3 py-2 rounded-lg shadow">
                                                 <svg class="text-white mr-2 overflow-visible"
