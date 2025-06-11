@@ -141,7 +141,7 @@
                         </h5>
 
                     </div>
-                    <a href="{{ route('pesanan.index') }}"
+                    <a href="{{ route('admin.pesanan') }}"
                         class="bg-[#2ab6a9] hover:bg-[#1e8379] text-white p-2 rounded-full text-sm font-medium flex items-center gap-2">
                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                             fill="currentColor">
