@@ -123,465 +123,406 @@
         </div>
     </aside>
 
-    <div class="p-2 sm:ml-64 bg-gray-100">
-        <div class="p-2  rounded-lg sm:mt-0 mt-14">
-            <!-- Top Stats Row -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                <!-- Stat Card 1 -->
-                <div class="bg-white rounded-lg shadow p-6 flex items-center">
-                    <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
-                        <i class="fas fa-users text-xl"></i>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 text-sm">Total Pesanan</p>
-                        <h3 class="font-bold text-2xl">{{ $pesanan['total_pesanan'] }}</h3>
-                        <p x-data="{ persentase: {{ $pesanan['persentase'] }} }" :class="persentase >= 0 ? 'text-green-500' : 'text-red-500'"
-                            class="text-xs flex items-center">
-                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    :d="persentase >= 0 ?
-                                        'M5 13V1m0 0L1 5m4-4 4 4' :
-                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+    <div class="p-4 sm:ml-64 bg-gray-50 min-h-screen">
+        <div class="p-4 pb-2 rounded-lg sm:mt-0 mt-14">
+            <!-- Page Header -->
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold text-gray-900 mb-2">Dashboard</h1>
+                <p class="text-gray-600">Overview Business Performance</p>
+            </div>
+
+            <!-- Top Stats Row - Increased spacing -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Stat Card 1 - Simplified design -->
+                <div
+                    class="bg-gradient-to-bl from-blue-50 to-blue-100 rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Total Pesanan</p>
+                            <h3 class="font-bold text-2xl text-gray-900 mt-1">{{ $pesanan['total_pesanan'] }}</h3>
+                        </div>
+                        <div class="p-3 rounded-lg bg-blue-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                class="overflow-visible transition duration-75 text-blue-600" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M7.308 21.116q-.633 0-1.067-.434t-.433-1.066t.433-1.067q.434-.433 1.067-.433t1.066.433t.434 1.067t-.434 1.066t-1.066.434m9.384 0q-.632 0-1.066-.434t-.434-1.066t.434-1.067q.434-.433 1.066-.433t1.067.433q.433.434.433 1.067q0 .632-.433 1.066q-.434.434-1.067.434M5.392 4.5h13.02q.652 0 .98.532q.33.531.035 1.095l-2.858 5.208q-.217.365-.564.573t-.763.208H8.1l-1.215 2.23q-.154.231-.01.5t.433.27h10.884v1H7.308q-.875 0-1.306-.738t-.021-1.482l1.504-2.68L3.808 3.5H2v-1h2.442z" />
                             </svg>
-                            <span x-text="persentase + '% from last month'"></span>
-                        </p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span
+                            class="flex items-center {{ $pesanan['persentase'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="{{ $pesanan['persentase'] >= 0 ? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6' }}" />
+                            </svg>
+                            {{ $pesanan['persentase'] }}%
+                        </span>
+                        <span class="text-gray-500 ml-2">dari bulan lalu</span>
                     </div>
                 </div>
 
                 <!-- Stat Card 2 -->
-                <div class="bg-white rounded-lg shadow p-6 flex items-center">
-                    <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 text-sm">Total Pembelian</p>
-                        <h3 class="font-bold text-2xl">{{ $pembelian['total_pembelian'] }}</h3>
-                        <p x-data="{ persentase: {{ $pembelian['persentase'] }} }" :class="persentase <= 0 ? 'text-green-500' : 'text-red-500'"
-                            class="text-xs flex items-center">
-                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    :d="persentase >= 0 ?
-                                        'M5 13V1m0 0L1 5m4-4 4 4' :
-                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                <div
+                    class="bg-gradient-to-bl from-yellow-50 to-yellow-100 rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Total Pembelian</p>
+                            <h3 class="font-bold text-2xl text-gray-900 mt-1">{{ $pembelian['total_pembelian'] }}</h3>
+                        </div>
+                        <div class="p-3 rounded-lg bg-yellow-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                class="overflow-visible transition duration-75 text-yellow-600" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M11.007 21q-.303 0-.61-.121q-.306-.121-.55-.364l-6.362-6.361q-.25-.248-.365-.548t-.114-.61t.114-.616t.365-.551l8.338-8.345q.223-.222.527-.353T12.98 3h6.387q.69 0 1.162.48T21 4.635v6.386q0 .332-.121.632t-.358.518l-8.363 8.345q-.242.242-.545.363t-.606.121m6.435-13.442q.425 0 .722-.292t.298-.708q0-.425-.295-.722t-.717-.297t-.714.295t-.294.716t.292.715t.708.293" />
                             </svg>
-                            <span x-text="persentase + '% from last month'"></span>
-                        </p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span
+                            class="flex items-center {{ $pembelian['persentase'] <= 0 ? 'text-green-600' : 'text-red-600' }}">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="{{ $pembelian['persentase'] >= 0 ? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6' }}" />
+                            </svg>
+                            {{ $pembelian['persentase'] }}%
+                        </span>
+                        <span class="text-gray-500 ml-2">dari bulan lalu</span>
                     </div>
                 </div>
 
                 <!-- Stat Card 3 -->
-                <div class="bg-white rounded-lg shadow p-6 flex items-center">
-                    <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
-                        <i class="fas fa-dollar-sign text-xl"></i>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 text-sm">Total Pendapatan</p>
-                        <h3 class="font-bold text-xl">Rp. {{ number_format($pendapatan['total'], 2, ',', '.') }}</h3>
-                        <p x-data="{ persentase: {{ $pendapatan['persentase'] }} }" :class="persentase >= 0 ? 'text-green-500' : 'text-red-500'"
-                            class="text-xs flex items-center">
-                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    :d="persentase >= 0 ?
-                                        'M5 13V1m0 0L1 5m4-4 4 4' :
-                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                <div
+                    class="bg-gradient-to-bl from-green-50 to-green-100 rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Total Pendapatan</p>
+                            <h3 class="font-bold text-xl text-gray-900 mt-1">Rp.
+                                {{ number_format($pendapatan['total'], 2, ',', '.') }}</h3>
+                        </div>
+                        <div class="p-3 rounded-lg bg-green-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                class="overflow-visible transition duration-75 text-green-600" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M12 12a3 3 0 1 0 3 3a3 3 0 0 0-3-3m0 4a1 1 0 1 1 1-1a1 1 0 0 1-1 1m-.71-6.29a1 1 0 0 0 .33.21a.94.94 0 0 0 .76 0a1 1 0 0 0 .33-.21L15 7.46A1 1 0 1 0 13.54 6l-.54.59V3a1 1 0 0 0-2 0v3.59L10.46 6A1 1 0 0 0 9 7.46ZM19 15a1 1 0 1 0-1 1a1 1 0 0 0 1-1m1-7h-3a1 1 0 0 0 0 2h3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h3a1 1 0 0 0 0-2H4a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3M5 15a1 1 0 1 0 1-1a1 1 0 0 0-1 1" />
                             </svg>
-                            <span x-text="persentase + '% from last month'"></span>
-                        </p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span
+                            class="flex items-center {{ $pendapatan['persentase'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="{{ $pendapatan['persentase'] >= 0 ? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6' }}" />
+                            </svg>
+                            {{ $pendapatan['persentase'] }}%
+                        </span>
+                        <span class="text-gray-500 ml-2">dari bulan lalu</span>
                     </div>
                 </div>
 
                 <!-- Stat Card 4 -->
-                <div class="bg-white rounded-lg shadow p-6 flex items-center">
-                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 mr-4">
-                        <i class="fas fa-chart-line text-xl"></i>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 text-sm">Total Pengeluaran</p>
-                        <h3 class="font-bold text-xl">Rp. {{ number_format($pengeluaran['total'], 2, ',', '.') }}</h3>
-                        <p x-data="{ persentase: {{ $pengeluaran['persentase'] }} }" :class="persentase <= 0 ? 'text-green-500' : 'text-red-500'"
-                            class="text-xs flex items-center">
-                            <svg class="w-3 h-3 me-1 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    :d="persentase >= 0 ?
-                                        'M5 13V1m0 0L1 5m4-4 4 4' :
-                                        'M5 1v12m0 0L1 9m4 4 4-4'" />
+                <div
+                    class="bg-gradient-to-bl from-red-50 to-red-100 rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Total Pengeluaran</p>
+                            <h3 class="font-bold text-xl text-gray-900 mt-1">Rp.
+                                {{ number_format($pengeluaran['total'], 2, ',', '.') }}</h3>
+                        </div>
+                        <div class="p-3 red-lg bg-red-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                class="overflow-visible transition duration-75 text-yellow-600" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="m10.46 6l.54-.59V9a1 1 0 0 0 2 0V5.41l.54.55A1 1 0 0 0 15 6a1 1 0 0 0 0-1.42l-2.29-2.29a1 1 0 0 0-.33-.21a1 1 0 0 0-.76 0a1 1 0 0 0-.33.21L9 4.54A1 1 0 0 0 10.46 6M12 12a3 3 0 1 0 3 3a3 3 0 0 0-3-3m0 4a1 1 0 1 1 1-1a1 1 0 0 1-1 1m-7-1a1 1 0 1 0 1-1a1 1 0 0 0-1 1m14 0a1 1 0 1 0-1 1a1 1 0 0 0 1-1m1-7h-4a1 1 0 0 0 0 2h4a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h4a1 1 0 0 0 0-2H4a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3" />
                             </svg>
-                            <span x-text="persentase + '% from last month'"></span>
-                        </p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <span
+                            class="flex items-center {{ $pengeluaran['persentase'] <= 0 ? 'text-green-600' : 'text-red-600' }}">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="{{ $pengeluaran['persentase'] >= 0 ? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6' }}" />
+                            </svg>
+                            {{ $pengeluaran['persentase'] }}%
+                        </span>
+                        <span class="text-gray-500 ml-2">dari bulan lalu</span>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-8 gap-4 mb-4">
-                <!-- Business Performance Chart -->
-                <div class="lg:col-span-6 bg-white rounded-lg shadow p-6">
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-8">
+                <!-- Business Performance Chart - Improved Layout -->
+                <div class="xl:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                     <!-- Header Section -->
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900">Business Performance</h3>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
-                            :class="{
-                                'bg-green-100 text-green-800': business_status.status === 'profitable',
-                                'bg-blue-100 text-blue-800': business_status.status === 'stable' || business_status
-                                    .status === 'improving',
-                                'bg-yellow-100 text-yellow-800': business_status.status === 'recovery',
-                                'bg-red-100 text-red-800': business_status.status === 'declining' || business_status
-                                    .status === 'loss'
-                            }">
-                            {{ ucfirst($business_status['status']) }}
-                        </span>
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Business Performance</h3>
+                            <p class="text-gray-500 text-sm mt-1">Monitor your business financial performance</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span
+                                class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium {{ $business_status['status'] === 'profitable' ? 'bg-green-100 text-green-800' : ($business_status['status'] === 'recovery' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+                                {{ ucfirst($business_status['status']) }}
+                            </span>
+                        </div>
                     </div>
 
-                    <!-- Performance Metrics Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-8">
-                        <!-- YTD Performance Card -->
-                        <div
-                            class="group relative overflow-hidden bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <!-- Background Gradient -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-br from-blue-50 via-blue-50 to-blue-100 opacity-60">
-                            </div>
+                    @php
+                        $labels = ['Bulan Ini vs Bulan Lalu', '3 Bulan Terakhir', 'Tahun Ini'];
+                        $defaultIndex = 0; // default: Bulan Ini
+                    @endphp
 
-                            <!-- Content -->
-                            <div class="relative z-10">
-                                <!-- Header -->
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="flex items-center gap-2">
-                                        <div
-                                            class="p-3 rounded-xl {{ $ytd_performance['is_profitable_ytd'] ? 'bg-green-500 shadow-green-200' : 'bg-red-500 shadow-red-200' }} shadow-lg">
-                                            @if ($ytd_performance['is_profitable_ytd'])
-                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                                                </svg>
-                                            @else
-                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2.5" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
-                                                </svg>
-                                            @endif
-                                        </div>
-                                        <div>
-                                            <h3 class="text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                                YTD Performance</h3>
-                                        </div>
-                                    </div>
-                                    <!-- Status Badge -->
-                                    <div
-                                        class="px-3 py-1 rounded-full text-xs font-medium {{ $ytd_performance['is_profitable_ytd'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                                        {{ $ytd_performance['is_profitable_ytd'] ? 'Profitable' : 'Loss' }}
-                                    </div>
-                                </div>
+                    <!-- Compact Profit Display -->
+                    <div x-data="{
+                        selectedIndex: 0,
+                        profits: {{ Js::from($profit['profit']) }},
+                        percentages: {{ Js::from($profit['persentase']) }},
+                        labels: {{ Js::from($labels) }}
+                    }" class="mb-6">
 
-                                <!-- Value -->
-                                <div class="mb-2 pt-2">
-                                    <p
-                                        class="text-2xl font-bold pb-7 {{ $ytd_performance['is_profitable_ytd'] ? 'text-green-600' : 'text-red-600' }} mb-1">
-                                        Rp {{ number_format($ytd_performance['net_profit_ytd'], 0, ',', '.') }}
-                                    </p>
-                                    <p class="text-sm text-gray-500 font-medium">{{ $ytd_performance['periode'] }}</p>
-                                </div>
-                            </div>
-
-                            <!-- Decorative Element -->
-                            <div class="absolute -bottom-2 -right-2 w-20 h-20 bg-blue-200 rounded-full opacity-20">
-                            </div>
-                        </div>
-
-                        <!-- 12-Month Performance Card -->
-                        <div
-                            class="group relative overflow-hidden bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <!-- Background Gradient -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-br from-purple-50 via-purple-50 to-purple-100 opacity-60">
-                            </div>
-
-                            <!-- Content -->
-                            <div class="relative z-10">
-                                <!-- Header -->
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="p-3 rounded-xl {{ $full_year_performance['is_profitable_full_year'] ? 'bg-green-500 shadow-green-200' : 'bg-red-500 shadow-red-200' }} shadow-lg">
-                                            @if ($full_year_performance['is_profitable_full_year'])
-                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2.5"
-                                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                                </svg>
-                                            @else
-                                                <svg class="w-4 h-4 text-red-600" fill="none"
-                                                    stroke="currentColor" viewBox="0 0 24 24" <path
-                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                                </svg>
-                                            @endif
-                                        </div>
-                                        <div>
-                                            <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                                                12-Month Performance</h3>
-                                        </div>
-                                    </div>
-                                    <!-- Status Badge -->
-                                    <div
-                                        class="px-2 py-1 rounded-full text-xs font-medium {{ $full_year_performance['is_profitable_full_year'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                                        {{ $full_year_performance['is_profitable_full_year'] ? 'Profitable' : 'Loss' }}
-                                    </div>
-                                </div>
-
-                                <!-- Value -->
-                                <div class="mx-2 pt-2">
-                                    <p
-                                        class="text-2xl font-bold pb-7 {{ $full_year_performance['is_profitable_full_year'] ? 'text-green-600' : 'text-red-600' }} mb-1">
-                                        Rp
-                                        {{ number_format($full_year_performance['net_profit_full_year'], 0, ',', '.') }}
-                                    </p>
-                                    <p class="text-sm text-gray-500 font-medium">
-                                        {{ $full_year_performance['periode'] }}</p>
-                                </div>
-                            </div>
-
-                            <!-- Decorative Element -->
-                            <div class="absolute -bottom-2 -right-2 w-20 h-20 bg-purple-200 rounded-full opacity-20">
-                            </div>
-                        </div>
-
-                        <!-- Consecutive Profitable Months Card -->
-                        <div
-                            class="group relative overflow-hidden bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <!-- Background Gradient -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-br from-emerald-50 via-emerald-50 to-emerald-100 opacity-60">
-                            </div>
-
-                            <!-- Content -->
-                            <div class="relative z-10">
-                                <!-- Header -->
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="p-3 rounded-xl bg-emerald-500 shadow-emerald-200 shadow-lg">
-                                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
+                        <div class="bg-gradient-to-bl from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-100">
+                            <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
+                                <!-- Left: Profit Info -->
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                class="overflow-visible transition duration-75 text-blue-600"
                                                 viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2.5"
-                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                <path fill="currentColor"
+                                                    d="M2.385 12.958q-.171-.11-.205-.305t.07-.372l2.839-4.554q.434-.702 1.245-.755q.81-.053 1.345.568l.898 1.04q.212.25.529.222q.317-.029.471-.298l2.048-3.331q.46-.758 1.345-.78q.886-.022 1.37.73l.949 1.458q.192.269.528.269t.51-.288l2.57-4.104q.109-.183.325-.222t.394.1q.151.11.185.286t-.07.353l-2.57 4.104q-.459.752-1.345.752t-1.37-.727l-.929-1.42q-.192-.288-.529-.278q-.336.01-.51.298l-2.047 3.311q-.429.702-1.25.768q-.82.065-1.354-.556l-.904-1.065q-.212-.25-.52-.222q-.307.03-.46.298l-2.84 4.58q-.109.182-.325.231t-.393-.091M14.115 18q1.204 0 2.035-.83t.83-2.036q0-1.203-.83-2.034t-2.034-.83t-2.035.83t-.831 2.035t.83 2.034t2.036.831m0 1q-1.606 0-2.736-1.13t-1.13-2.735t1.13-2.736t2.735-1.13t2.736 1.13t1.13 2.736q0 .669-.214 1.272q-.213.603-.601 1.09l2.461 2.48q.14.14.14.335t-.14.334t-.344.14t-.344-.14l-2.481-2.461q-.487.388-1.08.602T14.116 19" />
                                             </svg>
+                                            <span class="text-sm font-medium text-blue-700">Peningkatan </span>
                                         </div>
-                                        <div>
-                                            <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                                                Profitable Months</h3>
-                                        </div>
+                                        <!-- Dropdown integrated -->
+                                        <select x-model.number="selectedIndex"
+                                            class="text-sm px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                            @foreach ($labels as $i => $label)
+                                                <option value="{{ $i }}">{{ $label }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <!-- Status Badge -->
-                                    <div
-                                        class="px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
-                                        @if ($business_status['consistent_profit'])
-                                            Consistent
-                                        @else
-                                            Building
-                                        @endif
+
+                                    <div class="flex items-baseline gap-4">
+                                        <h4 class="text-2xl lg:text-3xl font-bold"
+                                            :class="(profits[selectedIndex] >= 0) ? 'text-green-600' : 'text-red-600'">
+                                            <span
+                                                x-text="new Intl.NumberFormat('id-ID', { 
+                            style: 'currency', 
+                            currency: 'IDR',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                        }).format(profits[selectedIndex])"></span>
+                                        </h4>
+
+                                        <!-- Percentage inline -->
+                                        <div class="flex items-center px-2 py-1 rounded-md text-sm font-semibold"
+                                            :class="(percentages[selectedIndex] >= 0) ? 'bg-green-100 text-green-700' :
+                                            'bg-red-100 text-red-700'">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    :d="(percentages[selectedIndex] >= 0) ?
+                                                    'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6'" />
+                                            </svg>
+                                            <span
+                                                x-text="`${percentages[selectedIndex] >= 0 ? '+' : ''}${percentages[selectedIndex]}%`"></span>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <!-- Value -->
-                                <div class="mb-3">
-                                    <div class="flex items-baseline gap-2 mb-1">
-                                        <p class="text-3xl font-bold text-emerald-600">
-                                            {{ $business_status['consecutive_profitable_months'] }}
-                                        </p>
-                                        <span class="text-lg font-medium text-emerald-500">months</span>
-                                    </div>
-                                    <p class="text-sm text-gray-500 font-medium">
-                                        @if ($business_status['consistent_profit'])
-                                            Consistently Profitable
-                                        @else
-                                            Building Consistency
-                                        @endif
-                                    </p>
-                                </div>
-
-                                <!-- Progress Indicator -->
-                                <div class="mt-4">
-                                    <div class="flex items-center gap-2">
-                                        <div class="flex-1 bg-gray-200 rounded-full h-2">
-                                            <div class="bg-emerald-500 h-2 rounded-full transition-all duration-300"
-                                                style="width: {{ min(($business_status['consecutive_profitable_months'] / 12) * 100, 100) }}%">
-                                            </div>
-                                        </div>
-                                        <span
-                                            class="text-xs text-gray-500 font-medium">{{ min($business_status['consecutive_profitable_months'], 12) }}/12</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Decorative Element -->
-                            <div class="absolute -bottom-2 -right-2 w-20 h-20 bg-emerald-200 rounded-full opacity-20">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Performance Chart -->
-                    <div class="mb-6">
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            <canvas id="profitChart" width="400" height="200"></canvas>
+                    <!-- Simplified Performance Metrics -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+                        <!-- YTD Performance -->
+                        <div class="bg-gradient-to-r from-red-50 to-red-100 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-red-700">YTD Performance</span>
+                                <div
+                                    class="w-8 h-8 rounded-lg {{ $ytd_performance['is_profitable_ytd'] ? 'bg-green-500' : 'bg-red-500' }} flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="{{ $ytd_performance['is_profitable_ytd'] ? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6' }}" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <p
+                                class="text-2xl font-bold {{ $ytd_performance['is_profitable_ytd'] ? 'text-green-600' : 'text-red-600' }}">
+                                Rp {{ number_format($ytd_performance['net_profit_ytd'], 0, ',', '.') }}
+                            </p>
+                            <p class="text-sm text-gray-600 mt-1">{{ $ytd_performance['periode'] }}</p>
+                        </div>
+
+                        <!-- 12-Month Performance -->
+                        <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-purple-700">12-Month</span>
+                                <div
+                                    class="w-8 h-8 rounded-lg {{ $full_year_performance['is_profitable_full_year'] ? 'bg-green-500' : 'bg-red-500' }} flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="{{ $full_year_performance['is_profitable_full_year']? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6' }}" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <p
+                                class="text-2xl font-bold {{ $full_year_performance['is_profitable_full_year'] ? 'text-green-600' : 'text-red-600' }}">
+                                Rp {{ number_format($full_year_performance['net_profit_full_year'], 0, ',', '.') }}
+                            </p>
+                            <p class="text-sm text-gray-600 mt-1">{{ $full_year_performance['periode'] }}</p>
+                        </div>
+
+                        <!-- Profitable Months -->
+                        <div class="bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-emerald-700">Profitable Months</span>
+                                <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <p class="text-2xl font-bold text-emerald-600">
+                                    {{ $business_status['consecutive_profitable_months'] }}</p>
+                                <span class="text-lg font-medium text-emerald-500">months</span>
+                            </div>
+                            <div class="mt-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="flex-1 bg-emerald-200 rounded-full h-2">
+                                        <div class="bg-emerald-500 h-2 rounded-full transition-all duration-300"
+                                            style="width: {{ min(($business_status['consecutive_profitable_months'] / 12) * 100, 100) }}%">
+                                        </div>
+                                    </div>
+                                    <span
+                                        class="text-xs text-gray-600">{{ min($business_status['consecutive_profitable_months'], 12) }}/12</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Status Message -->
-                    <div class="rounded-lg border-l-4 p-4"
-                        :class="{
-                            'bg-green-50 border-green-400': business_status.status === 'profitable',
-                            'bg-blue-50 border-blue-400': business_status.status === 'stable' || business_status
-                                .status === 'improving',
-                            'bg-yellow-50 border-yellow-400': business_status.status === 'recovery',
-                            'bg-red-50 border-red-400': business_status.status === 'declining' || business_status
-                                .status === 'loss'
-                        }">
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                @if ($business_status['status'] === 'profitable')
-                                    <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                @elseif($business_status['status'] === 'recovery')
-                                    <svg class="w-5 h-5 text-yellow-500 mt-0.5" fill="currentColor"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                @else
-                                    <svg class="w-5 h-5 text-red-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                @endif
-                            </div>
-                            <div class="ml-3 flex-1">
-                                <h4 class="text-sm font-medium mb-1"
-                                    :class="{
-                                        'text-green-800': business_status.status === 'profitable',
-                                        'text-blue-800': business_status.status === 'stable' || business_status
-                                            .status === 'improving',
-                                        'text-yellow-800': business_status.status === 'recovery',
-                                        'text-red-800': business_status.status === 'declining' || business_status
-                                            .status === 'loss'
-                                    }">
-                                    {{ $business_status['message'] }}
-                                </h4>
-                                @if ($business_status['needs_attention'])
-                                    <p class="text-sm text-red-700 leading-relaxed">
-                                        Immediate attention required - consider cost reduction or revenue improvement
-                                        strategies.
-                                    </p>
-                                @elseif($business_status['recovery_indicator'])
-                                    <p class="text-sm text-yellow-700 leading-relaxed">
-                                        Great! Your business is showing signs of recovery. Keep monitoring trends.
-                                    </p>
-                                @endif
-                            </div>
-                        </div>
+                    <!-- Chart Container -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <canvas id="profitChart" width="400" height="200"></canvas>
                     </div>
                 </div>
 
-                <!-- Kategori Terlaris -->
-                <div class="lg:col-span-2 bg-white rounded-lg shadow p-4">
-                    <h2 class="text-lg font-semibold">Kategori Terlaris</h2>
-                    <div class="mb-4">
-                        <div class="grid grid-cols-3 gap-4">
-                            <button
-                                class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                                onclick="changePeriod('month')" id="btn-month">
-                                1 Bulan
-                            </button>
-                            <button
-                                class="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
-                                onclick="changePeriod('threeMonths')" id="btn-before">
-                                3 Bulan
-                            </button>
-                            <button
-                                class="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
-                                onclick="changePeriod('year')" id="btn-year">
-                                1 Tahun
-                            </button>
+                <!-- Kategori Terlaris - Simplified -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-900">Kategori Terlaris</h2>
+                            <p class="text-gray-500 text-sm mt-1">Top selling categories</p>
                         </div>
                     </div>
 
-                    <div class="h-[300px]">
+                    <!-- Period Buttons - Simplified -->
+                    <div class="flex gap-2 mb-6">
+                        <button
+                            class="px-4 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                            onclick="changePeriod('month')" id="btn-month" data-period="month">
+                            1M
+                        </button>
+                        <button
+                            class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                            onclick="changePeriod('previous')" id="btn-before" data-period="previous">
+                            3M
+                        </button>
+                        <button
+                            class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                            onclick="changePeriod('year')" id="btn-year" data-period="year">
+                            1Y
+                        </button>
+                    </div>
+
+                    <!-- Chart -->
+                    <div class="h-[280px] mb-6">
                         <canvas id="kategoriChart"></canvas>
                     </div>
 
                     <!-- Legend -->
                     <div class="mt-4 flex flex-wrap gap-4 justify-center" id="customLegend"></div>
 
-                    <!-- Stats -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                        <div class="col-span-1 bg-gray-50 p-4 rounded-lg text-center">
-                            <div class="text-2xl font-bold text-blue-600" id="totalCategories">6</div>
-                            <div class="text-sm text-gray-600 mt-1">Kategori</div>
+                    <!-- Stats - Simplified -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg text-center">
+                            <div class="text-xl font-bold text-blue-600" id="topCategory"></div>
+                            <div class="text-sm text-gray-600">Top Kategori</div>
                         </div>
-                        <div class="col-span-2 bg-gray-50 p-4 rounded-lg text-center">
-                            <div class="text-2xl font-bold text-green-600" id="totalSales">125,480</div>
-                            <div class="text-sm text-gray-600 mt-1">Total Penjualan</div>
-                        </div>
-                        <div class="col-span-3 bg-gray-50 p-4 rounded-lg text-center">
-                            <div class="text-2xl font-bold text-purple-600" id="topCategory">Elektronik</div>
-                            <div class="text-sm text-gray-600 mt-1">Kategori Teratas</div>
+                        <div class="bg-gray-50 p-4 rounded-lg text-center">
+                            <div class="text-xl font-bold text-green-600" id="totalSales"></div>
+                            <div class="text-sm text-gray-600">Total Sales</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Bottom Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <!-- Bottom Row - Improved spacing -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <!-- Recent Orders -->
-                <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">Pesanan Terbaru</h2>
-                        <a type="button" href="{{ route('admin.pesanan') }}"
-                            class="text-blue-600 text-sm font-medium">View All</a>
+                <div class="xl:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-900">Pesanan Terbaru</h2>
+                            <p class="text-gray-500 text-sm mt-1">Latest orders from customers</p>
+                        </div>
+                        <a href="{{ route('admin.pesanan') }}"
+                            class="text-blue-600 text-sm font-medium hover:text-blue-700">
+                            View All →
+                        </a>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 rounded-lg">
                                 <tr>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Kode Pesanan</th>
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-l-lg">
+                                        Kode Pesanan
+                                    </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Pelanggan</th>
+                                        Pelanggan
+                                    </th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Total</th>
+                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider rounded-r-lg">
+                                        Total
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody class="divide-y divide-gray-100">
                                 @forelse ($daftar_pesanan as $p)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-3">{{ $p->kode_pesanan }}</td>
-                                        <td class="px-6 py-3">{{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
-                                        <td class="px-6 py-3 font-medium text-black">Rp.
-                                            {{ number_format($p->total_harga, 2, ',', '.') }}</td>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                            {{ $p->kode_pesanan }}
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600">
+                                            {{ $p->Pelanggan->nama_pelanggan ?? '-' }}</td>
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 text-right">
+                                            Rp {{ number_format($p->total_harga, 0, ',', '.') }}
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center px-6 py-4 text-gray-500">Belum ada data
-                                            pesanan</td>
+                                        <td colspan="3" class="text-center px-6 py-8 text-gray-500">
+                                            <div class="flex flex-col items-center">
+                                                <svg class="w-12 h-12 text-gray-300 mb-3" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                                </svg>
+                                                <p>Belum ada data pesanan</p>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -589,25 +530,40 @@
                     </div>
                 </div>
 
-                <!-- Activity Timeline -->
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-lg font-semibold mb-4">Recent Activity</h2>
-                    <div class="space-y-2">
+                <!-- Activity Timeline - Simplified -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-semibold text-gray-900">Recent Activity</h2>
+                        <p class="text-gray-500 text-sm mt-1">Latest transactions</p>
+                    </div>
+                    <div class="space-y-4">
                         @foreach ($transaksi as $p)
-                            <div class="grid grid-cols-[auto_1fr] gap-3 items-center">
+                            <div class="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                                 <div
-                                    class="h-8 w-8 rounded-full flex items-center justify-center text-blue-600 {{ $p->jenis == 'pesanan' ? 'bg-green-300' : 'bg-red-300' }}">
+                                    class="w-10 h-10 rounded-full flex items-center justify-center {{ $p->jenis == 'pesanan' ? 'bg-green-100' : 'bg-red-100' }}">
+                                    @if ($p->jenis == 'pesanan')
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                        </svg>
+                                    @else
+                                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                    @endif
                                 </div>
-                                <div>
-                                    <p class="text-sm font-medium text-gray-900">{{ $p->jenis }}</p>
-                                    <p class="text-sm text-gray-500">{{ $p->kode }}</p>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 capitalize">{{ $p->jenis }}
+                                    </p>
+                                    <p class="text-sm text-gray-600">{{ $p->kode }}</p>
                                     <p class="text-xs text-gray-400 mt-1">
                                         {{ \Carbon\Carbon::parse($p->tanggal)->diffForHumans() }}</p>
                                 </div>
                             </div>
-                            <hr>
                         @endforeach
-
                     </div>
                 </div>
             </div>
@@ -913,169 +869,175 @@
         });
 
 
-            const grafikPieData = @json($grafik_pie);
-            const colors = ['#4285f4', '#34a853', '#fbbc04', '#ea4335', '#9c27b0', '#ff9800', '#795548', '#607d8b'];
-            const borderColors = colors.map(color => color.replace(/[^,]+(?=\))/, '1'));
+        const grafikPieData = @json($grafik_pie);
+        const colors = ['#4285f4', '#34a853', '#fbbc04', '#ea4335', '#9c27b0', '#ff9800', '#795548', '#607d8b'];
+        const borderColors = colors.map(color => color.replace(/[^,]+(?=\))/, '1'));
 
-            function getChartData(sourceData) {
-                if (!sourceData || !sourceData.labels || !sourceData.data) {
-                    return {
-                        labels: [],
-                        data: [],
-                        colors: []
-                    };
-                }
-
-                // Filter data yang valid
-                const validData = sourceData.labels
-                    .map((label, index) => ({
-                        label: label || 'Unknown',
-                        value: parseFloat(sourceData.data[index]) || 0
-                    }))
-                    .filter(item => item.value > 0);
-
+        function getChartData(sourceData) {
+            if (!sourceData || !sourceData.labels || !sourceData.data) {
                 return {
-                    labels: validData.map(item => item.label),
-                    data: validData.map(item => item.value),
-                    colors: colors.slice(0, validData.length)
-                };
-            }
-
-            const dataMonth = getChartData(grafikPieData.bulan_sekarang);
-            const dataPreviousMonths = getChartData(grafikPieData.bulan_lalu);
-            const dataYear = getChartData(grafikPieData.Satu_tahun);
-
-            const periods = [{
-                    key: 'month',
-                    label: 'Bulan Sekarang',
-                    data: dataMonth
-                },
-                {
-                    key: 'previous',
-                    label: 'Bulan Sebelumnya',
-                    data: dataPreviousMonths
-                },
-                {
-                    key: 'year',
-                    label: 'Satu Tahun',
-                    data: dataYear
-                }
-            ];
-
-            let currentChart = null;
-            let currentPeriod = 'month';
-
-            function initChart() {
-                const ctx = document.getElementById('kategoriChart');
-                if (!ctx) {
-                    console.error('Canvas element not found');
-                    return;
-                }
-
-                // Hancurkan chart sebelumnya jika ada
-                if (currentChart) {
-                    currentChart.destroy();
-                }
-
-                const currentData = periods.find(p => p.key === currentPeriod)?.data || {
                     labels: [],
                     data: [],
                     colors: []
                 };
-                console.log('Current data:', currentData)
+            }
 
-                // Jika tidak ada data, tampilkan pesan
-                if (currentData.labels.length === 0) {
-                    ctx.style.display = 'none';
-                    document.getElementById('customLegend').innerHTML =
-                        '<div class="text-center text-gray-500 py-4">Tidak ada data untuk ditampilkan</div>';
-                    updateStats(currentData);
-                    return;
-                }
+            // Filter data yang valid
+            const validData = sourceData.labels
+                .map((label, index) => ({
+                    label: label || 'Unknown',
+                    value: parseFloat(sourceData.data[index]) || 0
+                }))
+                .filter(item => item.value > 0);
 
-                ctx.style.display = 'block';
+            return {
+                labels: validData.map(item => item.label),
+                data: validData.map(item => item.value),
+                colors: colors.slice(0, validData.length)
+            };
+        }
 
-                currentChart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: currentData.labels,
-                        datasets: [{
-                            data: currentData.data,
-                            backgroundColor: currentData.colors,
-                            borderColor: '#ffffff',
-                            borderWidth: 2,
-                            hoverBorderWidth: 3
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        const label = context.label || '';
-                                        const value = context.parsed;
-                                        const total = context.dataset.data.reduce((a, b) => a + b,
-                                            0);
-                                        const percentage = total > 0 ? ((value / total) * 100)
-                                            .toFixed(1) : 0;
-                                        return `${label}: ${value} (${percentage}%)`;
-                                    }
+        const dataMonth = getChartData(grafikPieData.bulan_sekarang);
+        const dataPreviousMonths = getChartData(grafikPieData.bulan_lalu);
+        const dataYear = getChartData(grafikPieData.Satu_tahun);
+
+        const periods = [{
+                key: 'month',
+                label: 'Bulan Sekarang',
+                data: dataMonth
+            },
+            {
+                key: 'previous',
+                label: 'Bulan Sebelumnya',
+                data: dataPreviousMonths
+            },
+            {
+                key: 'year',
+                label: 'Satu Tahun',
+                data: dataYear
+            }
+        ];
+
+        let currentChart = null;
+        let currentPeriod = 'month';
+
+        function initChart() {
+            const ctx = document.getElementById('kategoriChart');
+            if (!ctx) {
+                console.error('Canvas element not found');
+                return;
+            }
+
+            // Hancurkan chart sebelumnya jika ada
+            if (currentChart) {
+                currentChart.destroy();
+            }
+
+            const currentData = periods.find(p => p.key === currentPeriod)?.data || {
+                labels: [],
+                data: [],
+                colors: []
+            };
+            // Jika tidak ada data, tampilkan pesan
+            if (currentData.labels.length === 0) {
+                ctx.style.display = 'none';
+                document.getElementById('customLegend').innerHTML =
+                    '<div class="text-center text-gray-500 py-4">Tidak ada data untuk ditampilkan</div>';
+                updateStats(currentData);
+                return;
+            }
+
+            ctx.style.display = 'block';
+
+            currentChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: currentData.labels,
+                    datasets: [{
+                        data: currentData.data,
+                        backgroundColor: currentData.colors,
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        hoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((a, b) => a + b,
+                                        0);
+                                    const percentage = total > 0 ? ((value / total) * 100)
+                                        .toFixed(1) : 0;
+                                    return `${label}: ${value} (${percentage}%)`;
                                 }
                             }
-                        },
-                        cutout: '60%',
-                        animation: {
-                            animateRotate: true,
-                            duration: 1000
                         }
+                    },
+                    cutout: '60%',
+                    animation: {
+                        animateRotate: true,
+                        duration: 1000
                     }
-                });
-
-                updateLegend(currentData);
-                updateStats(currentData);
-            }
-
-            function updateLegend(data) {
-                const legendContainer = document.getElementById('customLegend');
-                if (!legendContainer) return;
-
-                if (data.labels.length === 0) {
-                    legendContainer.innerHTML = '<div class="text-center text-gray-500 py-4">Tidak ada data</div>';
-                    return;
                 }
+            });
+
+            updateLegend(currentData);
+            updateStats(currentData);
+        }
+
+        function updateLegend(data) {
+            const legendContainer = document.getElementById('customLegend');
+            if (!legendContainer) return;
+
+            if (data.labels.length === 0) {
+                legendContainer.innerHTML = '<div class="text-center text-gray-500 py-4">Tidak ada data</div>';
+                return;
             }
 
-            function updateStats(data) {
-                const totalCategories = data.labels.length;
-                const totalValue = data.data.reduce((sum, value) => sum + value, 0);
-                const topCategory = totalCategories > 0 ?
-                    data.labels[data.data.indexOf(Math.max(...data.data))] : 'Tidak ada data';
+            legendContainer.innerHTML = data.labels.map((label, index) => `
+        <div class="flex items-center gap-2 text-sm mb-1">
+            <div class="w-4 h-4 rounded-full" style="background-color: ${data.colors[index]}"></div>
+            <span class="text-gray-700">${label}: ${data.data[index]}</span>
+        </div>
+    `).join('');
+        }
 
-                document.getElementById('totalCategories').textContent = totalCategories;
-                document.getElementById('totalSales').textContent = totalValue.toLocaleString('id-ID');
-                document.getElementById('topCategory').textContent = topCategory;
-            }
+        function updateStats(data) {
+            const totalCategories = data.labels.length;
+            const totalValue = data.data.reduce((sum, value) => sum + value, 0);
+            const topCategory = totalCategories > 0 ?
+                data.labels[data.data.indexOf(Math.max(...data.data))] : 'Tidak ada data';
 
-            function changePeriod(period) {
-                currentPeriod = period;
+            document.getElementById('totalSales').textContent = totalValue.toLocaleString('id-ID');
+            document.getElementById('topCategory').textContent = topCategory;
+        }
 
-                // Update tombol aktif
-                document.querySelectorAll('[data-period]').forEach(btn => {
-                    btn.classList.toggle('bg-blue-500', btn.dataset.period === period);
-                    btn.classList.toggle('text-white', btn.dataset.period === period);
-                    btn.classList.toggle('bg-gray-200', btn.dataset.period !== period);
-                    btn.classList.toggle('text-gray-700', btn.dataset.period !== period);
-                });
+        function changePeriod(period) {
+            currentPeriod = period;
 
-                initChart();
-            }
+            // Update tombol aktif
+            document.querySelectorAll('[data-period]').forEach(btn => {
+                const isActive = btn.dataset.period === period;
+
+                btn.disabled = false;
+                btn.classList.toggle('bg-blue-500', isActive);
+                btn.classList.toggle('text-white', isActive);
+                btn.classList.toggle('bg-gray-100', !isActive);
+                btn.classList.toggle('text-gray-700', !isActive);
+            });
+
+            initChart();
+        }
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("hi")
             if (typeof Chart === 'undefined') {
                 console.error('Chart.js is not loaded!');
                 document.getElementById('kategoriChart').innerHTML =
