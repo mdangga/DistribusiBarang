@@ -311,7 +311,7 @@
                     <label for="nama_pelanggan" class="block mb-2 text-sm font-medium text-gray-900">Nama
                         Pelanggan</label>
                     <input type="text" name="nama_pelanggan" id="nama_pelanggan"
-                        value="{{ $person->nama_pelanggan }}"
+                        value="{{ $person->nama_pelanggan }}" readonly
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
                 </div>
 

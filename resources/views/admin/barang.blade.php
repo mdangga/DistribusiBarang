@@ -290,9 +290,9 @@
                 </table>
             </div>
             @if ($barang->total() > 10)
-            <div class="bg-[#cbf3f07a] py-2 px-6">
-                {{ $barang->withQueryString()->links() }}
-            </div>
+                <div class="bg-[#cbf3f07a] py-2 px-6">
+                    {{ $barang->withQueryString()->links() }}
+                </div>
             @endif
         </div>
     </div>
@@ -381,6 +381,7 @@
                 <div class="col-span-2">
                     <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Nama Barang</label>
                     <input type="text" name="nama_barang" id="nama_barang" value="{{ $item->nama_barang }}"
+                        readonly
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
                 </div>
 
@@ -450,7 +451,7 @@
 
                 <div class="col-span-2">
                     <label for="stok" class="block mb-2 text-sm font-medium text-gray-900">Stok</label>
-                    <input type="number" name="stok" id="stok"
+                    <input type="number" name="stok" id="stok" min="0"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
                 </div>
             </div>
