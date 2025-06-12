@@ -301,7 +301,7 @@
         </div>
     </x-modal>
 
-    <!-- Modals untuk setiap barang -->
+    <!-- Modals untuk setiap pelanggan -->
     @foreach ($pemasok as $person)
         <x-modal id="editModal{{ $person->id_pemasok }}" header="Edit {{ $person->nama_pemasok }}" button="Update"
             :actionRoute="route('pemasok.update', $person->id_pemasok)" methodOverride="put">
@@ -325,7 +325,7 @@
                 <div class="col-span-3">
                     <label for="nama_pemasok" class="block mb-2 text-sm font-medium text-gray-900">Nama
                         Pemasok</label>
-                    <input type="text" name="nama_pemasok" id="nama_pemasok" value="{{ $person->nama_pemasok }}"
+                    <input type="text" name="nama_pemasok" id="nama_pemasok" value="{{ $person->nama_pemasok }}" readonly
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
                 </div>
                 <div class="col-span-3 sm:col-span-3">

@@ -260,7 +260,7 @@
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6">
                         <div>
                             <h3 class="text-xl font-semibold text-gray-900">Business Performance</h3>
-                            <p class="text-gray-500 text-sm mt-1">Monitor your business financial performance</p>
+                            <p class="text-gray-500 text-sm mt-1">{{ $business_status['message'] }}</p>
                         </div>
                         <div class="flex items-center gap-3">
                             <span
@@ -311,11 +311,12 @@
                                             :class="(profits[selectedIndex] >= 0) ? 'text-green-600' : 'text-red-600'">
                                             <span
                                                 x-text="new Intl.NumberFormat('id-ID', { 
-                            style: 'currency', 
-                            currency: 'IDR',
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0
-                        }).format(profits[selectedIndex])"></span>
+                                                        style: 'currency', 
+                                                        currency: 'IDR',
+                                                        minimumFractionDigits: 0,
+                                                        maximumFractionDigits: 0
+                                                        }).format(profits[selectedIndex])">
+                                            </span>
                                         </h4>
 
                                         <!-- Percentage inline -->
@@ -368,7 +369,7 @@
                                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="{{ $full_year_performance['is_profitable_full_year']? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6' }}" />
+                                            d="{{ $full_year_performance['is_profitable_full_year'] ? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6' }}" />
                                     </svg>
                                 </div>
                             </div>
@@ -426,16 +427,21 @@
                     </div>
 
                     <!-- Period Buttons - Simplified -->
-                    <div class="flex gap-2 mb-6">
+                    <div class="flex justify-center gap-2 mb-6">
                         <button
                             class="px-4 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                            onclick="changePeriod('month')" id="btn-month" data-period="month">
-                            1M
+                            onclick="changePeriod('daily')" id="btn-daily" data-period="daily">
+                            1D
                         </button>
                         <button
                             class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                            onclick="changePeriod('previous')" id="btn-before" data-period="previous">
-                            3M
+                            onclick="changePeriod('week')" id="btn-week" data-period="week">
+                            1W
+                        </button>
+                        <button
+                            class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                            onclick="changePeriod('month')" id="btn-month" data-period="month">
+                            1M
                         </button>
                         <button
                             class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
@@ -450,7 +456,7 @@
                     </div>
 
                     <!-- Legend -->
-                    <div class="mt-4 flex flex-wrap gap-4 justify-center" id="customLegend"></div>
+                    <div class="my-2 flex flex-wrap gap-4 justify-center" id="customLegend"></div>
 
                     <!-- Stats - Simplified -->
                     <div class="grid grid-cols-2 gap-4">
@@ -897,19 +903,25 @@
             };
         }
 
-        const dataMonth = getChartData(grafikPieData.bulan_sekarang);
-        const dataPreviousMonths = getChartData(grafikPieData.bulan_lalu);
-        const dataYear = getChartData(grafikPieData.Satu_tahun);
+        const dataDaily = getChartData(grafikPieData['1_day']);
+        const dataWeek = getChartData(grafikPieData['1_week']);
+        const dataMonth = getChartData(grafikPieData['1_month']);
+        const dataYear = getChartData(grafikPieData['1_year']);
 
         const periods = [{
-                key: 'month',
-                label: 'Bulan Sekarang',
-                data: dataMonth
+                key: 'daily',
+                label: 'Hari Ini',
+                data: dataDaily
             },
             {
-                key: 'previous',
-                label: 'Bulan Sebelumnya',
-                data: dataPreviousMonths
+                key: 'week',
+                label: 'Minggu Ini',
+                data: dataWeek
+            },
+            {
+                key: 'month',
+                label: 'Bulan Ini',
+                data: dataMonth
             },
             {
                 key: 'year',
@@ -919,7 +931,7 @@
         ];
 
         let currentChart = null;
-        let currentPeriod = 'month';
+        let currentPeriod = 'daily';
 
         function initChart() {
             const ctx = document.getElementById('kategoriChart');

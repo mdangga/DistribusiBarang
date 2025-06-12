@@ -380,22 +380,38 @@ class DashboardController extends Controller
 
     private function getPieChartData(): array
     {
-        $currentMonth = $this->now->copy()->startOfMonth();
-        $previousMonth = $this->now->copy()->subMonthNoOverflow()->startOfMonth();
+        // 1 Week period
+        $dailyStart = now()->startOfDay();
+        $dailyEnd = now()->endOfDay();
+
+        // 1 Week period
+        $weekStart = $this->now->copy()->subWeek()->startOfWeek();
+        $weekEnd = $this->now->copy()->endOfWeek();
+
+        // 1 Month period
+        $monthStart = $this->now->copy()->startOfMonth();
+        $monthEnd = $this->now->copy()->endOfMonth();
+
+        // 1 Year period
         $yearStart = $this->now->copy()->subMonthNoOverflow(12)->startOfMonth();
+        $yearEnd = $this->now->copy();
 
         return [
-            'bulan_sekarang' => PieGraphDashboard::getKategoriData(
-                $currentMonth,
-                $this->now->copy()->endOfMonth()
+            '1_day' => PieGraphDashboard::getKategoriData(
+                $dailyStart,
+                $dailyEnd
             ),
-            'bulan_sebelumnya' => PieGraphDashboard::getKategoriData(
-                $previousMonth,
-                $this->now->copy()->subMonthNoOverflow()->endOfMonth()
+            '1_week' => PieGraphDashboard::getKategoriData(
+                $weekStart,
+                $weekEnd
             ),
-            'Satu_tahun' => PieGraphDashboard::getKategoriData(
+            '1_month' => PieGraphDashboard::getKategoriData(
+                $monthStart,
+                $monthEnd
+            ),
+            '1_year' => PieGraphDashboard::getKategoriData(
                 $yearStart,
-                $this->now->copy()->endOfMonth()
+                $yearEnd
             ),
         ];
     }
