@@ -47,7 +47,7 @@
                         <div class="relative">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Nama <a data-modal-target="addModalPelanggan"
-                                    data-modal-toggle="addModalPelanggan">Pelanggan</a><span
+                                    data-modal-toggle="addModalPelanggan" class="cursor-pointer">Pelanggan</a><span
                                     class="text-gray-400">(Opsional)</span>
                             </label>
                             <input type="hidden" name="id_pelanggan" id="id_pelanggan"
@@ -286,6 +286,46 @@
             </div>
         </form>
 
+        <x-modal id="addModalPelanggan" header="Tambah Pelanggan" button="Tambah" :actionRoute="route('add.pelanggan')"
+            methodOverride="POST">
+            <div class="grid gap-4 mb-4
+            grid-cols-3">
+                {{-- svg icon di header --}}
+                <x-slot:iconheader>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"
+                        class="text-gray-700 mr-3 overflow-visible">
+                        <path fill="currentColor"
+                            d="M224 256a128 128 0 1 0 0-256a128 128 0 1 0 0 256m-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512h388.6c10 0 18.8-4.9 24.2-12.5l-99.2-99.2c-14.9-14.9-23.3-35.1-23.3-56.1v-33c-15.9-4.7-32.8-7.2-50.3-7.2zM384 224c-17.7 0-32 14.3-32 32v82.7c0 17 6.7 33.3 18.7 45.3l107.4 107.3c18.7 18.7 49.1 18.7 67.9 0l73.4-73.4c18.7-18.7 18.7-49.1 0-67.9L512 242.7c-12-12-28.3-18.7-45.3-18.7zm24 80a24 24 0 1 1 48 0a24 24 0 1 1-48 0" />
+                    </svg>
+                </x-slot:iconheader>
+                {{-- svg icon sebelah kiri btn --}}
+                <x-slot:iconbtn>
+                    <svg class="me-1 -ms-1 w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 512 512" class="text-gray-700 mr-3">
+                        <path fill="currentColor"
+                            d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256z" />
+                    </svg>
+                </x-slot:iconbtn>
+                <div class="col-span-3">
+                    <label for="nama_pelanggan" class="block mb-2 text-sm font-medium text-gray-900">Nama
+                        Pelanggan</label>
+                    <input type="text" name="nama_pelanggan" id="nama_pelanggan"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5 ">
+                </div>
+
+                <div class="col-span-3 sm:col-span-3">
+                    <label for="no_telpon" class="block mb-2 text-sm font-medium text-gray-900">No Telpon</label>
+                    <input type="text" name="no_telpon" id="no_telpon"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transitions block w-full p-2.5">
+                </div>
+
+                <div class="col-span-3 sm:col-span-3">
+                    <label for="alamat" class="block mb-2 text-sm font-medium text-gray-900">Alamat</label>
+                    <textarea name="alamat" id="alamat" rows="3"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#2ec4b6] focus:border-blue-500 transition block w-full p-2.5 resize-none"></textarea>
+                </div>
+            </div>
+        </x-modal>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
