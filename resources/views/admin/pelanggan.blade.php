@@ -128,7 +128,7 @@
 
     <div class="p-4 sm:ml-64 mt-14 sm:mt-0">
         {{-- validasi modal --}}
-        <x-toast-info :fields="['nama_pelanggan', 'no_telepon', 'alamat']" type="error" />
+        <x-toast-info :fields="['nama_pelanggan', 'no_telpon', 'alamat']" type="error" />
         @if (session('success'))
             <x-toast-info type="success" :message="session('success')" />
         @endif

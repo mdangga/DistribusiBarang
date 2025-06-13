@@ -13,6 +13,10 @@
 </head>
 
 <body class="h-full bg-white flex flex-col items-center p-10">
+    <x-toast-info :fields="['nama_pelanggan', 'no_telpon', 'alamat']" type="error" />
+    @if (session('success'))
+        <x-toast-info type="success" :message="session('success')" />
+    @endif
 
     <!-- Toast untuk error validasi -->
     @if ($errors->has('id_pelanggan'))
@@ -46,9 +50,8 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div class="relative">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Nama <a data-modal-target="addModalPelanggan"
-                                    data-modal-toggle="addModalPelanggan" class="cursor-pointer">Pelanggan</a><span
-                                    class="text-gray-400">(Opsional)</span>
+                                Nama <a data-modal-target="addModalPelanggan" data-modal-toggle="addModalPelanggan"
+                                    class="cursor-pointer">Pelanggan</a><span class="text-gray-400">(Opsional)</span>
                             </label>
                             <input type="hidden" name="id_pelanggan" id="id_pelanggan"
                                 value="{{ old('id_pelanggan') }}">
