@@ -71,7 +71,7 @@ class PelangganController extends Controller
             'no_telpon.required' => 'No Telephone wajib diisi.',
             'no_telpon.regex' => 'Nomor telepon hanya boleh berisi angka.',
             'no_telpon.max' => 'Nomor telepon terlalu panjang.',
-            'alamat.required' => 'Satuan wajib diisi.',
+            'alamat.required' => 'Alamat wajib diisi.',
         ]);
         // dd($request->all());
 
@@ -108,7 +108,7 @@ class PelangganController extends Controller
             'no_telpon.required' => 'No Telephone wajib diisi.',
             'no_telpon.regex' => 'Nomor telepon hanya boleh berisi angka.',
             'no_telpon.max' => 'Nomor telepon terlalu panjang.',
-            'alamat.required' => 'Satuan wajib diisi.',
+            'alamat.required' => 'Alamat wajib diisi.',
         ]);
         // dd($request->all());
 
